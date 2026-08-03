@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import FormationCouture, InscriptionFormation, Presence, Certification
 
-# Register your models here.
+admin.site.register(FormationCouture)
+admin.site.register(InscriptionFormation)
+admin.site.register(Presence)
+admin.site.register(Certification)

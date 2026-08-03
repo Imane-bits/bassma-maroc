@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import DemandeAide, PieceJustificative
 
-# Register your models here.
+admin.site.register(DemandeAide)
+admin.site.register(PieceJustificative)

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Don, Affectation
 
-# Register your models here.
+admin.site.register(Don)
+admin.site.register(Affectation)
