@@ -2,6 +2,16 @@ from django.conf import settings
 from django.db import models
 
 
+class Beneficiaire(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profil_beneficiaire"
+    )
+    situation_familiale = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return str(self.user)
+
+
 class DemandeAide(models.Model):
     class Urgence(models.TextChoices):
         FAIBLE = "faible", "Faible"
