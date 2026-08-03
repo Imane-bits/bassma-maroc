@@ -1,0 +1,6 @@
+<h1>Bienvenue, {{ user.first_name }} {{ user.last_name }}</h1>
+<p>Rôle : {{ user.role }}</p>
+<form method="post" action="{% url 'logout' %}">
+  {% csrf_token %}
+  <button type="submit">Se déconnecter</button>
+</form>

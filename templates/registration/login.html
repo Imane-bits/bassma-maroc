@@ -1,0 +1,8 @@
+<h1>Connexion</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Se connecter</button>
+</form>
+<p><a href="{% url 'password_reset' %}">Mot de passe oublié ?</a></p>
+<p><a href="{% url 'inscription' %}">Créer un compte</a></p>
