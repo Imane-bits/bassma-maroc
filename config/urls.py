@@ -21,7 +21,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('', include('users.urls')),
+    path('aide/', include('aide.urls')),
+    path('dons/', include('dons.urls')),
 ]
 
 if settings.DEBUG:

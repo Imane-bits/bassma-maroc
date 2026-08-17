@@ -1,0 +1,19 @@
+{% load i18n %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Association Bassma Maroc{% endblock %}</title>
+</head>
+<body>
+  <div>
+    {% get_current_language as CURRENT_LANGUAGE %}
+    <form action="{% url 'set_language' %}" method="post" style="display:inline">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.path }}">
+      <button type="submit" name="language" value="fr" {% if CURRENT_LANGUAGE == "fr" %}disabled{% endif %}>FR</button>
+      <button type="submit" name="language" value="ar" {% if CURRENT_LANGUAGE == "ar" %}disabled{% endif %}>AR</button>
+    </form>
+  </div>
+  {% block content %}{% endblock %}
+</body>
+</html>

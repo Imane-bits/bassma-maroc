@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Faire un don" %}</h1>
+{% if messages %}
+  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% trans "Confirmer le don" %}</button>
+</form>
+{% endblock %}

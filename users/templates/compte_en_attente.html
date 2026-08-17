@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Compte en attente de validation" %}</h1>
+<p>{% trans "Votre compte gestionnaire a été créé mais doit être validé par un responsable avant que vous puissiez vous connecter." %}</p>
+<p><a href="{% url 'login' %}">{% trans "Se connecter" %}</a></p>
+{% endblock %}

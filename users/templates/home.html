@@ -1,6 +1,10 @@
-<h1>Bienvenue, {{ user.first_name }} {{ user.last_name }}</h1>
-<p>Rôle : {{ user.role }}</p>
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% blocktrans with first_name=user.first_name last_name=user.last_name %}Bienvenue, {{ first_name }} {{ last_name }}{% endblocktrans %}</h1>
+<p>{% trans "Rôle :" %} {{ user.role }}</p>
 <form method="post" action="{% url 'logout' %}">
   {% csrf_token %}
-  <button type="submit">Se déconnecter</button>
+  <button type="submit">{% trans "Se déconnecter" %}</button>
 </form>
+{% endblock %}

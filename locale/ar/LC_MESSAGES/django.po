@@ -1,0 +1,617 @@
+# Arabic translations for Association Bassma Maroc backend.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-05 13:31+0000\n"
+"PO-Revision-Date: 2026-08-05 10:31+0000\n"
+"Language-Team: Arabic\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: aide/forms.py:33 aide/models.py:70
+msgid "J'accepte le traitement de mes données personnelles (loi 09-08)"
+msgstr "أوافق على معالجة بياناتي الشخصية (القانون 09.08)"
+
+#: aide/forms.py:58 aide/templates/aide/_demande_detail_content.html:13
+#: aide/templates/aide/soumettre_demande.html:14
+msgid "Pièces justificatives"
+msgstr "الوثائق الثبوتية"
+
+#: aide/models.py:10
+msgid "Divorcé(e)"
+msgstr "مطلق(ة)"
+
+#: aide/models.py:11
+msgid "Veuf/Veuve"
+msgstr "أرمل/أرملة"
+
+#: aide/models.py:12
+msgid "Orphelin"
+msgstr "يتيم"
+
+#: aide/models.py:13
+msgid "Situation difficile"
+msgstr "وضعية صعبة"
+
+#: aide/models.py:14
+msgid "Autre"
+msgstr "أخرى"
+
+#: aide/models.py:16
+msgid "nom"
+msgstr "الاسم العائلي"
+
+#: aide/models.py:17
+msgid "prénom"
+msgstr "الاسم الشخصي"
+
+#: aide/models.py:18
+msgid "CIN"
+msgstr "البطاقة الوطنية"
+
+#: aide/models.py:19
+msgid "date de naissance"
+msgstr "تاريخ الازدياد"
+
+#: aide/models.py:20
+msgid "téléphone"
+msgstr "الهاتف"
+
+#: aide/models.py:21
+msgid "ville"
+msgstr "المدينة"
+
+#: aide/models.py:22
+msgid "adresse"
+msgstr "العنوان"
+
+#: aide/models.py:24
+msgid "situation familiale"
+msgstr "الوضعية العائلية"
+
+#: aide/models.py:26
+msgid "nombre d'enfants"
+msgstr "عدد الأطفال"
+
+#: aide/models.py:27
+msgid "enfants scolarisés"
+msgstr "الأطفال المتمدرسون"
+
+#: aide/models.py:29
+msgid "Un membre de la famille a un problème de santé"
+msgstr "أحد أفراد الأسرة يعاني من مشكل صحي"
+
+#: aide/models.py:46
+msgid "Faible"
+msgstr "منخفضة"
+
+#: aide/models.py:47
+msgid "Moyenne"
+msgstr "متوسطة"
+
+#: aide/models.py:48
+msgid "Haute"
+msgstr "عالية"
+
+#: aide/models.py:51 aide/templates/aide/liste_demandes.html:10
+msgid "En attente"
+msgstr "قيد الانتظار"
+
+#: aide/models.py:52 aide/templates/aide/liste_demandes.html:11
+msgid "En cours"
+msgstr "قيد المعالجة"
+
+#: aide/models.py:53
+msgid "Acceptée"
+msgstr "مقبولة"
+
+#: aide/models.py:54
+msgid "Refusée"
+msgstr "مرفوضة"
+
+#: aide/models.py:57
+msgid "Financière"
+msgstr "مالية"
+
+#: aide/models.py:58
+msgid "En nature"
+msgstr "عينية"
+
+#: aide/models.py:61
+msgid "numéro de dossier"
+msgstr "رقم الملف"
+
+#: aide/models.py:66
+msgid "description"
+msgstr "الوصف"
+
+#: aide/models.py:67
+msgid "urgence"
+msgstr "درجة الاستعجال"
+
+#: aide/models.py:68
+msgid "type d'aide"
+msgstr "نوع المساعدة"
+
+#: aide/models.py:74 dons/models.py:23
+msgid "statut"
+msgstr "الحالة"
+
+#: aide/templates/aide/_demande_detail_content.html:2
+#, python-format
+msgid "Dossier %(numero)s"
+msgstr "الملف %(numero)s"
+
+#: aide/templates/aide/_demande_detail_content.html:6
+msgid "Bénéficiaire :"
+msgstr "المستفيد(ة) :"
+
+#: aide/templates/aide/_demande_detail_content.html:7
+msgid "Description :"
+msgstr "الوصف :"
+
+#: aide/templates/aide/_demande_detail_content.html:8
+msgid "Urgence :"
+msgstr "درجة الاستعجال :"
+
+#: aide/templates/aide/_demande_detail_content.html:9
+msgid "Type d'aide :"
+msgstr "نوع المساعدة :"
+
+#: aide/templates/aide/_demande_detail_content.html:10
+msgid "Statut :"
+msgstr "الحالة :"
+
+#: aide/templates/aide/_demande_detail_content.html:11
+msgid "Date de soumission :"
+msgstr "تاريخ التقديم :"
+
+#: aide/templates/aide/_demande_detail_content.html:18
+msgid "Aucune pièce jointe."
+msgstr "لا توجد وثائق مرفقة."
+
+#: aide/templates/aide/_demande_detail_content.html:23
+msgid "Actions"
+msgstr "إجراءات"
+
+#: aide/templates/aide/_demande_detail_content.html:26
+msgid "Accepter"
+msgstr "قبول"
+
+#: aide/templates/aide/_demande_detail_content.html:30
+msgid "Refuser"
+msgstr "رفض"
+
+#: aide/templates/aide/confirmation.html:4
+msgid "Votre demande a été enregistrée"
+msgstr "تم تسجيل طلبكم"
+
+#: aide/templates/aide/confirmation.html:5
+msgid "Votre numéro de dossier :"
+msgstr "رقم ملفكم :"
+
+#: aide/templates/aide/confirmation.html:7
+msgid ""
+"Notez-le précieusement : il vous permettra de suivre l'état de votre "
+"dossier. Il ne pourra pas vous être renvoyé automatiquement en cas de perte "
+"— contactez l'association directement dans ce cas."
+msgstr ""
+"احتفظوا به جيدا: سيمكنكم من تتبع حالة ملفكم. لا يمكن استرجاعه تلقائيا في "
+"حالة الضياع — يرجى الاتصال بالجمعية مباشرة في هذه الحالة."
+
+#: aide/templates/aide/confirmation.html:8
+msgid "Suivre mon dossier"
+msgstr "تتبع ملفي"
+
+#: aide/templates/aide/liste_demandes.html:4
+msgid "Demandes d'aide"
+msgstr "طلبات المساعدة"
+
+#: aide/templates/aide/liste_demandes.html:9
+msgid "Filtrer :"
+msgstr "تصفية :"
+
+#: aide/templates/aide/liste_demandes.html:12
+msgid "Acceptées"
+msgstr "مقبولة"
+
+#: aide/templates/aide/liste_demandes.html:13
+msgid "Refusées"
+msgstr "مرفوضة"
+
+#: aide/templates/aide/liste_demandes.html:14
+msgid "Toutes"
+msgstr "الكل"
+
+#: aide/templates/aide/liste_demandes.html:19 dons/models.py:32
+msgid "Bénéficiaire"
+msgstr "مستفيد(ة)"
+
+#: aide/templates/aide/liste_demandes.html:20
+#: dons/templates/dons/mes_dons.html:13
+msgid "Type"
+msgstr "النوع"
+
+#: aide/templates/aide/liste_demandes.html:21
+msgid "Urgence"
+msgstr "الاستعجال"
+
+#: aide/templates/aide/liste_demandes.html:22
+#: dons/templates/dons/liste_dons.html:15 dons/templates/dons/mes_dons.html:14
+msgid "Statut"
+msgstr "الحالة"
+
+#: aide/templates/aide/liste_demandes.html:23
+#: dons/templates/dons/liste_dons.html:16 dons/templates/dons/mes_dons.html:15
+msgid "Date"
+msgstr "التاريخ"
+
+#: aide/templates/aide/liste_demandes.html:35
+msgid "Aucune demande."
+msgstr "لا توجد طلبات."
+
+#: aide/templates/aide/soumettre_demande.html:4
+msgid "Demande d'aide"
+msgstr "طلب مساعدة"
+
+#: aide/templates/aide/soumettre_demande.html:10
+msgid "Informations personnelles"
+msgstr "المعلومات الشخصية"
+
+#: aide/templates/aide/soumettre_demande.html:12
+msgid "Votre demande"
+msgstr "طلبكم"
+
+#: aide/templates/aide/soumettre_demande.html:16
+msgid "Envoyer la demande"
+msgstr "إرسال الطلب"
+
+#: aide/templates/aide/suivi_dossier.html:4
+msgid "Suivi de dossier"
+msgstr "تتبع الملف"
+
+#: aide/templates/aide/suivi_dossier.html:12
+msgid "Numéro de dossier"
+msgstr "رقم الملف"
+
+#: aide/templates/aide/suivi_dossier.html:14
+msgid "Consulter"
+msgstr "استعلام"
+
+#: aide/views.py:57
+msgid "Aucun dossier trouvé avec ce numéro."
+msgstr "لم يتم العثور على أي ملف بهذا الرقم."
+
+#: aide/views.py:86
+msgid "Demande acceptée."
+msgstr "تم قبول الطلب."
+
+#: aide/views.py:96
+msgid "Demande refusée."
+msgstr "تم رفض الطلب."
+
+#: dons/forms.py:34
+msgid "Requis lorsque la cible est un bénéficiaire."
+msgstr "مطلوب عندما تكون الجهة المستفيدة هي مستفيد(ة)."
+
+#: dons/forms.py:36
+msgid "Ne doit pas être renseigné pour cette cible."
+msgstr "لا يجب تحديده لهذه الجهة."
+
+#: dons/forms.py:43
+msgid "Dépasse le solde disponible de ce don."
+msgstr "يتجاوز الرصيد المتاح لهذا التبرع."
+
+#: dons/models.py:8
+msgid "Unique"
+msgstr "لمرة واحدة"
+
+#: dons/models.py:9
+msgid "Mensuel"
+msgstr "شهري"
+
+#: dons/models.py:12
+msgid "Reçu"
+msgstr "مستلم"
+
+#: dons/models.py:13
+msgid "En affectation"
+msgstr "قيد التخصيص"
+
+#: dons/models.py:14
+msgid "Distribué"
+msgstr "موزَّع"
+
+#: dons/models.py:19
+msgid "montant"
+msgstr "المبلغ"
+
+#: dons/models.py:21
+msgid "type de don"
+msgstr "نوع التبرع"
+
+#: dons/models.py:33
+msgid "École"
+msgstr "المدرسة"
+
+#: dons/models.py:34
+msgid "Centre de formation"
+msgstr "مركز التكوين"
+
+#: dons/models.py:40
+msgid "montant affecté"
+msgstr "المبلغ المخصص"
+
+#: dons/models.py:42
+msgid "cible"
+msgstr "الجهة المستفيدة"
+
+#: dons/models.py:72
+msgid "Une demande d'aide est requise pour une affectation à un bénéficiaire."
+msgstr "يجب تحديد طلب مساعدة عند التخصيص لمستفيد(ة)."
+
+#: dons/models.py:76
+msgid "Aucune demande d'aide ne doit être liée pour cette cible."
+msgstr "لا يجب ربط أي طلب مساعدة بهذه الجهة."
+
+#: dons/templates/dons/creer_affectation.html:4
+#: dons/templates/dons/liste_dons.html:5
+msgid "Créer une affectation"
+msgstr "إنشاء تخصيص"
+
+#: dons/templates/dons/creer_affectation.html:11
+msgid "Créer l'affectation"
+msgstr "إنشاء التخصيص"
+
+#: dons/templates/dons/creer_don.html:4
+msgid "Faire un don"
+msgstr "التبرع"
+
+#: dons/templates/dons/creer_don.html:11
+msgid "Confirmer le don"
+msgstr "تأكيد التبرع"
+
+#: dons/templates/dons/liste_dons.html:4
+msgid "Dons à affecter"
+msgstr "التبرعات الواجب تخصيصها"
+
+#: dons/templates/dons/liste_dons.html:12 users/models.py:8
+msgid "Donateur"
+msgstr "متبرع(ة)"
+
+#: dons/templates/dons/liste_dons.html:13 dons/templates/dons/mes_dons.html:12
+msgid "Montant"
+msgstr "المبلغ"
+
+#: dons/templates/dons/liste_dons.html:14
+msgid "Déjà affecté"
+msgstr "تم تخصيصه"
+
+#: dons/templates/dons/liste_dons.html:28
+msgid "Aucun don en attente d'affectation."
+msgstr "لا توجد تبرعات في انتظار التخصيص."
+
+#: dons/templates/dons/mes_dons.html:4
+msgid "Mes dons"
+msgstr "تبرعاتي"
+
+#: dons/templates/dons/mes_dons.html:5
+msgid "Faire un nouveau don"
+msgstr "تقديم تبرع جديد"
+
+#: dons/templates/dons/mes_dons.html:16
+msgid "Affectations"
+msgstr "التخصيصات"
+
+#: dons/templates/dons/mes_dons.html:30
+msgid "Aucune affectation pour le moment."
+msgstr "لا توجد تخصيصات حاليا."
+
+#: dons/templates/dons/mes_dons.html:36
+msgid "Aucun don pour le moment."
+msgstr "لا توجد تبرعات حاليا."
+
+#: dons/views.py:21
+msgid "Merci pour votre don."
+msgstr "شكرا على تبرعكم."
+
+#: dons/views.py:65
+msgid "Affectation créée, le donateur a été notifié."
+msgstr "تم إنشاء التخصيص، وتم إخطار المتبرع(ة)."
+
+#: templates/registration/inscription.html:4
+msgid "Inscription"
+msgstr "التسجيل"
+
+#: templates/registration/inscription.html:8
+msgid "S'inscrire"
+msgstr "إنشاء الحساب"
+
+#: templates/registration/inscription.html:10
+msgid "J'ai déjà un compte"
+msgstr "لدي حساب بالفعل"
+
+#: templates/registration/login.html:4
+msgid "Connexion"
+msgstr "تسجيل الدخول"
+
+#: templates/registration/login.html:8
+#: templates/registration/password_reset_complete.html:5
+#: users/templates/compte_en_attente.html:6
+msgid "Se connecter"
+msgstr "دخول"
+
+#: templates/registration/login.html:10
+msgid "Mot de passe oublié ?"
+msgstr "نسيت كلمة المرور؟"
+
+#: templates/registration/login.html:11
+msgid "Créer un compte"
+msgstr "إنشاء حساب"
+
+#: templates/registration/password_reset_complete.html:4
+msgid "Mot de passe changé"
+msgstr "تم تغيير كلمة المرور"
+
+#: templates/registration/password_reset_confirm.html:4
+msgid "Nouveau mot de passe"
+msgstr "كلمة مرور جديدة"
+
+#: templates/registration/password_reset_confirm.html:9
+msgid "Changer le mot de passe"
+msgstr "تغيير كلمة المرور"
+
+#: templates/registration/password_reset_confirm.html:12
+msgid "Ce lien de réinitialisation n'est plus valide."
+msgstr "رابط إعادة التعيين هذا لم يعد صالحا."
+
+#: templates/registration/password_reset_done.html:4
+msgid "Email envoyé"
+msgstr "تم إرسال البريد الإلكتروني"
+
+#: templates/registration/password_reset_done.html:5
+msgid ""
+"Si un compte existe avec cette adresse, un email de réinitialisation vient "
+"d'être envoyé."
+msgstr ""
+"إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فقد تم للتو إرسال بريد "
+"إلكتروني لإعادة تعيين كلمة المرور."
+
+#: templates/registration/password_reset_email.html:3
+msgid ""
+"Vous recevez cet email car vous avez demandé la réinitialisation de votre "
+"mot de passe."
+msgstr ""
+"تتلقى هذا البريد الإلكتروني لأنك طلبت إعادة تعيين كلمة المرور الخاصة بك."
+
+#: templates/registration/password_reset_email.html:5
+msgid "Cliquez sur le lien suivant pour choisir un nouveau mot de passe :"
+msgstr "انقر على الرابط التالي لاختيار كلمة مرور جديدة:"
+
+#: templates/registration/password_reset_email.html:8
+msgid "Si vous n'avez pas fait cette demande, ignorez cet email."
+msgstr "إذا لم تقم بهذا الطلب، يرجى تجاهل هذا البريد الإلكتروني."
+
+#: templates/registration/password_reset_form.html:4
+msgid "Réinitialiser le mot de passe"
+msgstr "إعادة تعيين كلمة المرور"
+
+#: templates/registration/password_reset_form.html:8
+msgid "Envoyer"
+msgstr "إرسال"
+
+#: templates/registration/password_reset_subject.txt:1
+msgid "Réinitialisation de votre mot de passe"
+msgstr "إعادة تعيين كلمة المرور الخاصة بك"
+
+#: users/forms.py:9
+msgid "Mot de passe"
+msgstr "كلمة المرور"
+
+#: users/forms.py:11
+msgid "Confirmer le mot de passe"
+msgstr "تأكيد كلمة المرور"
+
+#: users/forms.py:14 users/models.py:12
+msgid "rôle"
+msgstr "الدور"
+
+#: users/forms.py:17
+msgid "Gestionnaire"
+msgstr "مسير(ة)"
+
+#: users/forms.py:28
+msgid "Un compte existe déjà avec cet email."
+msgstr "يوجد حساب بالفعل بهذا البريد الإلكتروني."
+
+#: users/forms.py:36
+msgid "Les mots de passe ne correspondent pas."
+msgstr "كلمتا المرور غير متطابقتين."
+
+#: users/models.py:9
+msgid "Enseignant"
+msgstr "أستاذ(ة)"
+
+#: users/models.py:10
+msgid "Responsable"
+msgstr "المسؤول(ة)"
+
+#: users/templates/compte_en_attente.html:4
+msgid "Compte en attente de validation"
+msgstr "الحساب في انتظار التفعيل"
+
+#: users/templates/compte_en_attente.html:5
+msgid ""
+"Votre compte gestionnaire a été créé mais doit être validé par un "
+"responsable avant que vous puissiez vous connecter."
+msgstr ""
+"تم إنشاء حسابكم كمسير، لكن يجب أن يتم تفعيله من طرف مسؤول قبل أن تتمكنوا "
+"من تسجيل الدخول."
+
+#: users/templates/comptes_en_attente.html:4
+#: users/templates/espace_responsable.html:6
+msgid "Comptes en attente"
+msgstr "الحسابات في انتظار التفعيل"
+
+#: users/templates/comptes_en_attente.html:10
+msgid "Nom"
+msgstr "الاسم"
+
+#: users/templates/comptes_en_attente.html:11
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: users/templates/comptes_en_attente.html:21
+msgid "Activer"
+msgstr "تفعيل"
+
+#: users/templates/comptes_en_attente.html:26
+msgid "Aucun compte en attente."
+msgstr "لا توجد حسابات في انتظار التفعيل."
+
+#: users/templates/espace_responsable.html:4
+msgid "Espace Responsable"
+msgstr "فضاء المسؤول"
+
+#: users/templates/espace_responsable.html:5
+msgid "Tableau de bord à venir (Phase 4)."
+msgstr "لوحة التحكم قادمة قريبا (المرحلة 4)."
+
+#: users/templates/espace_responsable.html:7
+msgid "Retour"
+msgstr "رجوع"
+
+#: users/templates/home.html:4
+#, python-format
+msgid "Bienvenue, %(first_name)s %(last_name)s"
+msgstr "مرحبا، %(first_name)s %(last_name)s"
+
+#: users/templates/home.html:5
+msgid "Rôle :"
+msgstr "الدور :"
+
+#: users/templates/home.html:8
+msgid "Se déconnecter"
+msgstr "تسجيل الخروج"
+
+#: users/views.py:57
+msgid "Compte activé."
+msgstr "تم تفعيل الحساب."
+
+#, python-format
+#~ msgid "Demande #%(pk)s"
+#~ msgstr "الطلب رقم %(pk)s"
+
+#~ msgid "Mes demandes d'aide"
+#~ msgstr "طلبات المساعدة الخاصة بي"
+
+#~ msgid "Nouvelle demande"
+#~ msgstr "طلب جديد"
+
+#~ msgid "Aucune demande pour le moment."
+#~ msgstr "لا توجد طلبات حاليا."

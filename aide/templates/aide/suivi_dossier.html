@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Suivi de dossier" %}</h1>
+{% if not demande %}
+  {% if messages %}
+    {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+  {% endif %}
+{% endif %}
+<form method="post">
+  {% csrf_token %}
+  <label for="numero_dossier">{% trans "Numéro de dossier" %}</label>
+  <input type="text" id="numero_dossier" name="numero_dossier" required>
+  <button type="submit">{% trans "Consulter" %}</button>
+</form>
+
+{% if demande %}
+<hr>
+{% include "aide/_demande_detail_content.html" %}
+{% endif %}
+{% endblock %}

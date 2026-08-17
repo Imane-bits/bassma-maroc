@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Demande d'aide" %}</h1>
+{% if messages %}
+  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <h2>{% trans "Informations personnelles" %}</h2>
+  {{ profil_form.as_p }}
+  <h2>{% trans "Votre demande" %}</h2>
+  {{ demande_form.as_p }}
+  <h2>{% trans "Pièces justificatives" %}</h2>
+  {{ pieces_form.as_p }}
+  <button type="submit">{% trans "Envoyer la demande" %}</button>
+</form>
+{% endblock %}

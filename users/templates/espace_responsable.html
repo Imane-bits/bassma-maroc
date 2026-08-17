@@ -1,3 +1,8 @@
-<h1>Espace Responsable</h1>
-<p>Tableau de bord à venir (Phase 4).</p>
-<p><a href="{% url 'home' %}">Retour</a></p>
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Espace Responsable" %}</h1>
+<p>{% trans "Tableau de bord à venir (Phase 4)." %}</p>
+<p><a href="{% url 'comptes_en_attente' %}">{% trans "Comptes en attente" %}</a></p>
+<p><a href="{% url 'home' %}">{% trans "Retour" %}</a></p>
+{% endblock %}

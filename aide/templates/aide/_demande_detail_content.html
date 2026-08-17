@@ -1,0 +1,32 @@
+{% load i18n %}
+<h1>{% blocktrans with numero=demande.numero_dossier %}Dossier {{ numero }}{% endblocktrans %}</h1>
+{% if messages %}
+  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+<p><strong>{% trans "Bénéficiaire :" %}</strong> {{ demande.beneficiaire }}</p>
+<p><strong>{% trans "Description :" %}</strong> {{ demande.description }}</p>
+<p><strong>{% trans "Urgence :" %}</strong> {{ demande.get_urgence_display }}</p>
+<p><strong>{% trans "Type d'aide :" %}</strong> {{ demande.get_type_aide_display }}</p>
+<p><strong>{% trans "Statut :" %}</strong> {{ demande.get_statut_display }}</p>
+<p><strong>{% trans "Date de soumission :" %}</strong> {{ demande.date_soumission }}</p>
+
+<h2>{% trans "Pièces justificatives" %}</h2>
+<ul>
+  {% for piece in demande.pieces.all %}
+  <li><a href="{{ piece.fichier.url }}">{{ piece.fichier.name }}</a></li>
+  {% empty %}
+  <li>{% trans "Aucune pièce jointe." %}</li>
+  {% endfor %}
+</ul>
+
+{% if user.is_authenticated and user.role == "responsable" %}
+<h2>{% trans "Actions" %}</h2>
+<form method="post" action="{% url 'aide:accepter_demande' demande.pk %}">
+  {% csrf_token %}
+  <button type="submit">{% trans "Accepter" %}</button>
+</form>
+<form method="post" action="{% url 'aide:refuser_demande' demande.pk %}">
+  {% csrf_token %}
+  <button type="submit">{% trans "Refuser" %}</button>
+</form>
+{% endif %}

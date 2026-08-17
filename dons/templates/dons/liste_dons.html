@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Dons à affecter" %}</h1>
+<p><a href="{% url 'dons:creer_affectation' %}">{% trans "Créer une affectation" %}</a></p>
+{% if messages %}
+  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+<table>
+  <tr>
+    <th>#</th>
+    <th>{% trans "Donateur" %}</th>
+    <th>{% trans "Montant" %}</th>
+    <th>{% trans "Déjà affecté" %}</th>
+    <th>{% trans "Statut" %}</th>
+    <th>{% trans "Date" %}</th>
+  </tr>
+  {% for don in dons %}
+  <tr>
+    <td>{{ don.pk }}</td>
+    <td>{{ don.donateur }}</td>
+    <td>{{ don.montant }} MAD</td>
+    <td>{{ don.total_affecte|default:"0" }} MAD</td>
+    <td>{{ don.get_statut_display }}</td>
+    <td>{{ don.date_don }}</td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="6">{% trans "Aucun don en attente d'affectation." %}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

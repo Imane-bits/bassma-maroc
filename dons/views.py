@@ -1,3 +1,69 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.db.models import Sum
+from django.shortcuts import redirect, render
+from django.utils.translation import gettext as _
 
-# Create your views here.
+from users.mixins import role_required
+
+from .emails import notifier_donateur_affectation
+from .forms import AffectationForm, DonForm
+from .models import Don
+
+
+@role_required("donateur")
+def creer_don(request):
+    if request.method == "POST":
+        form = DonForm(request.POST)
+        if form.is_valid():
+            don = form.save(commit=False)
+            don.donateur = request.user
+            don.save()
+            messages.success(request, _("Merci pour votre don."))
+            return redirect("dons:mes_dons")
+    else:
+        form = DonForm()
+    return render(request, "dons/creer_don.html", {"form": form})
+
+
+@role_required("donateur")
+def mes_dons(request):
+    dons = (
+        Don.objects.filter(donateur=request.user)
+        .prefetch_related("affectations")
+        .order_by("-date_don")
+    )
+    return render(request, "dons/mes_dons.html", {"dons": dons})
+
+
+@role_required("responsable")
+def liste_dons_a_affecter(request):
+    dons = (
+        Don.objects.exclude(statut=Don.Statut.DISTRIBUE)
+        .annotate(total_affecte=Sum("affectations__montant_affecte"))
+        .order_by("-date_don")
+    )
+    return render(request, "dons/liste_dons.html", {"dons": dons})
+
+
+@role_required("responsable")
+def creer_affectation(request):
+    if request.method == "POST":
+        form = AffectationForm(request.POST)
+        if form.is_valid():
+            affectation = form.save(commit=False)
+            affectation.validee_par = request.user
+            affectation.save()
+
+            don = affectation.don
+            total = don.affectations.aggregate(total=Sum("montant_affecte"))["total"] or 0
+            don.statut = (
+                Don.Statut.DISTRIBUE if total >= don.montant else Don.Statut.EN_AFFECTATION
+            )
+            don.save(update_fields=["statut"])
+
+            notifier_donateur_affectation(affectation)
+            messages.success(request, _("Affectation créée, le donateur a été notifié."))
+            return redirect("dons:liste_dons")
+    else:
+        form = AffectationForm()
+    return render(request, "dons/creer_affectation.html", {"form": form})

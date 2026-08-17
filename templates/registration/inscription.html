@@ -1,7 +1,11 @@
-<h1>Inscription</h1>
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Inscription" %}</h1>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
-  <button type="submit">S'inscrire</button>
+  <button type="submit">{% trans "S'inscrire" %}</button>
 </form>
-<p><a href="{% url 'login' %}">J'ai déjà un compte</a></p>
+<p><a href="{% url 'login' %}">{% trans "J'ai déjà un compte" %}</a></p>
+{% endblock %}
