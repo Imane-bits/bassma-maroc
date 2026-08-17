@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<h1>{% trans "Paiements de scolarité" %}</h1>
+{% if messages %}
+  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+{% endif %}
+<p>
+  {% trans "Filtrer :" %}
+  <a href="?statut=du">{% trans "Dûs" %}</a> |
+  <a href="?statut=en_retard">{% trans "En retard" %}</a> |
+  <a href="?statut=paye">{% trans "Payés" %}</a> |
+  <a href="?statut=">{% trans "Tous" %}</a>
+</p>
+<table>
+  <tr>
+    <th>#</th>
+    <th>{% trans "Élève" %}</th>
+    <th>{% trans "Montant" %}</th>
+    <th>{% trans "Échéance" %}</th>
+    <th>{% trans "Statut" %}</th>
+    <th></th>
+  </tr>
+  {% for paiement in paiements %}
+  <tr>
+    <td>{{ paiement.pk }}</td>
+    <td>{{ paiement.eleve }}</td>
+    <td>{{ paiement.montant }} MAD</td>
+    <td>{{ paiement.date_echeance }}</td>
+    <td>{{ paiement.get_statut_paiement_display }}</td>
+    <td>
+      {% if paiement.statut_paiement != "paye" %}
+      <form action="{% url 'ecole:marquer_paye' paiement.pk %}" method="post" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">{% trans "Marquer payé" %}</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% empty %}
+  <tr><td colspan="6">{% trans "Aucun paiement." %}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
