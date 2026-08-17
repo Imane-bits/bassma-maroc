@@ -1,21 +1,28 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Suivi de dossier" %}</h1>
-{% if not demande %}
-  {% if messages %}
-    {% for message in messages %}<p>{{ message }}</p>{% endfor %}
-  {% endif %}
-{% endif %}
-<form method="post">
-  {% csrf_token %}
-  <label for="numero_dossier">{% trans "Numéro de dossier" %}</label>
-  <input type="text" id="numero_dossier" name="numero_dossier" required>
-  <button type="submit">{% trans "Consulter" %}</button>
-</form>
+<div class="container" style="max-width:520px">
+  <section class="hero" style="padding-bottom:24px">
+    <div class="hero-badge">🔎</div>
+    <h1 style="font-size:28px">{% trans "تتبّع ملفي" %}</h1>
+    <p>{% trans "أدخل رقم الملف لعرض حالته وتحديث معطياتك." %}</p>
+  </section>
 
-{% if demande %}
-<hr>
-{% include "aide/_demande_detail_content.html" %}
-{% endif %}
+  <div class="form-card">
+    <form method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label for="numero_dossier">{% trans "رقم الملف" %}</label>
+        <input type="text" id="numero_dossier" name="numero_dossier" required placeholder="DOS-2026-000123">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "عرض الملف" %}</button>
+    </form>
+  </div>
+
+  {% if demande %}
+    <div class="form-card">
+      {% include "aide/_demande_detail_content.html" %}
+    </div>
+  {% endif %}
+</div>
 {% endblock %}

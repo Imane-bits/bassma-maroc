@@ -1,39 +1,40 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Mes dons" %}</h1>
-<p><a href="{% url 'dons:creer_don' %}">{% trans "Faire un nouveau don" %}</a></p>
-{% if messages %}
-  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
-{% endif %}
-<table>
-  <tr>
-    <th>#</th>
-    <th>{% trans "Montant" %}</th>
-    <th>{% trans "Type" %}</th>
-    <th>{% trans "Statut" %}</th>
-    <th>{% trans "Date" %}</th>
-    <th>{% trans "Affectations" %}</th>
-  </tr>
-  {% for don in dons %}
-  <tr>
-    <td>{{ don.pk }}</td>
-    <td>{{ don.montant }} MAD</td>
-    <td>{{ don.get_type_don_display }}</td>
-    <td>{{ don.get_statut_display }}</td>
-    <td>{{ don.date_don }}</td>
-    <td>
-      <ul>
-        {% for affectation in don.affectations.all %}
-        <li>{{ affectation.montant_affecte }} MAD &rarr; {{ affectation.get_cible_display }}</li>
-        {% empty %}
-        <li>{% trans "Aucune affectation pour le moment." %}</li>
-        {% endfor %}
-      </ul>
-    </td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="6">{% trans "Aucun don pour le moment." %}</td></tr>
-  {% endfor %}
-</table>
+<div class="container">
+  <div class="section-title" style="text-align:start;display:flex;justify-content:space-between;align-items:center">
+    <h2 style="color:var(--color-primary)">{% trans "Mes dons" %}</h2>
+    <a href="{% url 'dons:creer_don' %}" class="btn btn-accent btn-sm">💚 {% trans "Faire un nouveau don" %}</a>
+  </div>
+  <div class="table-wrap">
+    <table class="styled">
+      <tr>
+        <th>#</th>
+        <th>{% trans "Montant" %}</th>
+        <th>{% trans "Type" %}</th>
+        <th>{% trans "Statut" %}</th>
+        <th>{% trans "Date" %}</th>
+        <th>{% trans "Affectations" %}</th>
+      </tr>
+      {% for don in dons %}
+      <tr>
+        <td>{{ don.pk }}</td>
+        <td>{{ don.montant }} MAD</td>
+        <td>{{ don.get_type_don_display }}</td>
+        <td>{{ don.get_statut_display }}</td>
+        <td>{{ don.date_don }}</td>
+        <td>
+          {% for affectation in don.affectations.all %}
+            {{ affectation.montant_affecte }} MAD &rarr; {{ affectation.get_cible_display }}<br>
+          {% empty %}
+            {% trans "Aucune affectation pour le moment." %}
+          {% endfor %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">{% trans "Aucun don pour le moment." %}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
 {% endblock %}

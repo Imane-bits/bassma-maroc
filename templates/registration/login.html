@@ -1,12 +1,41 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Connexion" %}</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">{% trans "Se connecter" %}</button>
-</form>
-<p><a href="{% url 'password_reset' %}">{% trans "Mot de passe oublié ?" %}</a></p>
-<p><a href="{% url 'inscription' %}">{% trans "Créer un compte" %}</a></p>
+<div class="container">
+  <section class="hero" style="padding-bottom:0">
+    <h1 style="font-size:28px">{% trans "الدخول إلى فضائك" %}</h1>
+    <p>{% trans "متبرّع أو مستفيد — لكلٍّ فضاؤه الخاص" %}</p>
+  </section>
+  <div style="max-width:420px;margin:0 auto 60px">
+    <div class="tabs">
+      <a href="{% url 'login' %}" class="active">{% trans "تسجيل الدخول" %}</a>
+      <a href="{% url 'inscription' %}">{% trans "إنشاء حساب" %}</a>
+    </div>
+    <div class="form-card">
+      <form method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+          {{ form.username }}
+        </div>
+        <div class="field">
+          <label for="{{ form.password.id_for_label }}">{% trans "كلمة المرور" %}</label>
+          {{ form.password }}
+        </div>
+        {% if form.non_field_errors %}
+          <ul class="messages">
+            {% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "تسجيل الدخول" %}</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:14px">
+        <a href="{% url 'password_reset' %}">{% trans "Mot de passe oublié ?" %}</a>
+      </p>
+      <p style="text-align:center;font-size:14px">
+        {% trans "ليس لديك حساب؟" %} <a href="{% url 'inscription' %}"><strong>{% trans "أنشئ حسابًا" %}</strong></a>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}

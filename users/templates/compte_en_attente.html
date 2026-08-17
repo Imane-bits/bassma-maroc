@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Compte en attente de validation" %}</h1>
-<p>{% trans "Votre compte gestionnaire a été créé mais doit être validé par un responsable avant que vous puissiez vous connecter." %}</p>
-<p><a href="{% url 'login' %}">{% trans "Se connecter" %}</a></p>
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">⏳</div>
+    <h1 style="font-size:28px">{% trans "Compte en attente de validation" %}</h1>
+    <p>{% trans "Votre compte gestionnaire a été créé mais doit être validé par un responsable avant que vous puissiez vous connecter." %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'login' %}" class="btn btn-primary">{% trans "Se connecter" %}</a>
+    </div>
+  </section>
+</div>
 {% endblock %}

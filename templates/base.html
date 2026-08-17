@@ -1,19 +1,80 @@
-{% load i18n %}<!DOCTYPE html>
+{% load i18n static %}<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}">
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Association Bassma Maroc{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% trans "Association Bassma Maroc" %}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <div>
-    {% get_current_language as CURRENT_LANGUAGE %}
-    <form action="{% url 'set_language' %}" method="post" style="display:inline">
-      {% csrf_token %}
-      <input type="hidden" name="next" value="{{ request.path }}">
-      <button type="submit" name="language" value="fr" {% if CURRENT_LANGUAGE == "fr" %}disabled{% endif %}>FR</button>
-      <button type="submit" name="language" value="ar" {% if CURRENT_LANGUAGE == "ar" %}disabled{% endif %}>AR</button>
-    </form>
-  </div>
-  {% block content %}{% endblock %}
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <span class="brand-badge">بسمة</span>
+        <span class="brand-text">
+          <span class="brand-title">{% trans "جمعية بسمة المغربية" %}</span>
+          <span class="brand-subtitle">{% trans "مواطنة ملتزمة — المغرب" %}</span>
+        </span>
+      </div>
+      <nav class="nav">
+        <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">{% trans "الرئيسية" %}</a>
+        <a href="{% url 'aide:liste_besoins' %}" class="{% if request.resolver_match.url_name == 'liste_besoins' %}active{% endif %}">{% trans "الاحتياجات" %}</a>
+        <a href="{% url 'aide:soumettre_demande' %}" class="{% if request.resolver_match.url_name == 'soumettre_demande' %}active{% endif %}">{% trans "طلب مساعدة" %}</a>
+        <a href="{% url 'aide:suivi_dossier' %}" class="{% if request.resolver_match.url_name == 'suivi_dossier' %}active{% endif %}">{% trans "تتبّع ملفي" %}</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="lang-switch">
+          {% get_current_language as CURRENT_LANGUAGE %}
+          <form action="{% url 'set_language' %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" name="language" value="fr" {% if CURRENT_LANGUAGE == "fr" %}disabled{% endif %}>FR</button>
+          </form>
+          <form action="{% url 'set_language' %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" name="language" value="ar" {% if CURRENT_LANGUAGE == "ar" %}disabled{% endif %}>AR</button>
+          </form>
+        </div>
+        {% if user.is_authenticated %}
+          {% if user.role == "responsable" %}
+            <a href="{% url 'espace_responsable' %}" class="btn btn-primary btn-sm">🔑 {% trans "Espace responsable" %}</a>
+          {% else %}
+            <a href="{% url 'dons:mes_dons' %}" class="btn btn-primary btn-sm">🔑 {% trans "Mon espace" %}</a>
+          {% endif %}
+          <form action="{% url 'logout' %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline btn-sm">{% trans "Se déconnecter" %}</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-accent btn-sm">🔑 {% trans "دخول الأعضاء" %}</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    {% if messages %}
+      <div class="container" style="padding-top:20px">
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>{% trans "جمعية بسمة المغربية" %}</strong>
+      {% trans "جميع الحقوق محفوظة" %} — Bassma © 2026
+    </div>
+  </footer>
 </body>
 </html>

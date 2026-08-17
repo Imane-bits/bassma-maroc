@@ -5,22 +5,30 @@ from django.utils.translation import gettext_lazy as _
 
 class Don(models.Model):
     class TypeDon(models.TextChoices):
-        UNIQUE = "unique", _("Unique")
-        MENSUEL = "mensuel", _("Mensuel")
+        UNIQUE = "unique", _("لمرة واحدة")
+        MENSUEL = "mensuel", _("شهري")
 
     class Statut(models.TextChoices):
-        RECU = "recu", _("Reçu")
-        EN_AFFECTATION = "en_affectation", _("En affectation")
-        DISTRIBUE = "distribue", _("Distribué")
+        RECU = "recu", _("مستلم")
+        EN_AFFECTATION = "en_affectation", _("قيد التوزيع")
+        DISTRIBUE = "distribue", _("موزّع")
 
     donateur = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="dons"
     )
-    montant = models.DecimalField(_("montant"), max_digits=10, decimal_places=2)
+    montant = models.DecimalField(_("المبلغ"), max_digits=10, decimal_places=2)
     date_don = models.DateField(auto_now_add=True)
-    type_don = models.CharField(_("type de don"), max_length=10, choices=TypeDon.choices)
+    type_don = models.CharField(_("نوع التبرّع"), max_length=10, choices=TypeDon.choices)
     statut = models.CharField(
-        _("statut"), max_length=20, choices=Statut.choices, default=Statut.RECU
+        _("الحالة"), max_length=20, choices=Statut.choices, default=Statut.RECU
+    )
+    demande_aide = models.ForeignKey(
+        "aide.DemandeAide",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="dons_cibles",
+        verbose_name=_("الحالة المدعومة"),
     )
 
     def __str__(self):
@@ -29,17 +37,17 @@ class Don(models.Model):
 
 class Affectation(models.Model):
     class Cible(models.TextChoices):
-        BENEFICIAIRE = "beneficiaire", _("Bénéficiaire")
-        ECOLE = "ecole", _("École")
-        CENTRE_FORMATION = "centre_formation", _("Centre de formation")
+        BENEFICIAIRE = "beneficiaire", _("مستفيد")
+        ECOLE = "ecole", _("المدرسة")
+        CENTRE_FORMATION = "centre_formation", _("مركز التكوين")
 
     don = models.ForeignKey(Don, on_delete=models.CASCADE, related_name="affectations")
     budget = models.ForeignKey(
         "comptabilite.Budget", on_delete=models.PROTECT, related_name="affectations"
     )
-    montant_affecte = models.DecimalField(_("montant affecté"), max_digits=10, decimal_places=2)
+    montant_affecte = models.DecimalField(_("المبلغ الموزّع"), max_digits=10, decimal_places=2)
     date_affectation = models.DateField(auto_now_add=True)
-    cible = models.CharField(_("cible"), max_length=20, choices=Cible.choices)
+    cible = models.CharField(_("الوجهة"), max_length=20, choices=Cible.choices)
     demande_aide = models.ForeignKey(
         "aide.DemandeAide",
         on_delete=models.PROTECT,
@@ -69,11 +77,11 @@ class Affectation(models.Model):
 
         if self.cible == self.Cible.BENEFICIAIRE and not self.demande_aide_id:
             raise ValidationError(
-                _("Une demande d'aide est requise pour une affectation à un bénéficiaire.")
+                _("طلب المساعدة مطلوب عند اختيار وجهة «مستفيد».")
             )
         if self.cible != self.Cible.BENEFICIAIRE and self.demande_aide_id:
             raise ValidationError(
-                _("Aucune demande d'aide ne doit être liée pour cette cible.")
+                _("لا يجب ربط طلب مساعدة بهذه الوجهة.")
             )
 
     def __str__(self):

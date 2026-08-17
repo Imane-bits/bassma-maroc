@@ -1,13 +1,38 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Faire un don" %}</h1>
-{% if messages %}
-  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
-{% endif %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">{% trans "Confirmer le don" %}</button>
-</form>
+<div class="container" style="max-width:480px">
+  <section class="hero" style="padding-bottom:24px">
+    <div class="hero-badge">💚</div>
+    <h1 style="font-size:28px">{% trans "تبرّع الآن" %}</h1>
+    {% if cible_demande %}
+      <p>{% blocktrans with titre=cible_demande.titre %}تبرّعك موجّه إلى: {{ titre }}{% endblocktrans %}</p>
+    {% else %}
+      <p>{% trans "شكرًا لدعمك — كل مساهمة تصنع فرقًا." %}</p>
+    {% endif %}
+  </section>
+
+  <div class="form-card">
+    <form method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label for="{{ form.montant.id_for_label }}">{{ form.montant.label }}</label>
+        {{ form.montant }}
+      </div>
+      <div class="field">
+        <label>{{ form.type_don.label }}</label>
+        <div class="choice-group">
+          {% for radio in form.type_don %}
+            <label>{{ radio.tag }} {{ radio.choice_label }}</label>
+          {% endfor %}
+        </div>
+      </div>
+      {{ form.demande_aide }}
+      {% if form.errors %}
+        <ul class="messages"><li class="error">{% trans "Merci de corriger les erreurs ci-dessus." %}</li></ul>
+      {% endif %}
+      <button type="submit" class="btn btn-accent" style="width:100%;justify-content:center">💚 {% trans "تبرّع الآن" %}</button>
+    </form>
+  </div>
+</div>
 {% endblock %}

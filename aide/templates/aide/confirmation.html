@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Votre demande a été enregistrée" %}</h1>
-<p>{% trans "Votre numéro de dossier :" %}</p>
-<p><strong>{{ demande.numero_dossier }}</strong></p>
-<p>{% trans "Notez-le précieusement : il vous permettra de suivre l'état de votre dossier. Il ne pourra pas vous être renvoyé automatiquement en cas de perte — contactez l'association directement dans ce cas." %}</p>
-<p><a href="{% url 'aide:suivi_dossier' %}">{% trans "Suivre mon dossier" %}</a></p>
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">✅</div>
+    <h1 style="font-size:28px">{% trans "Votre demande a été enregistrée" %}</h1>
+    <p>{% trans "Votre numéro de dossier :" %}</p>
+    <p style="font-size:32px;font-weight:900;color:var(--color-primary)">{{ demande.numero_dossier }}</p>
+    <p>{% trans "Notez-le précieusement : il vous permettra de suivre l'état de votre dossier. Il ne pourra pas vous être renvoyé automatiquement en cas de perte — contactez l'association directement dans ce cas." %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'aide:suivi_dossier' %}" class="btn btn-primary">🔎 {% trans "Suivre mon dossier" %}</a>
+      <a href="{% url 'home' %}" class="btn btn-outline">{% trans "Retour à l'accueil" %}</a>
+    </div>
+  </section>
+</div>
 {% endblock %}

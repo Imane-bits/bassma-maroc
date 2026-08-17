@@ -1,38 +1,42 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Demandes d'aide" %}</h1>
-{% if messages %}
-  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
-{% endif %}
-<p>
-  {% trans "Filtrer :" %}
-  <a href="?statut=en_attente">{% trans "En attente" %}</a> |
-  <a href="?statut=en_cours">{% trans "En cours" %}</a> |
-  <a href="?statut=acceptee">{% trans "Acceptées" %}</a> |
-  <a href="?statut=refusee">{% trans "Refusées" %}</a> |
-  <a href="?statut=">{% trans "Toutes" %}</a>
-</p>
-<table>
-  <tr>
-    <th>#</th>
-    <th>{% trans "Bénéficiaire" %}</th>
-    <th>{% trans "Type" %}</th>
-    <th>{% trans "Urgence" %}</th>
-    <th>{% trans "Statut" %}</th>
-    <th>{% trans "Date" %}</th>
-  </tr>
-  {% for demande in demandes %}
-  <tr>
-    <td><a href="{% url 'aide:demande_detail' demande.pk %}">{{ demande.pk }}</a></td>
-    <td>{{ demande.beneficiaire }}</td>
-    <td>{{ demande.get_type_aide_display }}</td>
-    <td>{{ demande.get_urgence_display }}</td>
-    <td>{{ demande.get_statut_display }}</td>
-    <td>{{ demande.date_soumission }}</td>
-  </tr>
-  {% empty %}
-  <tr><td colspan="6">{% trans "Aucune demande." %}</td></tr>
-  {% endfor %}
-</table>
+<div class="container">
+  <div class="section-title" style="text-align:start">
+    <h2 style="color:var(--color-primary)">{% trans "Demandes d'aide" %}</h2>
+  </div>
+  <div class="filters">
+    <a href="?statut=en_attente" class="{% if statut == 'en_attente' %}active{% endif %}">{% trans "En attente" %}</a>
+    <a href="?statut=en_cours" class="{% if statut == 'en_cours' %}active{% endif %}">{% trans "En cours" %}</a>
+    <a href="?statut=acceptee" class="{% if statut == 'acceptee' %}active{% endif %}">{% trans "Acceptées" %}</a>
+    <a href="?statut=refusee" class="{% if statut == 'refusee' %}active{% endif %}">{% trans "Refusées" %}</a>
+    <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "Toutes" %}</a>
+  </div>
+  <div class="table-wrap">
+    <table class="styled">
+      <tr>
+        <th>#</th>
+        <th>{% trans "Bénéficiaire" %}</th>
+        <th>{% trans "Titre" %}</th>
+        <th>{% trans "Catégorie" %}</th>
+        <th>{% trans "Urgence" %}</th>
+        <th>{% trans "Statut" %}</th>
+        <th>{% trans "Date" %}</th>
+      </tr>
+      {% for demande in demandes %}
+      <tr>
+        <td><a href="{% url 'aide:demande_detail' demande.pk %}">{{ demande.pk }}</a></td>
+        <td>{{ demande.beneficiaire }}</td>
+        <td>{{ demande.titre }}</td>
+        <td>{{ demande.get_categorie_display }}</td>
+        <td>{{ demande.get_urgence_display }}</td>
+        <td>{{ demande.get_statut_display }}</td>
+        <td>{{ demande.date_soumission }}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7">{% trans "Aucune demande." %}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
 {% endblock %}

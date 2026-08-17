@@ -8,6 +8,10 @@ from users.mixins import role_required
 from .models import PaiementScolarite
 
 
+def bientot_disponible(request):
+    return render(request, "bientot_disponible.html")
+
+
 @role_required("responsable")
 def liste_paiements(request):
     PaiementScolarite.objects.filter(
@@ -32,5 +36,5 @@ def marquer_paye(request, pk):
     if request.method == "POST":
         paiement.statut_paiement = PaiementScolarite.StatutPaiement.PAYE
         paiement.save(update_fields=["statut_paiement"])
-        messages.success(request, _("Paiement marqué comme payé."))
+        messages.success(request, _("تم تسجيل الدفعة كمدفوعة."))
     return redirect("ecole:liste_paiements")

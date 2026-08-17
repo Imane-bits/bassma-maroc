@@ -1,10 +1,63 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% blocktrans with first_name=user.first_name last_name=user.last_name %}Bienvenue, {{ first_name }} {{ last_name }}{% endblocktrans %}</h1>
-<p>{% trans "Rôle :" %} {{ user.role }}</p>
-<form method="post" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button type="submit">{% trans "Se déconnecter" %}</button>
-</form>
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">بسمة</div>
+    <span class="pill-tag">🌿 {% trans "مواطنة ملتزمة — المغرب" %}</span>
+    <h1>{% trans "جمعية بسمة المغربية" %}</h1>
+    <p>{% trans "نعمل من أجل دعم الأسر المحتاجة وتقديم المساعدات الإنسانية لأبناء مجتمعنا، لأن كل ابتسامة تستحق أن تُصنع." %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'aide:soumettre_demande' %}" class="btn btn-primary">🤲 {% trans "اطلب مساعدة الآن" %}</a>
+      <a href="{% url 'dons:creer_don' %}" class="btn btn-accent">💚 {% trans "تبرّع الآن" %}</a>
+      <a href="{% url 'ecole:bientot_disponible' %}" class="btn btn-outline">🎒 {% trans "التسجيل في المدرسة" %}</a>
+      <a href="{% url 'formation:bientot_disponible' %}" class="btn btn-outline">🧵 {% trans "التسجيل في مركز التكوين" %}</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-eyebrow">{% trans "مسار بسيط" %}</span>
+      <h2>{% trans "كيف نعمل" %}</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon">📝</div>
+        <div class="step-number">01</div>
+        <h3>{% trans "استلام الطلب" %}</h3>
+        <p>{% trans "تملأ استمارة « أعبّر عن حاجة » وتحصل على رقم ملف فوري." %}</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🔍</div>
+        <div class="step-number">02</div>
+        <h3>{% trans "التحقق الميداني" %}</h3>
+        <p>{% trans "يراجع فريقنا معطياتك ووثائقك للتأكد من الحالة." %}</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🤝</div>
+        <div class="step-number">03</div>
+        <h3>{% trans "الدعم والمتابعة" %}</h3>
+        <p>{% trans "يتم توجيه الدعم المناسب مع متابعة أثره خطوة بخطوة." %}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <span class="section-eyebrow">{% trans "شركاؤنا في العطاء" %}</span>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon">🏛️</div>
+        <h3>{% trans "التعاون الوطني" %}</h3>
+        <p>{% trans "مؤسسة عمومية ذات طابع اجتماعي" %}</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🇲🇦</div>
+        <h3>{% trans "المبادرة الوطنية للتنمية البشرية" %}</h3>
+        <p>{% trans "ورش ملكي تنموي" %}</p>
+      </div>
+    </div>
+  </section>
+</div>
 {% endblock %}

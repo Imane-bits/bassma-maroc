@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <section class="hero" style="padding-bottom:24px">
+    <h1 style="font-size:28px">{% trans "الاحتياجات الحالية" %}</h1>
+    <p>{% trans "اختر حالة وساهم بتبرّع ملائم، مرة واحدة أو بشكل دوري." %}</p>
+  </section>
+
+  <div class="filters">
+    <a href="{% url 'aide:liste_besoins' %}" class="{% if not categorie %}active{% endif %}">{% trans "الكل" %}</a>
+    {% for value, label in categories %}
+      <a href="?categorie={{ value }}" class="{% if categorie == value %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="cards-grid">
+    {% for besoin in besoins %}
+      <div class="besoin-card">
+        <div class="besoin-meta">
+          {% if besoin.urgence == "haute" %}
+            <span class="badge badge-urgent">{% trans "مستعجل جدًا" %}</span>
+          {% elif besoin.urgence == "moyenne" %}
+            <span class="badge badge-urgent">{% trans "مستعجل" %}</span>
+          {% else %}
+            <span class="badge badge-normal">{% trans "عادي" %}</span>
+          {% endif %}
+          <span>{{ besoin.get_categorie_display }}</span>
+          {% if besoin.beneficiaire.ville %}<span>📍 {{ besoin.beneficiaire.ville }}</span>{% endif %}
+        </div>
+        <h3>{{ besoin.titre }}</h3>
+        <p>{{ besoin.description|truncatewords:20 }}</p>
+        <div>
+          <div class="progress"><div class="progress-bar" style="width:{% widthratio besoin.montant_collecte besoin.montant_demande 100 %}%"></div></div>
+          <p class="progress-label">{{ besoin.montant_collecte }} DH / {{ besoin.montant_demande }} DH</p>
+        </div>
+        <a href="{% url 'dons:creer_don' %}?demande={{ besoin.pk }}" class="btn btn-primary btn-sm">🤲 {% trans "تبرّع لهذه الحالة" %}</a>
+      </div>
+    {% empty %}
+      <p>{% trans "Aucun besoin actif pour le moment." %}</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

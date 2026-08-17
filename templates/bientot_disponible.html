@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">🚧</div>
+    <h1>{% trans "Bientôt disponible" %}</h1>
+    <p>{% trans "Cette section est en cours de préparation. Revenez bientôt !" %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'home' %}" class="btn btn-primary">{% trans "Retour à l'accueil" %}</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

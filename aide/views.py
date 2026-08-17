@@ -11,16 +11,14 @@ from .models import Beneficiaire, DemandeAide, PieceJustificative
 
 def soumettre_demande(request):
     if request.method == "POST":
-        profil_form = BeneficiaireProfilForm(request.POST)
+        cin = request.POST.get("cin", "").strip()
+        profil_instance = Beneficiaire.objects.filter(cin=cin).first() if cin else None
+        profil_form = BeneficiaireProfilForm(request.POST, instance=profil_instance)
         demande_form = DemandeAideForm(request.POST)
         pieces_form = PiecesJustificativesForm(request.POST, request.FILES)
         if profil_form.is_valid() and demande_form.is_valid() and pieces_form.is_valid():
             with transaction.atomic():
-                profil_data = dict(profil_form.cleaned_data)
-                cin = profil_data.pop("cin")
-                profil, _created = Beneficiaire.objects.update_or_create(
-                    cin=cin, defaults=profil_data
-                )
+                profil = profil_form.save()
                 demande = demande_form.save(commit=False)
                 demande.beneficiaire = profil
                 demande.full_clean()
@@ -43,6 +41,24 @@ def soumettre_demande(request):
     )
 
 
+def liste_besoins(request):
+    categorie = request.GET.get("categorie", "")
+    besoins = DemandeAide.objects.filter(
+        statut=DemandeAide.Statut.ACCEPTEE, montant_demande__isnull=False
+    ).select_related("beneficiaire")
+    if categorie:
+        besoins = besoins.filter(categorie=categorie)
+    return render(
+        request,
+        "aide/liste_besoins.html",
+        {
+            "besoins": besoins.order_by("-urgence", "-date_soumission"),
+            "categorie": categorie,
+            "categories": DemandeAide.Categorie.choices,
+        },
+    )
+
+
 def confirmation(request, numero_dossier):
     demande = get_object_or_404(DemandeAide, numero_dossier=numero_dossier)
     return render(request, "aide/confirmation.html", {"demande": demande})
@@ -54,7 +70,7 @@ def suivi_dossier(request):
         numero_dossier = request.POST.get("numero_dossier", "").strip()
         demande = DemandeAide.objects.filter(numero_dossier=numero_dossier).first()
         if demande is None:
-            messages.error(request, _("Aucun dossier trouvé avec ce numéro."))
+            messages.error(request, _("لم يتم العثور على ملف بهذا الرقم."))
     return render(request, "aide/suivi_dossier.html", {"demande": demande})
 
 
@@ -83,7 +99,7 @@ def accepter_demande(request, pk):
     if request.method == "POST":
         demande.statut = DemandeAide.Statut.ACCEPTEE
         demande.save(update_fields=["statut"])
-        messages.success(request, _("Demande acceptée."))
+        messages.success(request, _("تم قبول الطلب."))
     return redirect("aide:liste_demandes")
 
 
@@ -93,5 +109,5 @@ def refuser_demande(request, pk):
     if request.method == "POST":
         demande.statut = DemandeAide.Statut.REFUSEE
         demande.save(update_fields=["statut"])
-        messages.success(request, _("Demande refusée."))
+        messages.success(request, _("تم رفض الطلب."))
     return redirect("aide:liste_demandes")

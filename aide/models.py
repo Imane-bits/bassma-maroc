@@ -7,11 +7,10 @@ from django.utils.translation import gettext_lazy as _
 
 class Beneficiaire(models.Model):
     class SituationFamiliale(models.TextChoices):
-        DIVORCE = "divorce", _("Divorcé(e)")
-        VEUF = "veuf", _("Veuf/Veuve")
-        ORPHELIN = "orphelin", _("Orphelin")
-        DIFFICILE = "situation_difficile", _("Situation difficile")
-        AUTRE = "autre", _("Autre")
+        MARIE = "marie", _("متزوج(ة)")
+        CELIBATAIRE = "celibataire", _("أعزب / عزباء")
+        VEUF = "veuf", _("أرمل(ة)")
+        DIVORCE = "divorce", _("مطلّق(ة)")
 
     nom = models.CharField(_("nom"), max_length=100, default="")
     prenom = models.CharField(_("prénom"), max_length=100, default="")
@@ -43,19 +42,21 @@ def generer_numero_dossier():
 
 class DemandeAide(models.Model):
     class Urgence(models.TextChoices):
-        FAIBLE = "faible", _("Faible")
-        MOYENNE = "moyenne", _("Moyenne")
-        HAUTE = "haute", _("Haute")
+        FAIBLE = "faible", _("عادي")
+        MOYENNE = "moyenne", _("مستعجل")
+        HAUTE = "haute", _("مستعجل جدًا")
 
     class Statut(models.TextChoices):
-        EN_ATTENTE = "en_attente", _("En attente")
-        EN_COURS = "en_cours", _("En cours")
-        ACCEPTEE = "acceptee", _("Acceptée")
-        REFUSEE = "refusee", _("Refusée")
+        EN_ATTENTE = "en_attente", _("قيد الانتظار")
+        EN_COURS = "en_cours", _("قيد المعالجة")
+        ACCEPTEE = "acceptee", _("مقبولة")
+        REFUSEE = "refusee", _("مرفوضة")
 
-    class TypeAide(models.TextChoices):
-        FINANCIERE = "financiere", _("Financière")
-        EN_NATURE = "en_nature", _("En nature")
+    class Categorie(models.TextChoices):
+        ETUDE = "etude", _("الدراسة والتمدرس")
+        NUTRITION = "nutrition", _("التغذية")
+        SANTE = "sante", _("الصحة")
+        COUTURE = "couture", _("مواد الخياطة")
 
     numero_dossier = models.CharField(
         _("numéro de dossier"), max_length=20, unique=True, blank=True
@@ -63,9 +64,13 @@ class DemandeAide(models.Model):
     beneficiaire = models.ForeignKey(
         Beneficiaire, on_delete=models.CASCADE, related_name="demandes_aide"
     )
+    titre = models.CharField(_("titre de la demande"), max_length=150, default="")
+    categorie = models.CharField(_("catégorie"), max_length=15, choices=Categorie.choices)
     description = models.TextField(_("description"))
     urgence = models.CharField(_("urgence"), max_length=10, choices=Urgence.choices)
-    type_aide = models.CharField(_("type d'aide"), max_length=15, choices=TypeAide.choices)
+    montant_demande = models.DecimalField(
+        _("montant demandé"), max_digits=10, decimal_places=2, null=True, blank=True
+    )
     consentement_donnees = models.BooleanField(
         _("J'accepte le traitement de mes données personnelles (loi 09-08)"),
         default=False,
@@ -79,6 +84,12 @@ class DemandeAide(models.Model):
         if not self.numero_dossier:
             self.numero_dossier = generer_numero_dossier()
         super().save(*args, **kwargs)
+
+    @property
+    def montant_collecte(self):
+        from django.db.models import Sum
+
+        return self.dons_cibles.aggregate(total=Sum("montant"))["total"] or 0
 
     def __str__(self):
         return f"{self.numero_dossier} ({self.statut})"

@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.shortcuts import redirect, render
 from django.utils.translation import gettext as _
 
+from aide.models import DemandeAide
 from users.mixins import role_required
 
 from .emails import notifier_donateur_affectation
@@ -14,15 +15,20 @@ from .models import Don
 def creer_don(request):
     if request.method == "POST":
         form = DonForm(request.POST)
+        demande_pk = request.POST.get("demande_aide")
         if form.is_valid():
             don = form.save(commit=False)
             don.donateur = request.user
             don.save()
-            messages.success(request, _("Merci pour votre don."))
+            messages.success(request, _("شكرًا على تبرّعك."))
             return redirect("dons:mes_dons")
     else:
-        form = DonForm()
-    return render(request, "dons/creer_don.html", {"form": form})
+        demande_pk = request.GET.get("demande")
+        form = DonForm(initial={"demande_aide": demande_pk} if demande_pk else {})
+    cible_demande = DemandeAide.objects.filter(pk=demande_pk).first() if demande_pk else None
+    return render(
+        request, "dons/creer_don.html", {"form": form, "cible_demande": cible_demande}
+    )
 
 
 @role_required("donateur")
@@ -62,7 +68,7 @@ def creer_affectation(request):
             don.save(update_fields=["statut"])
 
             notifier_donateur_affectation(affectation)
-            messages.success(request, _("Affectation créée, le donateur a été notifié."))
+            messages.success(request, _("تم إنشاء التوزيع، وتم إشعار المتبرّع."))
             return redirect("dons:liste_dons")
     else:
         form = AffectationForm()

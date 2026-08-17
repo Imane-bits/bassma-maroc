@@ -5,11 +5,11 @@ from .models import Beneficiaire, DemandeAide
 
 
 class BeneficiaireProfilForm(forms.ModelForm):
+    nom_complet = forms.CharField(label=_("الاسم الكامل"))
+
     class Meta:
         model = Beneficiaire
         fields = [
-            "nom",
-            "prenom",
             "cin",
             "date_naissance",
             "telephone",
@@ -25,17 +25,49 @@ class BeneficiaireProfilForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["cin"].required = True
+        self.order_fields(
+            ["nom_complet", "cin", "date_naissance", "telephone", "ville", "adresse"]
+        )
+
+    def clean_nom_complet(self):
+        nom_complet = self.cleaned_data["nom_complet"].strip()
+        if not nom_complet:
+            raise forms.ValidationError(_("هذا الحقل مطلوب."))
+        return nom_complet
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        nom_complet = self.cleaned_data["nom_complet"]
+        prenom, _sep, nom = nom_complet.partition(" ")
+        instance.prenom = prenom
+        instance.nom = nom or prenom
+        if commit:
+            instance.save()
+        return instance
 
 
 class DemandeAideForm(forms.ModelForm):
+    categorie = forms.ChoiceField(
+        choices=DemandeAide.Categorie.choices, widget=forms.RadioSelect
+    )
+    urgence = forms.ChoiceField(
+        choices=DemandeAide.Urgence.choices, widget=forms.RadioSelect
+    )
     consentement_donnees = forms.BooleanField(
         required=True,
-        label=_("J'accepte le traitement de mes données personnelles (loi 09-08)"),
+        label=_("أوافق على معالجة معطياتي الشخصية طبقاً للقانون رقم 09.08"),
     )
 
     class Meta:
         model = DemandeAide
-        fields = ["description", "urgence", "type_aide", "consentement_donnees"]
+        fields = [
+            "titre",
+            "categorie",
+            "urgence",
+            "description",
+            "montant_demande",
+            "consentement_donnees",
+        ]
 
 
 class MultipleFileInput(forms.ClearableFileInput):

@@ -1,11 +1,55 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<h1>{% trans "Inscription" %}</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">{% trans "S'inscrire" %}</button>
-</form>
-<p><a href="{% url 'login' %}">{% trans "J'ai déjà un compte" %}</a></p>
+<div class="container">
+  <section class="hero" style="padding-bottom:0">
+    <h1 style="font-size:28px">{% trans "الدخول إلى فضائك" %}</h1>
+    <p>{% trans "متبرّع أو مستفيد — لكلٍّ فضاؤه الخاص" %}</p>
+  </section>
+  <div style="max-width:420px;margin:0 auto 60px">
+    <div class="tabs">
+      <a href="{% url 'login' %}">{% trans "تسجيل الدخول" %}</a>
+      <a href="{% url 'inscription' %}" class="active">{% trans "إنشاء حساب" %}</a>
+    </div>
+    <div class="form-card">
+      <form method="post">
+        {% csrf_token %}
+        <div class="field">
+          <label>{{ form.role.label }}</label>
+          <div class="choice-group" style="flex-direction:column">
+            {% for radio in form.role %}
+              <label>{{ radio.tag }} {{ radio.choice_label }}</label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="field">
+          <label for="{{ form.nom_complet.id_for_label }}">{{ form.nom_complet.label }}</label>
+          {{ form.nom_complet }}
+        </div>
+        <div class="field">
+          <label for="{{ form.email.id_for_label }}">{% trans "البريد الإلكتروني" %}</label>
+          {{ form.email }}
+        </div>
+        <div class="field">
+          <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+          {{ form.password1 }}
+        </div>
+        <div class="field">
+          <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+          {{ form.password2 }}
+        </div>
+        {% if form.non_field_errors or form.email.errors %}
+          <ul class="messages">
+            {% for error in form.non_field_errors %}<li class="error">{{ error }}</li>{% endfor %}
+            {% for error in form.email.errors %}<li class="error">{{ error }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "إنشاء الحساب" %}</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:14px">
+        {% trans "لديك حساب بالفعل؟" %} <a href="{% url 'login' %}"><strong>{% trans "سجّل الدخول" %}</strong></a>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}

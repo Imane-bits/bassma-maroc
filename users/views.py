@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
@@ -28,7 +27,6 @@ def compte_en_attente(request):
     return render(request, "compte_en_attente.html")
 
 
-@login_required
 def home(request):
     return render(request, "home.html")
 
@@ -54,5 +52,5 @@ def activer_compte(request, pk):
     if request.method == "POST":
         compte.is_active = True
         compte.save(update_fields=["is_active"])
-        messages.success(request, _("Compte activé."))
+        messages.success(request, _("تم تفعيل الحساب."))
     return redirect("comptes_en_attente")

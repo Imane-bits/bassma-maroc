@@ -19,12 +19,13 @@ class DemandeAideAdmin(admin.ModelAdmin):
     list_display = (
         "numero_dossier",
         "beneficiaire",
-        "type_aide",
+        "titre",
+        "categorie",
         "urgence",
         "statut",
         "date_soumission",
     )
-    list_filter = ("statut", "urgence", "type_aide")
+    list_filter = ("statut", "urgence", "categorie")
     search_fields = (
         "numero_dossier",
         "beneficiaire__cin",

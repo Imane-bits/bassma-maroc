@@ -1,16 +1,19 @@
 {% load i18n %}
-<h1>{% blocktrans with numero=demande.numero_dossier %}Dossier {{ numero }}{% endblocktrans %}</h1>
-{% if messages %}
-  {% for message in messages %}<p>{{ message }}</p>{% endfor %}
-{% endif %}
-<p><strong>{% trans "Bénéficiaire :" %}</strong> {{ demande.beneficiaire }}</p>
+<h2 style="color:var(--color-primary);margin-top:0">{% blocktrans with numero=demande.numero_dossier %}Dossier {{ numero }}{% endblocktrans %}</h2>
+<div class="field-row">
+  <p><strong>{% trans "Bénéficiaire :" %}</strong> {{ demande.beneficiaire }}</p>
+  <p><strong>{% trans "Titre :" %}</strong> {{ demande.titre }}</p>
+  <p><strong>{% trans "Catégorie :" %}</strong> {{ demande.get_categorie_display }}</p>
+  <p><strong>{% trans "Urgence :" %}</strong> {{ demande.get_urgence_display }}</p>
+  <p><strong>{% trans "Statut :" %}</strong> <span class="badge badge-normal">{{ demande.get_statut_display }}</span></p>
+  <p><strong>{% trans "Date de soumission :" %}</strong> {{ demande.date_soumission }}</p>
+</div>
 <p><strong>{% trans "Description :" %}</strong> {{ demande.description }}</p>
-<p><strong>{% trans "Urgence :" %}</strong> {{ demande.get_urgence_display }}</p>
-<p><strong>{% trans "Type d'aide :" %}</strong> {{ demande.get_type_aide_display }}</p>
-<p><strong>{% trans "Statut :" %}</strong> {{ demande.get_statut_display }}</p>
-<p><strong>{% trans "Date de soumission :" %}</strong> {{ demande.date_soumission }}</p>
+{% if demande.montant_demande %}
+  <p><strong>{% trans "Montant demandé :" %}</strong> {{ demande.montant_demande }} MAD ({% trans "collecté :" %} {{ demande.montant_collecte }} MAD)</p>
+{% endif %}
 
-<h2>{% trans "Pièces justificatives" %}</h2>
+<h3>{% trans "Pièces justificatives" %}</h3>
 <ul>
   {% for piece in demande.pieces.all %}
   <li><a href="{{ piece.fichier.url }}">{{ piece.fichier.name }}</a></li>
@@ -20,13 +23,15 @@
 </ul>
 
 {% if user.is_authenticated and user.role == "responsable" %}
-<h2>{% trans "Actions" %}</h2>
-<form method="post" action="{% url 'aide:accepter_demande' demande.pk %}">
-  {% csrf_token %}
-  <button type="submit">{% trans "Accepter" %}</button>
-</form>
-<form method="post" action="{% url 'aide:refuser_demande' demande.pk %}">
-  {% csrf_token %}
-  <button type="submit">{% trans "Refuser" %}</button>
-</form>
+<h3>{% trans "Actions" %}</h3>
+<div style="display:flex;gap:10px">
+  <form method="post" action="{% url 'aide:accepter_demande' demande.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary btn-sm">{% trans "Accepter" %}</button>
+  </form>
+  <form method="post" action="{% url 'aide:refuser_demande' demande.pk %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-outline btn-sm">{% trans "Refuser" %}</button>
+  </form>
+</div>
 {% endif %}
