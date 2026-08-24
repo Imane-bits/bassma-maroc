@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <section class="hero" style="padding-bottom:24px">
+    <div class="hero-badge">🧵</div>
+    <h1 style="font-size:28px">{% trans "مركز التكوين في الخياطة" %}</h1>
+    <p>{% trans "اكتشف التكوينات المتاحة وسجّل مجانًا." %}</p>
+  </section>
+
+  <div class="cards-grid">
+    {% for formation in formations %}
+      <div class="besoin-card">
+        <h3>{{ formation.intitule }}</h3>
+        <p>{{ formation.description|truncatewords:25 }}</p>
+        <p class="progress-label">⏱ {{ formation.duree_semaines }} {% trans "أسابيع" %}</p>
+        <a href="{% url 'formation:inscription_formation' %}?formation={{ formation.pk }}" class="btn btn-primary btn-sm">📝 {% trans "التسجيل في هذا التكوين" %}</a>
+      </div>
+    {% empty %}
+      <p>{% trans "لا توجد تكوينات متاحة حاليًا." %}</p>
+    {% endfor %}
+  </div>
+
+  <p style="margin-top:24px"><a href="{% url 'formation:suivi_formation' %}">🔎 {% trans "تتبّع تسجيلي" %}</a></p>
+</div>
+{% endblock %}

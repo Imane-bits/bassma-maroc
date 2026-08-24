@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container" style="max-width:520px">
+  <section class="hero" style="padding-bottom:24px">
+    <div class="hero-badge">🔎</div>
+    <h1 style="font-size:28px">{% trans "تتبّع تسجيلي" %}</h1>
+    <p>{% trans "أدخل رقم التسجيل لعرض تقدّمك." %}</p>
+  </section>
+
+  <div class="form-card">
+    <form method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label for="numero_inscription">{% trans "رقم التسجيل" %}</label>
+        <input type="text" id="numero_inscription" name="numero_inscription" required placeholder="INS-2026-000123">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "عرض التسجيل" %}</button>
+    </form>
+  </div>
+
+  {% if inscription %}
+    <div class="form-card">
+      <p><strong>{% trans "التكوين" %}:</strong> {{ inscription.formation.intitule }}</p>
+      <p><strong>{% trans "الحالة" %}:</strong> {{ inscription.get_statut_display }}</p>
+      <div class="progress"><div class="progress-bar" style="width:{{ inscription.progression }}%"></div></div>
+      <p class="progress-label">{{ inscription.progression }}%</p>
+      {% if inscription.certification %}
+        <p>🎓 <strong>{% trans "رقم الشهادة" %}:</strong> {{ inscription.certification.numero }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

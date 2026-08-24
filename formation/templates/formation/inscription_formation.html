@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container" style="max-width:680px">
+  <section class="hero" style="padding-bottom:0">
+    <div class="hero-badge">🧵</div>
+    <span class="pill-tag">{% trans "مركز التكوين" %}</span>
+    <h1 style="font-size:28px">{% trans "التسجيل في تكوين" %}</h1>
+    <p>{% trans "يُرجى ملء المعطيات، وسيتواصل معك فريق الجمعية لتأكيد التسجيل." %}</p>
+  </section>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="nombre_enfants" value="0">
+    <input type="hidden" name="enfants_scolarises" value="0">
+
+    <div class="form-card">
+      <h2>👤 {% trans "الهوية" %}</h2>
+      <div class="field">
+        <label for="{{ profil_form.nom_complet.id_for_label }}">{{ profil_form.nom_complet.label }} *</label>
+        {{ profil_form.nom_complet }}
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="{{ profil_form.cin.id_for_label }}">{% trans "رقم بطاقة التعريف (CIN)" %} *</label>
+          {{ profil_form.cin }}
+        </div>
+        <div class="field">
+          <label for="{{ profil_form.date_naissance.id_for_label }}">{% trans "تاريخ الازدياد" %}</label>
+          {{ profil_form.date_naissance }}
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="{{ profil_form.telephone.id_for_label }}">{% trans "رقم الهاتف" %}</label>
+          {{ profil_form.telephone }}
+        </div>
+        <div class="field">
+          <label for="{{ profil_form.ville.id_for_label }}">{% trans "المدينة" %}</label>
+          {{ profil_form.ville }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>🧵 {% trans "التكوين" %}</h2>
+      <div class="field">
+        <label for="{{ inscription_form.formation.id_for_label }}">{% trans "اختر التكوين" %} *</label>
+        {{ inscription_form.formation }}
+      </div>
+    </div>
+
+    {% if profil_form.errors or inscription_form.errors %}
+      <ul class="messages">
+        <li class="error">{% trans "Merci de corriger les erreurs ci-dessus." %}</li>
+      </ul>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "تأكيد التسجيل" %}</button>
+  </form>
+</div>
+{% endblock %}

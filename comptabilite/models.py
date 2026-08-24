@@ -13,5 +13,9 @@ class Budget(models.Model):
     recettes = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     depenses = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
+    @property
+    def solde(self):
+        return self.recettes - self.depenses
+
     def __str__(self):
         return f"Budget {self.module} - {self.periode}"

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">✅</div>
+    <h1 style="font-size:28px">{% trans "تم تسجيلك بنجاح" %}</h1>
+    <p>{% trans "رقم تسجيلك:" %}</p>
+    <p style="font-size:32px;font-weight:900;color:var(--color-primary)">{{ inscription.numero_inscription }}</p>
+    <p>{% trans "احتفظ برقم التسجيل هذا لتتبّع تقدّمك في التكوين." %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'formation:suivi_formation' %}" class="btn btn-primary">🔎 {% trans "تتبّع تسجيلي" %}</a>
+      <a href="{% url 'home' %}" class="btn btn-outline">{% trans "Retour à l'accueil" %}</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

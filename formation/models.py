@@ -1,5 +1,8 @@
-from django.conf import settings
+import random
+
 from django.db import models
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 class FormationCouture(models.Model):
@@ -11,14 +14,31 @@ class FormationCouture(models.Model):
         return self.intitule
 
 
+def generer_numero_inscription():
+    annee = timezone.now().year
+    while True:
+        candidat = f"INS-{annee}-{random.randint(0, 999999):06d}"
+        if not InscriptionFormation.objects.filter(numero_inscription=candidat).exists():
+            return candidat
+
+
+def generer_numero_certification():
+    annee = timezone.now().year
+    while True:
+        candidat = f"CERT-{annee}-{random.randint(0, 999999):06d}"
+        if not Certification.objects.filter(numero=candidat).exists():
+            return candidat
+
+
 class InscriptionFormation(models.Model):
     class Statut(models.TextChoices):
-        EN_COURS = "en_cours", "En cours"
-        TERMINEE = "terminee", "Terminée"
-        ABANDONNEE = "abandonnee", "Abandonnée"
+        EN_COURS = "en_cours", _("قيد التكوين")
+        TERMINEE = "terminee", _("منتهية")
+        ABANDONNEE = "abandonnee", _("متوقفة")
 
+    numero_inscription = models.CharField(max_length=20, unique=True, blank=True)
     beneficiaire = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        "aide.Beneficiaire",
         on_delete=models.CASCADE,
         related_name="inscriptions_formation",
     )
@@ -31,8 +51,17 @@ class InscriptionFormation(models.Model):
         max_length=20, choices=Statut.choices, default=Statut.EN_COURS
     )
 
+    def save(self, *args, **kwargs):
+        if not self.numero_inscription:
+            self.numero_inscription = generer_numero_inscription()
+        super().save(*args, **kwargs)
+        if self.statut == self.Statut.TERMINEE and not hasattr(self, "certification"):
+            Certification.objects.create(
+                inscription=self, numero=generer_numero_certification()
+            )
+
     def __str__(self):
-        return f"{self.beneficiaire} - {self.formation}"
+        return f"{self.numero_inscription} - {self.beneficiaire}"
 
 
 class Presence(models.Model):
