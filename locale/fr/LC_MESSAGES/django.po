@@ -1491,3 +1491,19 @@ msgstr "Centre de formation des femmes"
 #: comptabilite/:1
 msgid "منها"
 msgstr "Dont"
+
+#: dons/templates/dons/don_detail.html:1
+msgid "Don"
+msgstr "Don"
+
+#: dons/templates/dons/don_detail.html:1
+msgid "Solde restant"
+msgstr "Solde restant"
+
+#: dons/templates/dons/don_detail.html:1
+msgid "Validée par"
+msgstr "Validée par"
+
+#: dons/templates/dons/don_detail.html:1
+msgid "montant affecté"
+msgstr "montant affecté"

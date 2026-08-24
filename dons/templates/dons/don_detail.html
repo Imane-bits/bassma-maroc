@@ -1,0 +1,57 @@
+{% extends "responsable_base.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{% trans "Don" %} #{{ don.pk }}</h2>
+</div>
+
+<div class="form-card">
+  <p><strong>{% trans "Donateur" %}:</strong> {{ don.donateur.get_full_name|default:don.donateur.username }}</p>
+  <p><strong>{% trans "Montant" %}:</strong> {{ don.montant }} MAD</p>
+  <p><strong>{% trans "Statut" %}:</strong> {{ don.get_statut_display }}</p>
+  <p><strong>{% trans "Date" %}:</strong> {{ don.date_don }}</p>
+  {% if don.demande_aide %}
+    <p><strong>{% trans "الحالة المدعومة" %}:</strong> {{ don.demande_aide.titre }}</p>
+  {% endif %}
+  <hr style="border:none;border-top:1px solid var(--color-border);margin:16px 0">
+  <p><strong>{% trans "Déjà affecté" %}:</strong> {{ total_affecte }} MAD</p>
+  <p><strong>{% trans "Solde restant" %}:</strong> {{ reste }} MAD</p>
+</div>
+
+<div class="section-title" style="text-align:start;margin-bottom:12px">
+  <h2 style="color:var(--color-primary);font-size:18px;margin:0">{% trans "Affectations" %}</h2>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "الوجهة" %}</th>
+      <th>{% trans "montant affecté" %}</th>
+      <th>{% trans "الحالة المدعومة" %}</th>
+      <th>{% trans "Date" %}</th>
+      <th>{% trans "Validée par" %}</th>
+    </tr>
+    {% for affectation in affectations %}
+    <tr>
+      <td>{{ affectation.get_cible_display }}</td>
+      <td>{{ affectation.montant_affecte }} MAD</td>
+      <td>
+        {% if affectation.demande_aide %}
+          <a href="{% url 'aide:demande_detail' affectation.demande_aide.pk %}">{{ affectation.demande_aide.titre }}</a>
+        {% else %}
+          —
+        {% endif %}
+      </td>
+      <td>{{ affectation.date_affectation }}</td>
+      <td>{{ affectation.validee_par.get_full_name|default:affectation.validee_par.username }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">{% trans "Aucune affectation pour le moment." %}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% if don.statut != "distribue" %}
+<p style="margin-top:16px"><a href="{% url 'dons:creer_affectation' %}" class="btn btn-primary btn-sm">{% trans "Créer une affectation" %}</a></p>
+{% endif %}
+<p style="margin-top:8px"><a href="{% url 'dons:liste_dons' %}">← {% trans "Dons à affecter" %}</a></p>
+{% endblock %}

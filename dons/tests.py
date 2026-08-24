@@ -129,3 +129,43 @@ class CreerAffectationViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Affectation.objects.exists())
+
+
+class DonDetailViewTests(TestCase):
+    def setUp(self):
+        self.responsable = User.objects.create_user(
+            username="resp3", password="pass1234", role=User.Role.RESPONSABLE
+        )
+        self.donateur = User.objects.create_user(
+            username="d4", password="pass1234", role=User.Role.DONATEUR
+        )
+        self.don = Don.objects.create(
+            donateur=self.donateur, montant=1000, type_don=Don.TypeDon.UNIQUE
+        )
+        self.budget = Budget.objects.create(module=Budget.Module.ECOLE, periode="2026-T1")
+
+    def test_affiche_les_affectations_du_don(self):
+        Affectation.objects.create(
+            don=self.don,
+            budget=self.budget,
+            montant_affecte=300,
+            cible=Affectation.Cible.ECOLE,
+            validee_par=self.responsable,
+        )
+        self.client.force_login(self.responsable)
+        response = self.client.get(reverse("dons:don_detail", args=[self.don.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["total_affecte"], 300)
+        self.assertEqual(response.context["reste"], 700)
+        self.assertEqual(len(response.context["affectations"]), 1)
+
+    def test_don_sans_affectation(self):
+        self.client.force_login(self.responsable)
+        response = self.client.get(reverse("dons:don_detail", args=[self.don.pk]))
+        self.assertEqual(response.context["total_affecte"], 0)
+        self.assertEqual(response.context["reste"], 1000)
+
+    def test_acces_refuse_hors_responsable(self):
+        self.client.force_login(self.donateur)
+        response = self.client.get(reverse("dons:don_detail", args=[self.don.pk]))
+        self.assertEqual(response.status_code, 403)

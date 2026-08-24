@@ -17,8 +17,8 @@
     </tr>
     {% for don in dons %}
     <tr>
-      <td>{{ don.pk }}</td>
-      <td>{{ don.donateur }}</td>
+      <td><a href="{% url 'dons:don_detail' don.pk %}">{{ don.pk }}</a></td>
+      <td>{{ don.donateur.get_full_name|default:don.donateur.username }}</td>
       <td>{{ don.montant }} MAD</td>
       <td>{{ don.total_affecte|default:"0" }} MAD</td>
       <td>{{ don.get_statut_display }}</td>

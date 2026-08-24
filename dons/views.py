@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.db.models import Sum
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
 from aide.models import DemandeAide
@@ -8,7 +8,7 @@ from users.mixins import role_required
 
 from .emails import notifier_donateur_affectation
 from .forms import AffectationForm, DonForm
-from .models import Don
+from .models import Affectation, Don
 
 
 @role_required("donateur")
@@ -49,6 +49,25 @@ def liste_dons_a_affecter(request):
         .order_by("-date_don")
     )
     return render(request, "dons/liste_dons.html", {"dons": dons})
+
+
+@role_required("responsable")
+def don_detail(request, pk):
+    don = get_object_or_404(Don.objects.select_related("donateur", "demande_aide"), pk=pk)
+    affectations = don.affectations.select_related(
+        "budget", "demande_aide", "demande_aide__beneficiaire", "validee_par"
+    ).order_by("-date_affectation")
+    total_affecte = affectations.aggregate(total=Sum("montant_affecte"))["total"] or 0
+    return render(
+        request,
+        "dons/don_detail.html",
+        {
+            "don": don,
+            "affectations": affectations,
+            "total_affecte": total_affecte,
+            "reste": don.montant - total_affecte,
+        },
+    )
 
 
 @role_required("responsable")
