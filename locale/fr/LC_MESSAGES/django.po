@@ -1411,3 +1411,83 @@ msgstr "Aucun bénéficiaire."
 #: aide/templates/aide/:1
 msgid "ابحث بالاسم أو CIN أو البريد الإلكتروني"
 msgstr "Rechercher par nom, CIN ou email"
+
+#: comptabilite/:1
+msgid "أنشطة مدرة للدخل"
+msgstr "Activités génératrices de revenus"
+
+#: comptabilite/:1
+msgid "الأنشطة والحملات"
+msgstr "Activités et campagnes"
+
+#: comptabilite/:1
+msgid "التسيير والإدارة"
+msgstr "Gestion et administration"
+
+#: comptabilite/:1
+msgid "الشهر"
+msgstr "Mois"
+
+#: comptabilite/:1
+msgid "المدرسة والتعليم الأولي"
+msgstr "École et préscolaire"
+
+#: comptabilite/:1
+msgid "المساعدات الاجتماعية"
+msgstr "Aide sociale"
+
+#: comptabilite/:1
+msgid "الموارد حسب المصدر"
+msgstr "Ressources par source"
+
+#: comptabilite/:1
+msgid "الميزانية المجمّعة"
+msgstr "Budget consolidé"
+
+#: comptabilite/:1
+msgid "الميزانية شهرًا بشهرًا — كل البرامج"
+msgstr "Budget mensuel — tous les programmes"
+
+#: comptabilite/:1
+msgid "النتيجة"
+msgstr "Résultat"
+
+#: comptabilite/:1
+msgid "النفقات حسب البرنامج"
+msgstr "Dépenses par programme"
+
+#: comptabilite/:1
+msgid "تبرعات الأفراد"
+msgstr "Dons individuels"
+
+#: comptabilite/:1
+msgid "تبرعات المقاولات"
+msgstr "Dons d'entreprises"
+
+#: comptabilite/:1
+msgid "تصدير"
+msgstr "Exporter"
+
+#: comptabilite/:1
+msgid "عجز"
+msgstr "Déficit"
+
+#: comptabilite/:1
+msgid "فائض"
+msgstr "Excédent"
+
+#: comptabilite/:1
+msgid "مجموع الموارد"
+msgstr "Total des ressources"
+
+#: comptabilite/:1
+msgid "مجموع النفقات"
+msgstr "Total des dépenses"
+
+#: comptabilite/:1
+msgid "مركز تكوين المرأة"
+msgstr "Centre de formation des femmes"
+
+#: comptabilite/:1
+msgid "منها"
+msgstr "Dont"

@@ -647,6 +647,46 @@ table.styled td {
   .dashboard-sidebar { width: 100%; position: static; flex-direction: row; overflow-x: auto; }
 }
 
+.stat-card-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.stat-card-primary .stat-number,
+.stat-card-primary .stat-label {
+  color: #fff;
+}
+
+.stat-card-danger .stat-number {
+  color: var(--color-danger);
+}
+
+/* Répartition (comptabilité breakdown bars) */
+.repartition-ligne {
+  margin-bottom: 14px;
+}
+
+.repartition-ligne .repartition-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.repartition-ligne .repartition-montant {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.progress-bar.progress-bar-danger {
+  background: var(--color-danger);
+}
+
+.progress-bar.progress-bar-accent {
+  background: var(--color-accent);
+}
+
 /* RTL / LTR */
 html[dir="rtl"] { text-align: right; }
 html[dir="ltr"] { text-align: left; }

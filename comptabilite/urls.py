@@ -7,4 +7,6 @@ urlpatterns = [
     path("consolidation/", views.consolidation, name="consolidation"),
     path("bilan/", views.bilan_financier, name="bilan_financier"),
     path("export/", views.exporter_donnees, name="exporter_donnees"),
+    path("export/excel/", views.exporter_excel, name="exporter_excel"),
+    path("export/pdf/", views.exporter_pdf, name="exporter_pdf"),
 ]

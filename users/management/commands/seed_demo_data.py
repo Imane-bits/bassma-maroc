@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 
 from aide.models import Beneficiaire, DemandeAide
-from comptabilite.models import Budget
+from comptabilite.models import Budget, DepenseMensuelle, RecetteMensuelle
 from dons.models import Affectation, Don
 from ecole.models import Eleve, PaiementScolarite, PreinscriptionEleve
 from formation.models import FormationCouture, InscriptionFormation
@@ -29,6 +29,7 @@ class Command(BaseCommand):
             self._seed_general_demo_data(responsable)
 
         self._seed_beneficiaire_vitrine(responsable)
+        self._seed_comptabilite_detaillee()
 
         self.stdout.write(self.style.SUCCESS("Terminé."))
 
@@ -356,3 +357,39 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(f"Bénéficiaire vitrine créée ({BENEFICIAIRE_EMAIL}).")
         )
+
+    def _seed_comptabilite_detaillee(self):
+        if DepenseMensuelle.objects.exists():
+            self.stdout.write(self.style.WARNING("Les données comptables détaillées existent déjà."))
+            return
+
+        Programme = DepenseMensuelle.Programme
+        depenses_par_mois = {
+            date(2026, 3, 1): {Programme.AIDE: 66000, Programme.ECOLE: 42000, Programme.FORMATION: 31000, Programme.ACTIVITES: 20000, Programme.GESTION: 12000},
+            date(2026, 4, 1): {Programme.AIDE: 70000, Programme.ECOLE: 44000, Programme.FORMATION: 32000, Programme.ACTIVITES: 24000, Programme.GESTION: 13000},
+            date(2026, 5, 1): {Programme.AIDE: 72000, Programme.ECOLE: 45000, Programme.FORMATION: 33000, Programme.ACTIVITES: 23000, Programme.GESTION: 13000},
+            date(2026, 6, 1): {Programme.AIDE: 71000, Programme.ECOLE: 44000, Programme.FORMATION: 31000, Programme.ACTIVITES: 25000, Programme.GESTION: 13500},
+            date(2026, 7, 1): {Programme.AIDE: 70000, Programme.ECOLE: 45000, Programme.FORMATION: 32000, Programme.ACTIVITES: 22000, Programme.GESTION: 13500},
+            date(2026, 8, 1): {Programme.AIDE: 71000, Programme.ECOLE: 45000, Programme.FORMATION: 31000, Programme.ACTIVITES: 21000, Programme.GESTION: 13000},
+        }
+        for mois, valeurs in depenses_par_mois.items():
+            for programme, montant in valeurs.items():
+                DepenseMensuelle.objects.create(mois=mois, programme=programme, montant=montant)
+
+        Source = RecetteMensuelle.Source
+        totaux_recettes = {
+            Source.INDIVIDUS: 285000,
+            Source.COOPERATION: 320000,
+            Source.INDH: 250000,
+            Source.ENTREPRISES: 165000,
+            Source.AGR: 90000,
+        }
+        mois_liste = list(depenses_par_mois.keys())
+        for source, total in totaux_recettes.items():
+            base = total // len(mois_liste)
+            reste = total - base * len(mois_liste)
+            for i, mois in enumerate(mois_liste):
+                montant = base + reste if i == 0 else base
+                RecetteMensuelle.objects.create(mois=mois, source=source, montant=montant)
+
+        self.stdout.write(self.style.SUCCESS("Données comptables détaillées créées."))

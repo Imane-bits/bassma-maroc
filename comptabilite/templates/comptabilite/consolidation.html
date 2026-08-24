@@ -2,33 +2,101 @@
 {% load i18n %}
 {% block dashboard_content %}
 <div class="section-title" style="text-align:start">
-  <h2 style="color:var(--color-primary)">{% trans "توحيد التدفقات المالية" %}</h2>
+  <h2 style="color:var(--color-primary)">{% trans "المحاسبة" %}</h2>
+</div>
+
+<div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
+  <div class="stat-card stat-card-primary">
+    <div class="stat-number">DH {{ resultat|floatformat:0 }}</div>
+    <div class="stat-label">📈 {% trans "النتيجة" %} · {% if resultat >= 0 %}{% trans "فائض" %}{% else %}{% trans "عجز" %}{% endif %}</div>
+  </div>
+  <div class="stat-card stat-card-danger">
+    <div class="stat-number">DH {{ total_depenses|floatformat:0 }}</div>
+    <div class="stat-label">💸 {% trans "مجموع النفقات" %}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-number">DH {{ total_recettes|floatformat:0 }}</div>
+    <div class="stat-label">💰 {% trans "مجموع الموارد" %}</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-top:20px">
+  <div class="form-card">
+    <h2>📊 {% trans "النفقات حسب البرنامج" %}</h2>
+    {% for ligne in depenses_par_programme %}
+    <div class="repartition-ligne">
+      <div class="repartition-header">
+        <span class="repartition-montant">DH {{ ligne.montant|floatformat:0 }} · {{ ligne.pourcentage }}%</span>
+        <span>{{ ligne.label }}</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar {% cycle 'progress-bar-danger' '' 'progress-bar-accent' '' '' as depense_couleur %}" style="width:{{ ligne.pourcentage }}%"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="form-card">
+    <h2>🏛️ {% trans "الموارد حسب المصدر" %}</h2>
+    {% for ligne in recettes_par_source %}
+    <div class="repartition-ligne">
+      <div class="repartition-header">
+        <span class="repartition-montant">DH {{ ligne.montant|floatformat:0 }} · {{ ligne.pourcentage }}%</span>
+        <span>{{ ligne.label }}</span>
+      </div>
+      <div class="progress">
+        <div class="progress-bar {% cycle '' 'progress-bar-accent' '' 'progress-bar-danger' '' as recette_couleur %}" style="width:{{ ligne.pourcentage }}%"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="section-title" style="text-align:start;margin-top:24px;margin-bottom:12px">
+  <h2 style="color:var(--color-primary);font-size:18px;margin:0">📅 {% trans "الميزانية شهرًا بشهرًا — كل البرامج" %}</h2>
 </div>
 <div class="table-wrap">
   <table class="styled">
     <tr>
-      <th>{% trans "الوحدة" %}</th>
-      <th>{% trans "المداخيل" %}</th>
-      <th>{% trans "المصاريف" %}</th>
-      <th>{% trans "الرصيد" %}</th>
+      <th>{% trans "الشهر" %}</th>
+      {% for code, label in programmes %}<th>{{ label }}</th>{% endfor %}
+      <th>{% trans "المجموع" %}</th>
     </tr>
-    {% for ligne in par_module %}
+    {% for ligne in table_mensuelle %}
     <tr>
-      <td>{{ ligne.module_display }}</td>
-      <td>{{ ligne.total_recettes|default:0 }} MAD</td>
-      <td>{{ ligne.total_depenses|default:0 }} MAD</td>
-      <td>{{ ligne.solde }} MAD</td>
+      <td>{{ ligne.mois_label }}</td>
+      {% for v in ligne.valeurs %}<td>DH {{ v|floatformat:0 }}</td>{% endfor %}
+      <td style="font-weight:900;color:var(--color-primary)">DH {{ ligne.total|floatformat:0 }}</td>
     </tr>
     {% empty %}
-    <tr><td colspan="4">{% trans "Aucune donnée." %}</td></tr>
+    <tr><td colspan="7">{% trans "Aucune donnée." %}</td></tr>
     {% endfor %}
-    <tr style="font-weight:900">
-      <td>{% trans "المجموع" %}</td>
-      <td>{{ total_recettes }} MAD</td>
-      <td>{{ total_depenses }} MAD</td>
-      <td>{{ solde }} MAD</td>
-    </tr>
   </table>
 </div>
-<p style="margin-top:16px"><a href="{% url 'comptabilite:bilan_financier' %}" class="btn btn-outline btn-sm">📊 {% trans "البيان المالي التفصيلي" %}</a></p>
+
+<div class="form-card" style="margin-top:24px">
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+    <a href="{% url 'comptabilite:exporter_excel' %}" class="btn btn-primary btn-sm">⬇️ {% trans "تصدير" %} Excel</a>
+    <a href="{% url 'comptabilite:exporter_pdf' %}" class="btn btn-sm" style="background:var(--color-danger);color:#fff">⬇️ {% trans "تصدير" %} PDF</a>
+  </div>
+  <h2>🗂 {% trans "الميزانية المجمّعة" %}</h2>
+  <p style="font-size:22px;font-weight:900;color:var(--color-primary);margin:6px 0">
+    DH {{ total_recettes|floatformat:0 }}
+    <span style="font-size:13px;font-weight:700;color:var(--color-text-muted)">{% trans "مجموع الموارد" %}</span>
+  </p>
+  <p style="font-size:22px;font-weight:900;color:var(--color-danger);margin:6px 0">
+    DH {{ total_depenses|floatformat:0 }}
+    <span style="font-size:13px;font-weight:700;color:var(--color-text-muted)">{% trans "مجموع النفقات" %}</span>
+  </p>
+  <ul style="margin:6px 0 12px 20px;color:var(--color-text-muted);font-size:14px">
+    {% for ligne in top_depenses %}
+    <li>{% trans "منها" %} · {{ ligne.label }}: DH {{ ligne.montant|floatformat:0 }}</li>
+    {% endfor %}
+  </ul>
+  <p style="font-size:24px;font-weight:900;margin:6px 0;color:{% if resultat >= 0 %}var(--color-primary){% else %}var(--color-danger){% endif %}">
+    DH {{ resultat|floatformat:0 }}
+    <span style="font-size:13px;font-weight:700;color:var(--color-text-muted)">{% trans "النتيجة" %} · {% if resultat >= 0 %}{% trans "فائض" %}{% else %}{% trans "عجز" %}{% endif %}</span>
+  </p>
+</div>
+
+<p style="margin-top:16px"><a href="{% url 'comptabilite:bilan_financier' %}">← {% trans "البيان المالي التفصيلي" %}</a></p>
 {% endblock %}
