@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <div class="section-title" style="text-align:start">
+    <h2 style="color:var(--color-primary)">{% trans "Préinscriptions" %}</h2>
+  </div>
+  <div class="filters">
+    <a href="?statut=en_attente" class="{% if statut == 'en_attente' %}active{% endif %}">{% trans "En attente" %}</a>
+    <a href="?statut=acceptee" class="{% if statut == 'acceptee' %}active{% endif %}">{% trans "Acceptées" %}</a>
+    <a href="?statut=refusee" class="{% if statut == 'refusee' %}active{% endif %}">{% trans "Refusées" %}</a>
+    <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "Toutes" %}</a>
+  </div>
+  <div class="table-wrap">
+    <table class="styled">
+      <tr>
+        <th>#</th>
+        <th>{% trans "Enfant" %}</th>
+        <th>{% trans "Naissance" %}</th>
+        <th>{% trans "Tuteur" %}</th>
+        <th>{% trans "Contact" %}</th>
+        <th>{% trans "Statut" %}</th>
+        <th></th>
+      </tr>
+      {% for preinscription in preinscriptions %}
+      <tr>
+        <td>{{ preinscription.numero_dossier }}</td>
+        <td>{{ preinscription.prenom_enfant }} {{ preinscription.nom_enfant }}</td>
+        <td>{{ preinscription.date_naissance }}</td>
+        <td>{{ preinscription.tuteur_nom }}</td>
+        <td>{{ preinscription.tuteur_contact }}</td>
+        <td>{{ preinscription.get_statut_display }}</td>
+        <td>
+          {% if preinscription.statut == "en_attente" %}
+          <form action="{% url 'ecole:accepter_preinscription' preinscription.pk %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-sm">{% trans "Accepter" %}</button>
+          </form>
+          <form action="{% url 'ecole:refuser_preinscription' preinscription.pk %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline btn-sm">{% trans "Refuser" %}</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7">{% trans "Aucune préinscription." %}</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

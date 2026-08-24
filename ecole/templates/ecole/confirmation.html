@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">✅</div>
+    <h1 style="font-size:28px">{% trans "تم تسجيل طلبكم" %}</h1>
+    <p>{% trans "رقم الملف:" %}</p>
+    <p style="font-size:32px;font-weight:900;color:var(--color-primary)">{{ preinscription.numero_dossier }}</p>
+    <p>{% trans "احتفظ برقم الملف هذا لتتبّع حالة الطلب." %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'ecole:suivi_preinscription' %}" class="btn btn-primary">🔎 {% trans "تتبّع طلبي" %}</a>
+      <a href="{% url 'home' %}" class="btn btn-outline">{% trans "Retour à l'accueil" %}</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

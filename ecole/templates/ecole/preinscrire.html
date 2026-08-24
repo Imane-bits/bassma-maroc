@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container" style="max-width:680px">
+  <section class="hero" style="padding-bottom:0">
+    <div class="hero-badge">🎒</div>
+    <span class="pill-tag">{% trans "المدرسة" %}</span>
+    <h1 style="font-size:28px">{% trans "طلب تسجيل مسبق" %}</h1>
+    <p>{% trans "يُرجى ملء معطيات الطفل والولي، وسيتواصل معك فريق الجمعية لتأكيد التسجيل." %}</p>
+  </section>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-card">
+      <h2>🧒 {% trans "الطفل" %}</h2>
+      <div class="field-row">
+        <div class="field">
+          <label for="{{ form.nom_enfant.id_for_label }}">{{ form.nom_enfant.label }} *</label>
+          {{ form.nom_enfant }}
+        </div>
+        <div class="field">
+          <label for="{{ form.prenom_enfant.id_for_label }}">{{ form.prenom_enfant.label }} *</label>
+          {{ form.prenom_enfant }}
+        </div>
+      </div>
+      <div class="field">
+        <label for="{{ form.date_naissance.id_for_label }}">{{ form.date_naissance.label }} *</label>
+        {{ form.date_naissance }}
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>👤 {% trans "الولي" %}</h2>
+      <div class="field">
+        <label for="{{ form.tuteur_nom.id_for_label }}">{{ form.tuteur_nom.label }} *</label>
+        {{ form.tuteur_nom }}
+      </div>
+      <div class="field">
+        <label for="{{ form.tuteur_contact.id_for_label }}">{{ form.tuteur_contact.label }} *</label>
+        {{ form.tuteur_contact }}
+      </div>
+      <div class="field">
+        <label for="{{ form.adresse.id_for_label }}">{{ form.adresse.label }}</label>
+        {{ form.adresse }}
+      </div>
+    </div>
+
+    {% if form.errors %}
+      <ul class="messages">
+        <li class="error">{% trans "Merci de corriger les erreurs ci-dessus." %}</li>
+      </ul>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "إرسال الطلب" %}</button>
+  </form>
+
+  <p style="margin-top:24px"><a href="{% url 'ecole:suivi_preinscription' %}">🔎 {% trans "تتبّع طلبي" %}</a></p>
+</div>
+{% endblock %}

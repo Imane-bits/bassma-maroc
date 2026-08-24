@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container" style="max-width:520px">
+  <section class="hero" style="padding-bottom:24px">
+    <div class="hero-badge">🔎</div>
+    <h1 style="font-size:28px">{% trans "تتبّع طلبي" %}</h1>
+    <p>{% trans "أدخل رقم الملف لعرض حالته." %}</p>
+  </section>
+
+  <div class="form-card">
+    <form method="post">
+      {% csrf_token %}
+      <div class="field">
+        <label for="numero_dossier">{% trans "رقم الملف" %}</label>
+        <input type="text" id="numero_dossier" name="numero_dossier" required placeholder="PRE-2026-000123">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">{% trans "عرض الطلب" %}</button>
+    </form>
+  </div>
+
+  {% if preinscription %}
+    <div class="form-card">
+      <p><strong>{% trans "الطفل" %}:</strong> {{ preinscription.prenom_enfant }} {{ preinscription.nom_enfant }}</p>
+      <p><strong>{% trans "الحالة" %}:</strong> {{ preinscription.get_statut_display }}</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
