@@ -2,6 +2,7 @@ from datetime import date, timedelta
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from django.db.models import Sum
 from django.utils import timezone
 
 from aide.models import Beneficiaire, DemandeAide
@@ -49,10 +50,16 @@ class Command(BaseCommand):
     def _seed_general_demo_data(self, responsable):
         today = timezone.localdate()
 
+        donateurs_data = [
+            ("Youssef", "Bennis"),
+            ("Salma", "Chraibi"),
+            ("Karim", "Idrissi"),
+            ("Nabil", "Sekkat"),
+            ("Amal", "Toumi"),
+            ("Fondation", "Al Amal"),
+        ]
         donateurs = []
-        for i, (prenom, nom) in enumerate(
-            [("Youssef", "Bennis"), ("Salma", "Chraibi"), ("Karim", "Idrissi")], start=1
-        ):
+        for i, (prenom, nom) in enumerate(donateurs_data, start=1):
             u, _ = User.objects.get_or_create(
                 username=f"demo.donateur{i}@example.com",
                 defaults={
@@ -63,6 +70,7 @@ class Command(BaseCommand):
                 },
             )
             donateurs.append(u)
+        youssef, salma, karim, nabil, amal, fondation = donateurs
 
         beneficiaires_data = [
             ("Amrani", "Fatima", "DEMO-0001", "Casablanca", 3, 2),
@@ -90,17 +98,26 @@ class Command(BaseCommand):
             )
             beneficiaires.append(b)
 
+        # Montants alignés sur ce qu'une affectation réelle va couvrir plus
+        # bas (6000/8000/5000 DH), pour que les demandes financées affichent
+        # une barre de progression à 100% cohérente avec les dons reçus.
         demandes_data = [
             (beneficiaires[0], "دعم غذائي شهري", DemandeAide.Categorie.NUTRITION,
-             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.EN_ATTENTE, 800),
+             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.ACCEPTEE, 6000),
             (beneficiaires[1], "مصاريف طبية عاجلة", DemandeAide.Categorie.SANTE,
-             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.ACCEPTEE, 1500),
+             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.ACCEPTEE, 8000),
             (beneficiaires[2], "تمدرس الأبناء", DemandeAide.Categorie.ETUDE,
-             DemandeAide.Urgence.MOYENNE, DemandeAide.Statut.EN_ATTENTE, 600),
+             DemandeAide.Urgence.MOYENNE, DemandeAide.Statut.EN_ATTENTE, 3500),
             (beneficiaires[3], "مواد خياطة للعمل المنزلي", DemandeAide.Categorie.COUTURE,
-             DemandeAide.Urgence.FAIBLE, DemandeAide.Statut.ACCEPTEE, 400),
+             DemandeAide.Urgence.FAIBLE, DemandeAide.Statut.ACCEPTEE, 5000),
             (beneficiaires[4], "مساعدة على السكن", DemandeAide.Categorie.NUTRITION,
-             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.REFUSEE, 1200),
+             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.REFUSEE, 4500),
+            (beneficiaires[0], "دعم لعلاج طبي مزمن", DemandeAide.Categorie.SANTE,
+             DemandeAide.Urgence.HAUTE, DemandeAide.Statut.EN_ATTENTE, 7000),
+            (beneficiaires[2], "إعادة تأهيل منزل متضرر", DemandeAide.Categorie.NUTRITION,
+             DemandeAide.Urgence.MOYENNE, DemandeAide.Statut.EN_COURS, 9000),
+            (beneficiaires[4], "تمويل مشروع تجاري صغير", DemandeAide.Categorie.COUTURE,
+             DemandeAide.Urgence.FAIBLE, DemandeAide.Statut.ACCEPTEE, 3000),
         ]
         demandes = []
         for beneficiaire, titre, categorie, urgence, statut, montant in demandes_data:
@@ -115,12 +132,13 @@ class Command(BaseCommand):
                 statut=statut,
             )
             demandes.append(d)
+        demande_nutrition, demande_sante, _, demande_couture, *_ = demandes
 
         budget_ecole, _ = Budget.objects.get_or_create(
             module=Budget.Module.ECOLE, periode="2026-T1",
             defaults={"recettes": 12000, "depenses": 4500},
         )
-        Budget.objects.get_or_create(
+        budget_formation, _ = Budget.objects.get_or_create(
             module=Budget.Module.CENTRE_FORMATION, periode="2026-T1",
             defaults={"recettes": 6000, "depenses": 2000},
         )
@@ -133,47 +151,71 @@ class Command(BaseCommand):
             defaults={"recettes": 36500, "depenses": 15500},
         )
 
+        # Total exactement 284 400 DH ici + 600 DH pour le don de la
+        # bénéficiaire vitrine = 285 000 DH, identique à "تبرعات الأفراد"
+        # dans la comptabilité détaillée. Les dons ciblant une demande
+        # précise (demande_aide déjà renseigné à la création) sont ceux
+        # qui alimentent montant_collecte / la barre de progression sur
+        # "besoins" -- une Affectation seule ne suffit pas, elle sert
+        # uniquement à la redistribution des dons non ciblés (école,
+        # centre de formation).
+        dons_data = [
+            (youssef, 500, None), (salma, 800, None), (karim, 1200, None), (nabil, 300, None),
+            (amal, 2000, None), (youssef, 750, None), (salma, 1500, None), (karim, 600, None),
+            (nabil, 900, None), (amal, 1000, None),
+            (fondation, 100000, None),
+            (nabil, 80000, None),
+            (karim, 49000, None), (karim, 6000, "nutrition"), (karim, 5000, "couture"),
+            (salma, 26850, None), (salma, 8000, "sante"),
+        ]
+        cibles_par_cle = {
+            "nutrition": demande_nutrition,
+            "sante": demande_sante,
+            "couture": demande_couture,
+        }
         dons = []
-        montants = [500, 1000, 250, 2000, 750]
-        for i, montant in enumerate(montants):
+        for i, (donateur, montant, cle_demande) in enumerate(dons_data):
             don = Don.objects.create(
-                donateur=donateurs[i % len(donateurs)],
+                donateur=donateur,
                 montant=montant,
-                type_don=Don.TypeDon.UNIQUE if i % 2 == 0 else Don.TypeDon.MENSUEL,
-                demande_aide=demandes[1] if i == 1 else None,
+                type_don=Don.TypeDon.MENSUEL if i % 3 == 0 else Don.TypeDon.UNIQUE,
+                demande_aide=cibles_par_cle.get(cle_demande),
             )
             dons.append(don)
+        (
+            don_fondation, don_nabil_80k, don_karim_pool,
+            don_karim_nutrition, don_karim_couture,
+            don_salma_pool, don_salma_sante,
+        ) = dons[-7:]
 
-        Affectation.objects.get_or_create(
-            don=dons[0],
-            cible=Affectation.Cible.ECOLE,
-            defaults={
-                "budget": budget_ecole,
-                "montant_affecte": dons[0].montant,
-                "validee_par": responsable,
-            },
-        )
-        Affectation.objects.get_or_create(
-            don=dons[1],
-            cible=Affectation.Cible.BENEFICIAIRE,
-            demande_aide=demandes[1],
-            defaults={
-                "budget": budget_dons,
-                "montant_affecte": dons[1].montant,
-                "validee_par": responsable,
-            },
-        )
-        dons[0].statut = Don.Statut.DISTRIBUE
-        dons[0].save(update_fields=["statut"])
-        dons[1].statut = Don.Statut.DISTRIBUE
-        dons[1].save(update_fields=["statut"])
+        def affecter_et_maj_statut(don, cible, montant_affecte, demande_aide=None, budget=budget_dons):
+            Affectation.objects.create(
+                don=don,
+                budget=budget,
+                montant_affecte=montant_affecte,
+                cible=cible,
+                demande_aide=demande_aide,
+                validee_par=responsable,
+            )
+            total = don.affectations.aggregate(t=Sum("montant_affecte"))["t"] or 0
+            don.statut = Don.Statut.DISTRIBUE if total >= don.montant else Don.Statut.EN_AFFECTATION
+            don.save(update_fields=["statut"])
+
+        affecter_et_maj_statut(don_fondation, Affectation.Cible.ECOLE, 100000, budget=budget_ecole)
+        affecter_et_maj_statut(don_nabil_80k, Affectation.Cible.CENTRE_FORMATION, 80000, budget=budget_formation)
+        affecter_et_maj_statut(don_karim_nutrition, Affectation.Cible.BENEFICIAIRE, 6000, demande_aide=demande_nutrition)
+        affecter_et_maj_statut(don_karim_couture, Affectation.Cible.BENEFICIAIRE, 5000, demande_aide=demande_couture)
+        affecter_et_maj_statut(don_salma_sante, Affectation.Cible.BENEFICIAIRE, 8000, demande_aide=demande_sante)
 
         eleves_data = [
-            ("Bennani", "Yassine", "CE1", "du"),
-            ("Chraibi", "Meryem", "CE2", "en_retard"),
-            ("Idrissi", "Omar", "CP", "paye"),
+            ("Bennani", "Yassine", "CE1", "du", 1200),
+            ("Chraibi", "Meryem", "CE2", "en_retard", 1500),
+            ("Idrissi", "Omar", "CP", "paye", 1000),
+            ("Zouiten", "Salma", "CE1", "du", 1200),
+            ("Alami", "Adam", "CM1", "en_retard", 1600),
+            ("Berrada", "Hiba", "CP", "paye", 1000),
         ]
-        for i, (nom, prenom, classe, statut_paiement) in enumerate(eleves_data, start=1):
+        for i, (nom, prenom, classe, statut_paiement, montant) in enumerate(eleves_data, start=1):
             tuteur, _ = User.objects.get_or_create(
                 username=f"demo.tuteur{i}@example.com",
                 defaults={
@@ -201,7 +243,7 @@ class Command(BaseCommand):
                 eleve=eleve,
                 budget=budget_ecole,
                 defaults={
-                    "montant": 500,
+                    "montant": montant,
                     "date_echeance": echeance,
                     "statut_paiement": statut_paiement,
                 },
