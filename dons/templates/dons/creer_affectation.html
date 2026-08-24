@@ -6,12 +6,15 @@
     <h2 style="color:var(--color-primary)">{% trans "Créer une affectation" %}</h2>
   </div>
   <div class="form-card">
-    <form method="post">
+    <form method="post" id="affectation-form">
       {% csrf_token %}
       {% for field in form %}
-        <div class="field">
+        <div class="field" id="field-{{ field.name }}">
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field }}
+          {% if field.name == "demande_aide" %}
+            <p style="color:var(--color-text-muted);font-size:13px;margin-top:4px">{% trans "طلب المساعدة مطلوب عند اختيار وجهة «مستفيد»." %}</p>
+          {% endif %}
           {% for error in field.errors %}<p style="color:var(--color-danger);font-size:13px">{{ error }}</p>{% endfor %}
         </div>
       {% endfor %}
@@ -19,4 +22,22 @@
     </form>
   </div>
 </div>
+<script>
+(function () {
+  var cibleField = document.getElementById("{{ form.cible.id_for_label }}");
+  var demandeField = document.getElementById("{{ form.demande_aide.id_for_label }}");
+  var demandeWrap = document.getElementById("field-demande_aide");
+
+  function sync() {
+    var estBeneficiaire = cibleField.value === "beneficiaire";
+    demandeWrap.style.display = estBeneficiaire ? "" : "none";
+    if (!estBeneficiaire) {
+      demandeField.value = "";
+    }
+  }
+
+  cibleField.addEventListener("change", sync);
+  sync();
+})();
+</script>
 {% endblock %}
