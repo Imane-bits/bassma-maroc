@@ -1,46 +1,44 @@
-{% extends "base.html" %}
+{% extends "responsable_base.html" %}
 {% load i18n %}
-{% block content %}
-<div class="container">
-  <div class="section-title" style="text-align:start">
-    <h2 style="color:var(--color-primary)">{% trans "مدفوعات الرسوم الدراسية" %}</h2>
-  </div>
-  <div class="filters">
-    <a href="?statut=du" class="{% if statut == 'du' %}active{% endif %}">{% trans "Dûs" %}</a>
-    <a href="?statut=en_retard" class="{% if statut == 'en_retard' %}active{% endif %}">{% trans "En retard" %}</a>
-    <a href="?statut=paye" class="{% if statut == 'paye' %}active{% endif %}">{% trans "Payés" %}</a>
-    <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "Tous" %}</a>
-  </div>
-  <div class="table-wrap">
-    <table class="styled">
-      <tr>
-        <th>#</th>
-        <th>{% trans "Élève" %}</th>
-        <th>{% trans "Montant" %}</th>
-        <th>{% trans "Échéance" %}</th>
-        <th>{% trans "Statut" %}</th>
-        <th></th>
-      </tr>
-      {% for paiement in paiements %}
-      <tr>
-        <td>{{ paiement.pk }}</td>
-        <td>{{ paiement.eleve }}</td>
-        <td>{{ paiement.montant }} MAD</td>
-        <td>{{ paiement.date_echeance }}</td>
-        <td>{{ paiement.get_statut_paiement_display }}</td>
-        <td>
-          {% if paiement.statut_paiement != "paye" %}
-          <form action="{% url 'ecole:marquer_paye' paiement.pk %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-sm">{% trans "Marquer payé" %}</button>
-          </form>
-          {% endif %}
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="6">{% trans "Aucun paiement." %}</td></tr>
-      {% endfor %}
-    </table>
-  </div>
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{% trans "مدفوعات الرسوم الدراسية" %}</h2>
+</div>
+<div class="filters">
+  <a href="?statut=du" class="{% if statut == 'du' %}active{% endif %}">{% trans "Dûs" %}</a>
+  <a href="?statut=en_retard" class="{% if statut == 'en_retard' %}active{% endif %}">{% trans "En retard" %}</a>
+  <a href="?statut=paye" class="{% if statut == 'paye' %}active{% endif %}">{% trans "Payés" %}</a>
+  <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "Tous" %}</a>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>#</th>
+      <th>{% trans "Élève" %}</th>
+      <th>{% trans "Montant" %}</th>
+      <th>{% trans "Échéance" %}</th>
+      <th>{% trans "Statut" %}</th>
+      <th></th>
+    </tr>
+    {% for paiement in paiements %}
+    <tr>
+      <td>{{ paiement.pk }}</td>
+      <td>{{ paiement.eleve }}</td>
+      <td>{{ paiement.montant }} MAD</td>
+      <td>{{ paiement.date_echeance }}</td>
+      <td>{{ paiement.get_statut_paiement_display }}</td>
+      <td>
+        {% if paiement.statut_paiement != "paye" %}
+        <form action="{% url 'ecole:marquer_paye' paiement.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary btn-sm">{% trans "Marquer payé" %}</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">{% trans "Aucun paiement." %}</td></tr>
+    {% endfor %}
+  </table>
 </div>
 {% endblock %}

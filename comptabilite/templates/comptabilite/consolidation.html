@@ -1,36 +1,34 @@
-{% extends "base.html" %}
+{% extends "responsable_base.html" %}
 {% load i18n %}
-{% block content %}
-<div class="container">
-  <div class="section-title" style="text-align:start">
-    <h2 style="color:var(--color-primary)">{% trans "توحيد التدفقات المالية" %}</h2>
-  </div>
-  <div class="table-wrap">
-    <table class="styled">
-      <tr>
-        <th>{% trans "الوحدة" %}</th>
-        <th>{% trans "المداخيل" %}</th>
-        <th>{% trans "المصاريف" %}</th>
-        <th>{% trans "الرصيد" %}</th>
-      </tr>
-      {% for ligne in par_module %}
-      <tr>
-        <td>{{ ligne.module_display }}</td>
-        <td>{{ ligne.total_recettes|default:0 }} MAD</td>
-        <td>{{ ligne.total_depenses|default:0 }} MAD</td>
-        <td>{{ ligne.solde }} MAD</td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="4">{% trans "Aucune donnée." %}</td></tr>
-      {% endfor %}
-      <tr style="font-weight:900">
-        <td>{% trans "المجموع" %}</td>
-        <td>{{ total_recettes }} MAD</td>
-        <td>{{ total_depenses }} MAD</td>
-        <td>{{ solde }} MAD</td>
-      </tr>
-    </table>
-  </div>
-  <p style="margin-top:16px"><a href="{% url 'comptabilite:bilan_financier' %}" class="btn btn-outline btn-sm">📊 {% trans "البيان المالي التفصيلي" %}</a></p>
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{% trans "توحيد التدفقات المالية" %}</h2>
 </div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "الوحدة" %}</th>
+      <th>{% trans "المداخيل" %}</th>
+      <th>{% trans "المصاريف" %}</th>
+      <th>{% trans "الرصيد" %}</th>
+    </tr>
+    {% for ligne in par_module %}
+    <tr>
+      <td>{{ ligne.module_display }}</td>
+      <td>{{ ligne.total_recettes|default:0 }} MAD</td>
+      <td>{{ ligne.total_depenses|default:0 }} MAD</td>
+      <td>{{ ligne.solde }} MAD</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">{% trans "Aucune donnée." %}</td></tr>
+    {% endfor %}
+    <tr style="font-weight:900">
+      <td>{% trans "المجموع" %}</td>
+      <td>{{ total_recettes }} MAD</td>
+      <td>{{ total_depenses }} MAD</td>
+      <td>{{ solde }} MAD</td>
+    </tr>
+  </table>
+</div>
+<p style="margin-top:16px"><a href="{% url 'comptabilite:bilan_financier' %}" class="btn btn-outline btn-sm">📊 {% trans "البيان المالي التفصيلي" %}</a></p>
 {% endblock %}

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'ecole',
     'formation',
     'comptabilite',
+    'personnel',
 ]
 
 AUTH_USER_MODEL = 'users.User'

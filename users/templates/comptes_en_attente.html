@@ -1,32 +1,30 @@
-{% extends "base.html" %}
+{% extends "responsable_base.html" %}
 {% load i18n %}
-{% block content %}
-<div class="container">
-  <div class="section-title" style="text-align:start">
-    <h2 style="color:var(--color-primary)">{% trans "Comptes en attente" %}</h2>
-  </div>
-  <div class="table-wrap">
-    <table class="styled">
-      <tr>
-        <th>{% trans "Nom" %}</th>
-        <th>{% trans "Email" %}</th>
-        <th></th>
-      </tr>
-      {% for compte in comptes %}
-      <tr>
-        <td>{{ compte.first_name }} {{ compte.last_name }}</td>
-        <td>{{ compte.email }}</td>
-        <td>
-          <form method="post" action="{% url 'activer_compte' compte.pk %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-sm">{% trans "Activer" %}</button>
-          </form>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="3">{% trans "Aucun compte en attente." %}</td></tr>
-      {% endfor %}
-    </table>
-  </div>
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{% trans "Comptes en attente" %}</h2>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "Nom" %}</th>
+      <th>{% trans "Email" %}</th>
+      <th></th>
+    </tr>
+    {% for compte in comptes %}
+    <tr>
+      <td>{{ compte.first_name }} {{ compte.last_name }}</td>
+      <td>{{ compte.email }}</td>
+      <td>
+        <form method="post" action="{% url 'activer_compte' compte.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary btn-sm">{% trans "Activer" %}</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">{% trans "Aucun compte en attente." %}</td></tr>
+    {% endfor %}
+  </table>
 </div>
 {% endblock %}

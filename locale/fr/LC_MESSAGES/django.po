@@ -1287,3 +1287,87 @@ msgstr "Échéance"
 #: _multiple_:1
 msgid "Élève"
 msgstr "Élève"
+
+#: personnel/templates/:1
+msgid "إضافة عضو"
+msgstr "Ajouter un membre"
+
+#: personnel/templates/:1
+msgid "إضافة عضو جديد"
+msgstr "Ajouter un nouveau membre"
+
+#: personnel/templates/:1
+msgid "إعادة التفعيل"
+msgstr "Réactiver"
+
+#: personnel/templates/:1
+msgid "إلغاء"
+msgstr "Annuler"
+
+#: personnel/templates/:1
+msgid "إلغاء التفعيل"
+msgstr "Désactiver"
+
+#: personnel/templates/:1
+msgid "الاسم"
+msgstr "Nom"
+
+#: personnel/templates/:1
+msgid "الاسم العائلي"
+msgstr "Nom de famille"
+
+#: personnel/templates/:1
+msgid "المنصب"
+msgstr "Poste"
+
+#: personnel/templates/:1
+msgid "الهاتف"
+msgstr "Téléphone"
+
+#: personnel/templates/:1
+msgid "تاريخ الالتحاق"
+msgstr "Date d'entrée"
+
+#: personnel/templates/:1
+msgid "تعديل"
+msgstr "Modifier"
+
+#: personnel/templates/:1
+msgid "تعديل عضو"
+msgstr "Modifier le membre"
+
+#: personnel/templates/:1
+msgid "تم إعادة تفعيل العضو."
+msgstr "Le membre a été réactivé."
+
+#: personnel/templates/:1
+msgid "تم إلغاء تفعيل العضو."
+msgstr "Le membre a été désactivé."
+
+#: personnel/templates/:1
+msgid "تم تحديث معطيات العضو."
+msgstr "Les données du membre ont été mises à jour."
+
+#: personnel/templates/:1
+msgid "تمت إضافة العضو."
+msgstr "Le membre a été ajouté."
+
+#: personnel/templates/:1
+msgid "حفظ"
+msgstr "Enregistrer"
+
+#: personnel/templates/:1
+msgid "غير نشط"
+msgstr "Inactif"
+
+#: personnel/templates/:1
+msgid "فريق العمل"
+msgstr "Équipe"
+
+#: personnel/templates/:1
+msgid "لا يوجد أعضاء."
+msgstr "Aucun membre."
+
+#: personnel/templates/:1
+msgid "نشط"
+msgstr "Actif"

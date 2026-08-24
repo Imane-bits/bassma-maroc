@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container" style="max-width:1200px">
+  <div class="dashboard-layout">
+    <aside class="dashboard-sidebar">
+      <a href="{% url 'espace_responsable' %}" class="{% if request.resolver_match.view_name == 'espace_responsable' %}active{% endif %}">🏠 {% trans "لوحة التحكم" %}</a>
+      <a href="{% url 'aide:liste_demandes' %}" class="{% if request.resolver_match.view_name == 'aide:liste_demandes' %}active{% endif %}">🤲 {% trans "طلبات المساعدة" %}</a>
+      <a href="{% url 'dons:liste_dons' %}" class="{% if request.resolver_match.view_name == 'dons:liste_dons' %}active{% endif %}">💚 {% trans "التبرعات الواجب تخصيصها" %}</a>
+      <a href="{% url 'ecole:liste_paiements' %}" class="{% if request.resolver_match.view_name == 'ecole:liste_paiements' %}active{% endif %}">🎒 {% trans "مدفوعات الرسوم الدراسية" %}</a>
+      <a href="{% url 'ecole:liste_preinscriptions' %}" class="{% if request.resolver_match.view_name == 'ecole:liste_preinscriptions' %}active{% endif %}">📥 {% trans "طلبات التسجيل المسبق للمدرسة" %}</a>
+      <a href="{% url 'comptabilite:consolidation' %}" class="{% if request.resolver_match.namespace == 'comptabilite' %}active{% endif %}">💰 {% trans "المحاسبة" %}</a>
+      <a href="{% url 'personnel:liste_membres' %}" class="{% if request.resolver_match.namespace == 'personnel' %}active{% endif %}">🧑‍🤝‍🧑 {% trans "فريق العمل" %}</a>
+      <a href="{% url 'comptes_en_attente' %}" class="{% if request.resolver_match.view_name == 'comptes_en_attente' or request.resolver_match.view_name == 'activer_compte' %}active{% endif %}">🔑 {% trans "الحسابات في انتظار التفعيل" %}</a>
+    </aside>
+
+    <div class="dashboard-main">
+      {% block dashboard_content %}{% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}

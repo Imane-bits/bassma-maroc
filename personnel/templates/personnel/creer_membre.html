@@ -1,0 +1,50 @@
+{% extends "responsable_base.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start;margin-bottom:12px">
+  <h2 style="color:var(--color-primary);margin:0">
+    {% if membre %}{% trans "تعديل عضو" %}{% else %}{% trans "إضافة عضو جديد" %}{% endif %}
+  </h2>
+</div>
+
+<form method="post" class="form-card">
+  {% csrf_token %}
+  <div class="field-row">
+    <div class="field">
+      <label for="{{ form.prenom.id_for_label }}">{{ form.prenom.label }} *</label>
+      {{ form.prenom }}
+    </div>
+    <div class="field">
+      <label for="{{ form.nom.id_for_label }}">{{ form.nom.label }} *</label>
+      {{ form.nom }}
+    </div>
+  </div>
+  <div class="field">
+    <label for="{{ form.poste.id_for_label }}">{{ form.poste.label }} *</label>
+    {{ form.poste }}
+  </div>
+  <div class="field-row">
+    <div class="field">
+      <label for="{{ form.telephone.id_for_label }}">{{ form.telephone.label }}</label>
+      {{ form.telephone }}
+    </div>
+    <div class="field">
+      <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+      {{ form.email }}
+    </div>
+  </div>
+  <div class="field">
+    <label for="{{ form.date_entree.id_for_label }}">{{ form.date_entree.label }}</label>
+    {{ form.date_entree }}
+  </div>
+
+  {% if form.errors %}
+    <ul class="messages">
+      <li class="error">{% trans "يرجى تصحيح الأخطاء أعلاه." %}</li>
+    </ul>
+  {% endif %}
+
+  <button type="submit" class="btn btn-primary">{% trans "حفظ" %}</button>
+  <a href="{% url 'personnel:liste_membres' %}" class="btn btn-outline">{% trans "إلغاء" %}</a>
+</form>
+{% endblock %}
