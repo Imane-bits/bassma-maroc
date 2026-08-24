@@ -736,3 +736,554 @@ msgid ""
 msgstr ""
 "Veuillez remplir les informations de l'enfant et du tuteur, l'équipe de "
 "l'association vous contactera pour confirmer l'inscription."
+
+#: users/templates/espace_responsable.html:23
+#: ecole/templates/ecole/liste_paiements.html:6
+msgid "مدفوعات الرسوم الدراسية"
+msgstr "Paiements de scolarité"
+
+#: users/templates/espace_responsable.html:27
+msgid "طلبات التسجيل المسبق للمدرسة"
+msgstr "Préinscriptions école"
+
+#: users/templates/espace_responsable.html:1
+msgid "لوحة التحكم"
+msgstr "Tableau de bord"
+
+#: users/templates/espace_responsable.html:1
+msgid "مرحبًا %(name)s — رؤية شاملة على كل الأنشطة"
+msgstr "Bonjour %(name)s — vue d'ensemble sur toutes les activités"
+
+#: users/templates/espace_responsable.html:1
+msgid "طلبات مساعدة قيد الانتظار"
+msgstr "Demandes d'aide en attente"
+
+#: users/templates/espace_responsable.html:1
+msgid "تبرّعات بانتظار التخصيص"
+msgstr "Dons en attente de répartition"
+
+#: users/templates/espace_responsable.html:1
+msgid "مجموع التبرّعات المجمّعة"
+msgstr "Total des dons collectés"
+
+#: users/templates/espace_responsable.html:1
+msgid "أداءات دراسية متأخرة"
+msgstr "Paiements scolaires en retard"
+
+#: users/templates/espace_responsable.html:1
+msgid "طلبات تسجيل مسبق قيد الانتظار"
+msgstr "Préinscriptions en attente"
+
+#: users/templates/espace_responsable.html:1
+msgid "حسابات بانتظار التفعيل"
+msgstr "Comptes en attente d'activation"
+
+#: users/templates/espace_responsable.html:1
+msgid "آخر طلبات المساعدة"
+msgstr "Dernières demandes d'aide"
+
+#: users/templates/espace_responsable.html:1
+msgid "المستفيد(ة)"
+msgstr "Bénéficiaire"
+
+#: users/templates/espace_responsable.html:1
+msgid "الاستعجال"
+msgstr "Urgence"
+
+#: users/templates/espace_responsable.html:1
+msgid "قبول"
+msgstr "Accepter"
+
+#: users/templates/espace_responsable.html:1
+msgid "رفض"
+msgstr "Refuser"
+
+#: users/templates/espace_responsable.html:1
+msgid "لا توجد طلبات قيد الانتظار."
+msgstr "Aucune demande en attente."
+
+#: users/templates/espace_responsable.html:1
+msgid "عرض كل الطلبات"
+msgstr "Voir toutes les demandes"
+
+#: users/templates/espace_responsable.html:1
+msgid "طلبات المساعدة"
+msgstr "Demandes d'aide"
+
+#: users/templates/espace_responsable.html:1
+msgid "المحاسبة"
+msgstr "Comptabilité"
+
+#: users/templates/espace_responsable.html:1
+msgid "التبرعات الواجب تخصيصها"
+msgstr "Dons à affecter"
+
+#: users/templates/espace_responsable.html:1
+msgid "الحسابات في انتظار التفعيل"
+msgstr "Comptes en attente d'activation"
+
+#: _multiple_:1
+msgid "Accepter"
+msgstr "Accepter"
+
+#: _multiple_:1
+msgid "Acceptées"
+msgstr "Acceptées"
+
+#: _multiple_:1
+msgid "Actions"
+msgstr "Actions"
+
+#: _multiple_:1
+msgid "Activer"
+msgstr "Activer"
+
+#: _multiple_:1
+msgid "Affectations"
+msgstr "Affectations"
+
+#: _multiple_:1
+msgid "Association Bassma Maroc"
+msgstr "Association Bassma Maroc"
+
+#: _multiple_:1
+msgid "Aucun besoin actif pour le moment."
+msgstr "Aucun besoin actif pour le moment."
+
+#: _multiple_:1
+msgid "Aucun compte en attente."
+msgstr "Aucun compte en attente."
+
+#: _multiple_:1
+msgid "Aucun don en attente d'affectation."
+msgstr "Aucun don en attente d'affectation."
+
+#: _multiple_:1
+msgid "Aucun don pour le moment."
+msgstr "Aucun don pour le moment."
+
+#: _multiple_:1
+msgid "Aucun paiement."
+msgstr "Aucun paiement."
+
+#: _multiple_:1
+msgid "Aucune affectation pour le moment."
+msgstr "Aucune affectation pour le moment."
+
+#: _multiple_:1
+msgid "Aucune demande."
+msgstr "Aucune demande."
+
+#: _multiple_:1
+msgid "Aucune donnée."
+msgstr "Aucune donnée."
+
+#: _multiple_:1
+msgid "Aucune pièce jointe."
+msgstr "Aucune pièce jointe."
+
+#: _multiple_:1
+msgid "Aucune préinscription."
+msgstr "Aucune préinscription."
+
+#: _multiple_:1
+msgid "Bientôt disponible"
+msgstr "Bientôt disponible"
+
+#: _multiple_:1
+msgid "Bénéficiaire"
+msgstr "Bénéficiaire"
+
+#: _multiple_:1
+msgid "Bénéficiaire :"
+msgstr "Bénéficiaire :"
+
+#: _multiple_:1
+msgid "CIN"
+msgstr "CIN"
+
+#: _multiple_:1
+msgid "Catégorie"
+msgstr "Catégorie"
+
+#: _multiple_:1
+msgid "Catégorie :"
+msgstr "Catégorie :"
+
+#: _multiple_:1
+msgid "Ce lien de réinitialisation n'est plus valide."
+msgstr "Ce lien de réinitialisation n'est plus valide."
+
+#: _multiple_:1
+msgid "Cette section est en cours de préparation. Revenez bientôt !"
+msgstr "Cette section est en cours de préparation. Revenez bientôt !"
+
+#: _multiple_:1
+msgid "Changer le mot de passe"
+msgstr "Changer le mot de passe"
+
+#: _multiple_:1
+msgid "Cliquez sur le lien suivant pour choisir un nouveau mot de passe :"
+msgstr "Cliquez sur le lien suivant pour choisir un nouveau mot de passe :"
+
+#: _multiple_:1
+msgid "Compte en attente de validation"
+msgstr "Compte en attente de validation"
+
+#: _multiple_:1
+msgid "Comptes en attente"
+msgstr "Comptes en attente"
+
+#: _multiple_:1
+msgid "Contact"
+msgstr "Contact"
+
+#: _multiple_:1
+msgid "Créer l'affectation"
+msgstr "Créer l'affectation"
+
+#: _multiple_:1
+msgid "Créer une affectation"
+msgstr "Créer une affectation"
+
+#: _multiple_:1
+msgid "Date"
+msgstr "Date"
+
+#: _multiple_:1
+msgid "Date de soumission :"
+msgstr "Date de soumission :"
+
+#: _multiple_:1
+msgid "Demandes d'aide"
+msgstr "Demandes d'aide"
+
+#: _multiple_:1
+msgid "Description :"
+msgstr "Description :"
+
+#: _multiple_:1
+msgid "Donateur"
+msgstr "Donateur"
+
+#: _multiple_:1
+msgid "Dons à affecter"
+msgstr "Dons à affecter"
+
+#: _multiple_:1
+msgid "Dossier %(numero)s"
+msgstr "Dossier %(numero)s"
+
+#: _multiple_:1
+msgid "Déjà affecté"
+msgstr "Déjà affecté"
+
+#: _multiple_:1
+msgid "Dûs"
+msgstr "Dûs"
+
+#: _multiple_:1
+msgid "Email"
+msgstr "Email"
+
+#: _multiple_:1
+msgid "Email envoyé"
+msgstr "Email envoyé"
+
+#: _multiple_:1
+msgid "En attente"
+msgstr "En attente"
+
+#: _multiple_:1
+msgid "En cours"
+msgstr "En cours"
+
+#: _multiple_:1
+msgid "En retard"
+msgstr "En retard"
+
+#: _multiple_:1
+msgid "Enfant"
+msgstr "Enfant"
+
+#: _multiple_:1
+msgid "Enseignant"
+msgstr "Enseignant"
+
+#: _multiple_:1
+msgid "Envoyer"
+msgstr "Envoyer"
+
+#: _multiple_:1
+msgid "Espace responsable"
+msgstr "Espace responsable"
+
+#: _multiple_:1
+msgid "Faire un nouveau don"
+msgstr "Faire un nouveau don"
+
+#: _multiple_:1
+msgid "J'accepte le traitement de mes données personnelles (loi 09-08)"
+msgstr "J'accepte le traitement de mes données personnelles (loi 09-08)"
+
+#: _multiple_:1
+msgid "Les mots de passe ne correspondent pas."
+msgstr "Les mots de passe ne correspondent pas."
+
+#: _multiple_:1
+msgid "Marquer payé"
+msgstr "Marquer payé"
+
+#: _multiple_:1
+msgid "Mes dons"
+msgstr "Mes dons"
+
+#: _multiple_:1
+msgid "Mon espace"
+msgstr "Mon espace"
+
+#: _multiple_:1
+msgid "Montant"
+msgstr "Montant"
+
+#: _multiple_:1
+msgid "Montant demandé :"
+msgstr "Montant demandé :"
+
+#: _multiple_:1
+msgid "Mot de passe changé"
+msgstr "Mot de passe changé"
+
+#: _multiple_:1
+msgid "Mot de passe oublié ?"
+msgstr "Mot de passe oublié ?"
+
+#: _multiple_:1
+msgid "Naissance"
+msgstr "Naissance"
+
+#: _multiple_:1
+msgid "Nom"
+msgstr "Nom"
+
+#: _multiple_:1
+msgid ""
+"Notez-le précieusement : il vous permettra de suivre l'état de votre "
+"dossier. Il ne pourra pas vous être renvoyé automatiquement en cas de perte "
+"— contactez l'association directement dans ce cas."
+msgstr ""
+"Notez-le précieusement : il vous permettra de suivre l'état de votre "
+"dossier. Il ne pourra pas vous être renvoyé automatiquement en cas de perte "
+"— contactez l'association directement dans ce cas."
+
+#: _multiple_:1
+msgid "Nouveau mot de passe"
+msgstr "Nouveau mot de passe"
+
+#: _multiple_:1
+msgid "Payés"
+msgstr "Payés"
+
+#: _multiple_:1
+msgid "Pièces justificatives"
+msgstr "Pièces justificatives"
+
+#: _multiple_:1
+msgid "Préinscriptions"
+msgstr "Préinscriptions"
+
+#: _multiple_:1
+msgid "Refuser"
+msgstr "Refuser"
+
+#: _multiple_:1
+msgid "Refusées"
+msgstr "Refusées"
+
+#: _multiple_:1
+msgid "Responsable"
+msgstr "Responsable"
+
+#: _multiple_:1
+msgid "Retour à l'accueil"
+msgstr "Retour à l'accueil"
+
+#: _multiple_:1
+msgid "Réinitialiser le mot de passe"
+msgstr "Réinitialiser le mot de passe"
+
+#: _multiple_:1
+msgid "Se connecter"
+msgstr "Se connecter"
+
+#: _multiple_:1
+msgid "Se déconnecter"
+msgstr "Se déconnecter"
+
+#: _multiple_:1
+msgid ""
+"Si un compte existe avec cette adresse, un email de réinitialisation vient "
+"d'être envoyé."
+msgstr ""
+"Si un compte existe avec cette adresse, un email de réinitialisation vient "
+"d'être envoyé."
+
+#: _multiple_:1
+msgid "Si vous n'avez pas fait cette demande, ignorez cet email."
+msgstr "Si vous n'avez pas fait cette demande, ignorez cet email."
+
+#: _multiple_:1
+msgid "Statut"
+msgstr "Statut"
+
+#: _multiple_:1
+msgid "Statut :"
+msgstr "Statut :"
+
+#: _multiple_:1
+msgid "Suivre mon dossier"
+msgstr "Suivre mon dossier"
+
+#: _multiple_:1
+msgid "Titre"
+msgstr "Titre"
+
+#: _multiple_:1
+msgid "Titre :"
+msgstr "Titre :"
+
+#: _multiple_:1
+msgid "Tous"
+msgstr "Tous"
+
+#: _multiple_:1
+msgid "Toutes"
+msgstr "Toutes"
+
+#: _multiple_:1
+msgid "Tuteur"
+msgstr "Tuteur"
+
+#: _multiple_:1
+msgid "Type"
+msgstr "Type"
+
+#: _multiple_:1
+msgid "Un compte existe déjà avec cet email."
+msgstr "Un compte existe déjà avec cet email."
+
+#: _multiple_:1
+msgid "Un membre de la famille a un problème de santé"
+msgstr "Un membre de la famille a un problème de santé"
+
+#: _multiple_:1
+msgid "Urgence"
+msgstr "Urgence"
+
+#: _multiple_:1
+msgid "Urgence :"
+msgstr "Urgence :"
+
+#: _multiple_:1
+msgid ""
+"Votre compte gestionnaire a été créé mais doit être validé par un "
+"responsable avant que vous puissiez vous connecter."
+msgstr ""
+"Votre compte gestionnaire a été créé mais doit être validé par un "
+"responsable avant que vous puissiez vous connecter."
+
+#: _multiple_:1
+msgid "Votre demande a été enregistrée"
+msgstr "Votre demande a été enregistrée"
+
+#: _multiple_:1
+msgid "Votre numéro de dossier :"
+msgstr "Votre numéro de dossier :"
+
+#: _multiple_:1
+msgid ""
+"Vous recevez cet email car vous avez demandé la réinitialisation de votre "
+"mot de passe."
+msgstr ""
+"Vous recevez cet email car vous avez demandé la réinitialisation de votre "
+"mot de passe."
+
+#: _multiple_:1
+msgid "adresse"
+msgstr "adresse"
+
+#: _multiple_:1
+msgid "catégorie"
+msgstr "catégorie"
+
+#: _multiple_:1
+msgid "collecté :"
+msgstr "collecté :"
+
+#: _multiple_:1
+msgid "date de naissance"
+msgstr "date de naissance"
+
+#: _multiple_:1
+msgid "description"
+msgstr "description"
+
+#: _multiple_:1
+msgid "enfants scolarisés"
+msgstr "enfants scolarisés"
+
+#: _multiple_:1
+msgid "montant demandé"
+msgstr "montant demandé"
+
+#: _multiple_:1
+msgid "nom"
+msgstr "nom"
+
+#: _multiple_:1
+msgid "nombre d'enfants"
+msgstr "nombre d'enfants"
+
+#: _multiple_:1
+msgid "numéro de dossier"
+msgstr "numéro de dossier"
+
+#: _multiple_:1
+msgid "prénom"
+msgstr "prénom"
+
+#: _multiple_:1
+msgid "rôle"
+msgstr "rôle"
+
+#: _multiple_:1
+msgid "situation familiale"
+msgstr "situation familiale"
+
+#: _multiple_:1
+msgid "statut"
+msgstr "statut"
+
+#: _multiple_:1
+msgid "titre de la demande"
+msgstr "titre de la demande"
+
+#: _multiple_:1
+msgid "téléphone"
+msgstr "téléphone"
+
+#: _multiple_:1
+msgid "urgence"
+msgstr "urgence"
+
+#: _multiple_:1
+msgid "ville"
+msgstr "ville"
+
+#: _multiple_:1
+msgid "Échéance"
+msgstr "Échéance"
+
+#: _multiple_:1
+msgid "Élève"
+msgstr "Élève"

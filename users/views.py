@@ -3,6 +3,10 @@ from django.contrib.auth import get_user_model, login
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
+from aide.models import DemandeAide
+from dons.models import Don
+from ecole.models import PaiementScolarite, PreinscriptionEleve
+
 from .forms import InscriptionForm
 from .mixins import role_required
 
@@ -33,7 +37,34 @@ def home(request):
 
 @role_required("responsable")
 def espace_responsable(request):
-    return render(request, "espace_responsable.html")
+    from django.db.models import Sum
+
+    demandes_en_attente = DemandeAide.objects.filter(
+        statut=DemandeAide.Statut.EN_ATTENTE
+    ).select_related("beneficiaire")
+
+    stats = {
+        "demandes_en_attente": demandes_en_attente.count(),
+        "dons_a_affecter": Don.objects.exclude(statut=Don.Statut.DISTRIBUE).count(),
+        "total_dons": Don.objects.aggregate(total=Sum("montant"))["total"] or 0,
+        "paiements_en_retard": PaiementScolarite.objects.filter(
+            statut_paiement=PaiementScolarite.StatutPaiement.EN_RETARD
+        ).count(),
+        "preinscriptions_en_attente": PreinscriptionEleve.objects.filter(
+            statut=PreinscriptionEleve.Statut.EN_ATTENTE
+        ).count(),
+        "comptes_en_attente": User.objects.filter(
+            role=User.Role.RESPONSABLE, is_active=False
+        ).count(),
+    }
+    return render(
+        request,
+        "espace_responsable.html",
+        {
+            "stats": stats,
+            "dernieres_demandes": demandes_en_attente.order_by("-date_soumission")[:5],
+        },
+    )
 
 
 @role_required("responsable")

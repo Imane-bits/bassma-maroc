@@ -1,36 +1,85 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% block content %}
-<div class="container">
-  <div class="section-title" style="text-align:start">
-    <h2 style="color:var(--color-primary)">{% trans "Espace Responsable" %}</h2>
+<div class="container" style="max-width:1200px">
+  <div class="dashboard-layout">
+    <aside class="dashboard-sidebar">
+      <a href="{% url 'espace_responsable' %}" class="active">🏠 {% trans "لوحة التحكم" %}</a>
+      <a href="{% url 'aide:liste_demandes' %}">🤲 {% trans "طلبات المساعدة" %}</a>
+      <a href="{% url 'dons:liste_dons' %}">💚 {% trans "التبرعات الواجب تخصيصها" %}</a>
+      <a href="{% url 'ecole:liste_paiements' %}">🎒 {% trans "مدفوعات الرسوم الدراسية" %}</a>
+      <a href="{% url 'ecole:liste_preinscriptions' %}">📥 {% trans "طلبات التسجيل المسبق للمدرسة" %}</a>
+      <a href="{% url 'comptabilite:consolidation' %}">💰 {% trans "المحاسبة" %}</a>
+      <a href="{% url 'comptes_en_attente' %}">🔑 {% trans "الحسابات في انتظار التفعيل" %}</a>
+    </aside>
+
+    <div class="dashboard-main">
+      <div class="section-title" style="text-align:start;margin-bottom:8px">
+        <h2 style="color:var(--color-primary);margin:0">{% trans "لوحة التحكم" %}</h2>
+      </div>
+      <p class="dashboard-welcome">{% blocktrans with name=user.get_full_name|default:user.username %}مرحبًا {{ name }} — رؤية شاملة على كل الأنشطة{% endblocktrans %}</p>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.demandes_en_attente }}</div>
+          <div class="stat-label">🤲 {% trans "طلبات مساعدة قيد الانتظار" %}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.dons_a_affecter }}</div>
+          <div class="stat-label">💚 {% trans "تبرّعات بانتظار التخصيص" %}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.total_dons }} DH</div>
+          <div class="stat-label">📈 {% trans "مجموع التبرّعات المجمّعة" %}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.paiements_en_retard }}</div>
+          <div class="stat-label">🎒 {% trans "أداءات دراسية متأخرة" %}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.preinscriptions_en_attente }}</div>
+          <div class="stat-label">📥 {% trans "طلبات تسجيل مسبق قيد الانتظار" %}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">{{ stats.comptes_en_attente }}</div>
+          <div class="stat-label">🔑 {% trans "حسابات بانتظار التفعيل" %}</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="text-align:start;margin-bottom:12px">
+        <h2 style="color:var(--color-primary);font-size:18px;margin:0">{% trans "آخر طلبات المساعدة" %}</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="styled">
+          <tr>
+            <th>{% trans "المستفيد(ة)" %}</th>
+            <th>{% trans "الفئة" %}</th>
+            <th>{% trans "الاستعجال" %}</th>
+            <th></th>
+          </tr>
+          {% for demande in dernieres_demandes %}
+          <tr>
+            <td><a href="{% url 'aide:demande_detail' demande.pk %}">{{ demande.beneficiaire }}</a></td>
+            <td>{{ demande.get_categorie_display }}</td>
+            <td>{{ demande.get_urgence_display }}</td>
+            <td>
+              <form action="{% url 'aide:accepter_demande' demande.pk %}" method="post" style="display:inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm">{% trans "قبول" %}</button>
+              </form>
+              <form action="{% url 'aide:refuser_demande' demande.pk %}" method="post" style="display:inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline btn-sm">{% trans "رفض" %}</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">{% trans "لا توجد طلبات قيد الانتظار." %}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+      <p style="margin-top:16px"><a href="{% url 'aide:liste_demandes' %}">{% trans "عرض كل الطلبات" %} ←</a></p>
+    </div>
   </div>
-  <div class="cards-grid">
-    <a href="{% url 'comptes_en_attente' %}" class="card" style="text-decoration:none">
-      <div class="step-icon">🔑</div>
-      <h3 style="color:var(--color-primary);margin:8px 0 0">{% trans "Comptes en attente" %}</h3>
-    </a>
-    <a href="{% url 'aide:liste_demandes' %}" class="card" style="text-decoration:none">
-      <div class="step-icon">🤲</div>
-      <h3 style="color:var(--color-primary);margin:8px 0 0">{% trans "Demandes d'aide" %}</h3>
-    </a>
-    <a href="{% url 'dons:liste_dons' %}" class="card" style="text-decoration:none">
-      <div class="step-icon">💚</div>
-      <h3 style="color:var(--color-primary);margin:8px 0 0">{% trans "Dons à affecter" %}</h3>
-    </a>
-    <a href="{% url 'ecole:liste_paiements' %}" class="card" style="text-decoration:none">
-      <div class="step-icon">🎒</div>
-      <h3 style="color:var(--color-primary);margin:8px 0 0">{% trans "Paiements de scolarité" %}</h3>
-    </a>
-    <a href="{% url 'ecole:liste_preinscriptions' %}" class="card" style="text-decoration:none">
-      <div class="step-icon">📥</div>
-      <h3 style="color:var(--color-primary);margin:8px 0 0">{% trans "Préinscriptions école" %}</h3>
-    </a>
-    <a href="{% url 'comptabilite:consolidation' %}" class="card" style="text-decoration:none">
-      <div class="step-icon">💰</div>
-      <h3 style="color:var(--color-primary);margin:8px 0 0">{% trans "الوضع المالي" %}</h3>
-    </a>
-  </div>
-  <p style="margin-top:24px"><a href="{% url 'home' %}">{% trans "Retour" %}</a></p>
 </div>
 {% endblock %}
