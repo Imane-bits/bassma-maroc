@@ -1,0 +1,95 @@
+{% extends "responsable_base.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{{ beneficiaire.prenom }} {{ beneficiaire.nom }}</h2>
+</div>
+
+<div class="form-card">
+  <h2>👤 {% trans "الهوية" %}</h2>
+  <p><strong>{% trans "CIN" %}:</strong> {{ beneficiaire.cin|default:"—" }}</p>
+  <p><strong>{% trans "تاريخ الازدياد" %}:</strong> {{ beneficiaire.date_naissance|default:"—" }}</p>
+  <p><strong>{% trans "رقم الهاتف" %}:</strong> {{ beneficiaire.telephone|default:"—" }}</p>
+  <p><strong>{% trans "البريد الإلكتروني" %}:</strong> {{ beneficiaire.email|default:"—" }}</p>
+  <p><strong>{% trans "المدينة" %}:</strong> {{ beneficiaire.ville|default:"—" }}</p>
+  <p><strong>{% trans "العنوان الكامل" %}:</strong> {{ beneficiaire.adresse|default:"—" }}</p>
+  <p><strong>{% trans "الحالة العائلية" %}:</strong> {{ beneficiaire.get_situation_familiale_display|default:"—" }}</p>
+  <p><strong>{% trans "عدد الأبناء" %}:</strong> {{ beneficiaire.nombre_enfants }} — <strong>{% trans "منهم في التعليم الأولي" %}:</strong> {{ beneficiaire.enfants_scolarises }}</p>
+</div>
+
+<div class="section-title" style="text-align:start;margin-bottom:12px">
+  <h2 style="color:var(--color-primary);font-size:18px;margin:0">🤲 {% trans "طلبات المساعدة" %}</h2>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "رقم الملف" %}</th>
+      <th>{% trans "عنوان الطلب" %}</th>
+      <th>{% trans "الفئة" %}</th>
+      <th>{% trans "الحالة" %}</th>
+      <th>{% trans "Date" %}</th>
+    </tr>
+    {% for demande in demandes %}
+    <tr>
+      <td><a href="{% url 'aide:demande_detail' demande.pk %}">{{ demande.numero_dossier }}</a></td>
+      <td>{{ demande.titre }}</td>
+      <td>{{ demande.get_categorie_display }}</td>
+      <td>{{ demande.get_statut_display }}</td>
+      <td>{{ demande.date_soumission }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">{% trans "Aucune demande." %}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="section-title" style="text-align:start;margin-bottom:12px;margin-top:24px">
+  <h2 style="color:var(--color-primary);font-size:18px;margin:0">🧵 {% trans "التكوين" %}</h2>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "رقم التسجيل" %}</th>
+      <th>{% trans "التكوين" %}</th>
+      <th>{% trans "الحالة" %}</th>
+      <th>{% trans "التقدّم" %}</th>
+    </tr>
+    {% for inscription in inscriptions_formation %}
+    <tr>
+      <td>{{ inscription.numero_inscription }}</td>
+      <td>{{ inscription.formation.intitule }}</td>
+      <td>{{ inscription.get_statut_display }}</td>
+      <td>{{ inscription.progression }}%</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">{% trans "لا توجد تسجيلات." %}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="section-title" style="text-align:start;margin-bottom:12px;margin-top:24px">
+  <h2 style="color:var(--color-primary);font-size:18px;margin:0">💚 {% trans "التبرّعات المستلمة" %}</h2>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "Donateur" %}</th>
+      <th>{% trans "Montant" %}</th>
+      <th>{% trans "لأجل" %}</th>
+      <th>{% trans "Date" %}</th>
+    </tr>
+    {% for don in dons_recus %}
+    <tr>
+      <td>{{ don.donateur }}</td>
+      <td>{{ don.montant }} MAD</td>
+      <td>{{ don.demande_aide.titre }}</td>
+      <td>{{ don.date_don }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">{% trans "لا توجد تبرّعات مستلمة." %}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<p style="margin-top:16px"><a href="{% url 'aide:liste_beneficiaires' %}">← {% trans "العودة إلى قائمة المستفيدين" %}</a></p>
+{% endblock %}

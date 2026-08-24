@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.db import transaction
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
+from dons.models import Don
 from users.mixins import role_required
 
 from .forms import BeneficiaireProfilForm, DemandeAideForm, PiecesJustificativesForm
@@ -78,6 +80,53 @@ def suivi_dossier(request):
 def demande_detail(request, pk):
     demande = get_object_or_404(DemandeAide, pk=pk)
     return render(request, "aide/demande_detail.html", {"demande": demande})
+
+
+@role_required("responsable")
+def liste_beneficiaires(request):
+    recherche = request.GET.get("q", "").strip()
+    beneficiaires = Beneficiaire.objects.all()
+    if recherche:
+        from django.db.models import Q
+
+        beneficiaires = beneficiaires.filter(
+            Q(nom__icontains=recherche)
+            | Q(prenom__icontains=recherche)
+            | Q(cin__icontains=recherche)
+            | Q(email__icontains=recherche)
+        )
+    beneficiaires = beneficiaires.annotate(
+        nb_demandes=Count("demandes_aide", distinct=True)
+    ).order_by("nom", "prenom")
+    return render(
+        request,
+        "aide/liste_beneficiaires.html",
+        {"beneficiaires": beneficiaires, "recherche": recherche},
+    )
+
+
+@role_required("responsable")
+def beneficiaire_detail(request, pk):
+    from formation.models import InscriptionFormation
+
+    beneficiaire = get_object_or_404(Beneficiaire, pk=pk)
+    demandes = beneficiaire.demandes_aide.order_by("-date_soumission")
+    inscriptions_formation = InscriptionFormation.objects.filter(
+        beneficiaire=beneficiaire
+    ).select_related("formation").order_by("-date_inscription")
+    dons_recus = Don.objects.filter(demande_aide__beneficiaire=beneficiaire).select_related(
+        "donateur", "demande_aide"
+    )
+    return render(
+        request,
+        "aide/beneficiaire_detail.html",
+        {
+            "beneficiaire": beneficiaire,
+            "demandes": demandes,
+            "inscriptions_formation": inscriptions_formation,
+            "dons_recus": dons_recus,
+        },
+    )
 
 
 @role_required("responsable")

@@ -15,6 +15,16 @@ urlpatterns = [
     path("demandes/<int:pk>/", views.demande_detail, name="demande_detail"),
     path("responsable/demandes/", views.liste_demandes, name="liste_demandes"),
     path(
+        "responsable/beneficiaires/",
+        views.liste_beneficiaires,
+        name="liste_beneficiaires",
+    ),
+    path(
+        "responsable/beneficiaires/<int:pk>/",
+        views.beneficiaire_detail,
+        name="beneficiaire_detail",
+    ),
+    path(
         "responsable/demandes/<int:pk>/accepter/",
         views.accepter_demande,
         name="accepter_demande",

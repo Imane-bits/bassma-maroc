@@ -34,13 +34,19 @@
           {{ profil_form.telephone }}
         </div>
         <div class="field">
+          <label for="{{ profil_form.email.id_for_label }}">{% trans "البريد الإلكتروني" %}</label>
+          {{ profil_form.email }}
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
           <label for="{{ profil_form.ville.id_for_label }}">{% trans "المدينة" %}</label>
           {{ profil_form.ville }}
         </div>
-      </div>
-      <div class="field">
-        <label for="{{ profil_form.adresse.id_for_label }}">{% trans "العنوان الكامل" %}</label>
-        {{ profil_form.adresse }}
+        <div class="field">
+          <label for="{{ profil_form.adresse.id_for_label }}">{% trans "العنوان الكامل" %}</label>
+          {{ profil_form.adresse }}
+        </div>
       </div>
     </div>
 

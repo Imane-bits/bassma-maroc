@@ -1,0 +1,38 @@
+{% extends "responsable_base.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{% trans "المستفيدون" %}</h2>
+</div>
+<form method="get" class="form-card" style="padding:16px;margin-bottom:16px">
+  <div class="field" style="margin:0">
+    <input type="text" name="q" value="{{ recherche }}" placeholder='{% trans "ابحث بالاسم أو CIN أو البريد الإلكتروني" %}'>
+  </div>
+</form>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "الاسم" %}</th>
+      <th>{% trans "CIN" %}</th>
+      <th>{% trans "المدينة" %}</th>
+      <th>{% trans "الهاتف" %}</th>
+      <th>{% trans "البريد الإلكتروني" %}</th>
+      <th>{% trans "عدد الطلبات" %}</th>
+      <th></th>
+    </tr>
+    {% for beneficiaire in beneficiaires %}
+    <tr>
+      <td>{{ beneficiaire.prenom }} {{ beneficiaire.nom }}</td>
+      <td>{{ beneficiaire.cin|default:"—" }}</td>
+      <td>{{ beneficiaire.ville|default:"—" }}</td>
+      <td>{{ beneficiaire.telephone|default:"—" }}</td>
+      <td>{{ beneficiaire.email|default:"—" }}</td>
+      <td>{{ beneficiaire.nb_demandes }}</td>
+      <td><a href="{% url 'aide:beneficiaire_detail' beneficiaire.pk %}" class="btn btn-outline btn-sm">👁 {% trans "عرض الملف" %}</a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">{% trans "لا يوجد مستفيدون." %}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

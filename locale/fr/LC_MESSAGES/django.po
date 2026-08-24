@@ -1371,3 +1371,43 @@ msgstr "Aucun membre."
 #: personnel/templates/:1
 msgid "نشط"
 msgstr "Actif"
+
+#: aide/templates/aide/:1
+msgid "التبرّعات المستلمة"
+msgstr "Dons reçus"
+
+#: aide/templates/aide/:1
+msgid "التقدّم"
+msgstr "Progression"
+
+#: aide/templates/aide/:1
+msgid "العودة إلى قائمة المستفيدين"
+msgstr "Retour à la liste des bénéficiaires"
+
+#: aide/templates/aide/:1
+msgid "المستفيدون"
+msgstr "Bénéficiaires"
+
+#: aide/templates/aide/:1
+msgid "عدد الطلبات"
+msgstr "Nombre de demandes"
+
+#: aide/templates/aide/:1
+msgid "لأجل"
+msgstr "Pour"
+
+#: aide/templates/aide/:1
+msgid "لا توجد تبرّعات مستلمة."
+msgstr "Aucun don reçu."
+
+#: aide/templates/aide/:1
+msgid "لا توجد تسجيلات."
+msgstr "Aucune inscription."
+
+#: aide/templates/aide/:1
+msgid "لا يوجد مستفيدون."
+msgstr "Aucun bénéficiaire."
+
+#: aide/templates/aide/:1
+msgid "ابحث بالاسم أو CIN أو البريد الإلكتروني"
+msgstr "Rechercher par nom, CIN ou email"

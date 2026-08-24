@@ -17,6 +17,7 @@ class Beneficiaire(models.Model):
     cin = models.CharField(_("CIN"), max_length=20, unique=True, null=True, blank=True)
     date_naissance = models.DateField(_("date de naissance"), null=True, blank=True)
     telephone = models.CharField(_("téléphone"), max_length=20, blank=True)
+    email = models.EmailField(_("البريد الإلكتروني"), blank=True)
     ville = models.CharField(_("ville"), max_length=100, blank=True)
     adresse = models.TextField(_("adresse"), blank=True)
     situation_familiale = models.CharField(

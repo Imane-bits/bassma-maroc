@@ -1,7 +1,13 @@
 {% load i18n %}
 <h2 style="color:var(--color-primary);margin-top:0">{% blocktrans with numero=demande.numero_dossier %}Dossier {{ numero }}{% endblocktrans %}</h2>
 <div class="field-row">
-  <p><strong>{% trans "Bénéficiaire :" %}</strong> {{ demande.beneficiaire }}</p>
+  <p><strong>{% trans "Bénéficiaire :" %}</strong>
+    {% if user.is_authenticated and user.role == "responsable" %}
+      <a href="{% url 'aide:beneficiaire_detail' demande.beneficiaire.pk %}">{{ demande.beneficiaire }}</a>
+    {% else %}
+      {{ demande.beneficiaire }}
+    {% endif %}
+  </p>
   <p><strong>{% trans "Titre :" %}</strong> {{ demande.titre }}</p>
   <p><strong>{% trans "Catégorie :" %}</strong> {{ demande.get_categorie_display }}</p>
   <p><strong>{% trans "Urgence :" %}</strong> {{ demande.get_urgence_display }}</p>

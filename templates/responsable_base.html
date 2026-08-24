@@ -6,6 +6,7 @@
     <aside class="dashboard-sidebar">
       <a href="{% url 'espace_responsable' %}" class="{% if request.resolver_match.view_name == 'espace_responsable' %}active{% endif %}">🏠 {% trans "لوحة التحكم" %}</a>
       <a href="{% url 'aide:liste_demandes' %}" class="{% if request.resolver_match.view_name == 'aide:liste_demandes' %}active{% endif %}">🤲 {% trans "طلبات المساعدة" %}</a>
+      <a href="{% url 'aide:liste_beneficiaires' %}" class="{% if request.resolver_match.view_name == 'aide:liste_beneficiaires' or request.resolver_match.view_name == 'aide:beneficiaire_detail' %}active{% endif %}">🌱 {% trans "المستفيدون" %}</a>
       <a href="{% url 'dons:liste_dons' %}" class="{% if request.resolver_match.view_name == 'dons:liste_dons' %}active{% endif %}">💚 {% trans "التبرعات الواجب تخصيصها" %}</a>
       <a href="{% url 'ecole:liste_paiements' %}" class="{% if request.resolver_match.view_name == 'ecole:liste_paiements' %}active{% endif %}">🎒 {% trans "مدفوعات الرسوم الدراسية" %}</a>
       <a href="{% url 'ecole:liste_preinscriptions' %}" class="{% if request.resolver_match.view_name == 'ecole:liste_preinscriptions' %}active{% endif %}">📥 {% trans "طلبات التسجيل المسبق للمدرسة" %}</a>

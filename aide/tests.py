@@ -130,3 +130,57 @@ class DecisionDemandeViewTests(TestCase):
         response = self.client.post(reverse("aide:accepter_demande", args=[self.demande.pk]))
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("login"), response.url)
+
+
+class ListeBeneficiairesViewTests(TestCase):
+    def setUp(self):
+        self.responsable = User.objects.create_user(
+            username="resp6", password="pass1234", role=User.Role.RESPONSABLE
+        )
+
+    def test_recherche_par_nom_cin_ou_email(self):
+        cible = Beneficiaire.objects.create(
+            nom="Amrani", prenom="Sara", cin="HH1", email="sara@example.com"
+        )
+        Beneficiaire.objects.create(nom="Autre", prenom="Personne", cin="HH2")
+
+        self.client.force_login(self.responsable)
+        response = self.client.get(reverse("aide:liste_beneficiaires"), {"q": "Amrani"})
+        self.assertEqual(list(response.context["beneficiaires"]), [cible])
+
+        response = self.client.get(reverse("aide:liste_beneficiaires"), {"q": "sara@example.com"})
+        self.assertEqual(list(response.context["beneficiaires"]), [cible])
+
+    def test_nombre_de_demandes_est_annote(self):
+        beneficiaire = Beneficiaire.objects.create(nom="X", prenom="Y", cin="HH3")
+        _demande_de_base(beneficiaire)
+        _demande_de_base(beneficiaire, titre="Deuxième demande")
+
+        self.client.force_login(self.responsable)
+        response = self.client.get(reverse("aide:liste_beneficiaires"))
+        self.assertEqual(response.context["beneficiaires"][0].nb_demandes, 2)
+
+    def test_acces_refuse_hors_responsable(self):
+        donateur = User.objects.create_user(
+            username="don6", password="pass1234", role=User.Role.DONATEUR
+        )
+        self.client.force_login(donateur)
+        response = self.client.get(reverse("aide:liste_beneficiaires"))
+        self.assertEqual(response.status_code, 403)
+
+
+class BeneficiaireDetailViewTests(TestCase):
+    def setUp(self):
+        self.responsable = User.objects.create_user(
+            username="resp7", password="pass1234", role=User.Role.RESPONSABLE
+        )
+        self.beneficiaire = Beneficiaire.objects.create(nom="X", prenom="Y", cin="HH4")
+        self.demande = _demande_de_base(self.beneficiaire)
+
+    def test_affiche_le_profil_et_ses_demandes(self):
+        self.client.force_login(self.responsable)
+        response = self.client.get(
+            reverse("aide:beneficiaire_detail", args=[self.beneficiaire.pk])
+        )
+        self.assertEqual(response.context["beneficiaire"], self.beneficiaire)
+        self.assertIn(self.demande, response.context["demandes"])

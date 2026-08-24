@@ -13,6 +13,7 @@ class BeneficiaireProfilForm(forms.ModelForm):
             "cin",
             "date_naissance",
             "telephone",
+            "email",
             "ville",
             "adresse",
             "situation_familiale",
@@ -26,7 +27,7 @@ class BeneficiaireProfilForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["cin"].required = True
         self.order_fields(
-            ["nom_complet", "cin", "date_naissance", "telephone", "ville", "adresse"]
+            ["nom_complet", "cin", "date_naissance", "telephone", "email", "ville", "adresse"]
         )
 
     def clean_nom_complet(self):

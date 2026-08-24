@@ -14,18 +14,25 @@ from personnel.models import Membre
 User = get_user_model()
 
 MARKER_CIN = "DEMO-0001"
+BENEFICIAIRE_EMAIL = "imanejennane@gmail.com"
 
 
 class Command(BaseCommand):
     help = "Remplit la base avec des données de démonstration réalistes."
 
     def handle(self, *args, **options):
+        responsable = self._get_or_create_responsable()
+
         if Beneficiaire.objects.filter(cin=MARKER_CIN).exists():
-            self.stdout.write(self.style.WARNING("Des données de démo existent déjà — rien à faire."))
-            return
+            self.stdout.write(self.style.WARNING("Des données de démo générales existent déjà."))
+        else:
+            self._seed_general_demo_data(responsable)
 
-        today = timezone.localdate()
+        self._seed_beneficiaire_vitrine(responsable)
 
+        self.stdout.write(self.style.SUCCESS("Terminé."))
+
+    def _get_or_create_responsable(self):
         responsable = User.objects.filter(
             role=User.Role.RESPONSABLE, is_active=True
         ).first()
@@ -36,6 +43,10 @@ class Command(BaseCommand):
                 password="DemoPass123!",
                 role=User.Role.RESPONSABLE,
             )
+        return responsable
+
+    def _seed_general_demo_data(self, responsable):
+        today = timezone.localdate()
 
         donateurs = []
         for i, (prenom, nom) in enumerate(
@@ -108,7 +119,7 @@ class Command(BaseCommand):
             module=Budget.Module.ECOLE, periode="2026-T1",
             defaults={"recettes": 12000, "depenses": 4500},
         )
-        budget_formation, _ = Budget.objects.get_or_create(
+        Budget.objects.get_or_create(
             module=Budget.Module.CENTRE_FORMATION, periode="2026-T1",
             defaults={"recettes": 6000, "depenses": 2000},
         )
@@ -211,14 +222,8 @@ class Command(BaseCommand):
                 statut=statut,
             )
 
-        formation1, _ = FormationCouture.objects.get_or_create(
-            intitule="Couture débutant",
-            defaults={"description": "Initiation à la couture traditionnelle.", "duree_semaines": 8},
-        )
-        formation2, _ = FormationCouture.objects.get_or_create(
-            intitule="Broderie avancée",
-            defaults={"description": "Perfectionnement en broderie marocaine.", "duree_semaines": 12},
-        )
+        formation1 = self._get_or_create_formation1()
+        formation2 = self._get_or_create_formation2()
 
         inscriptions_data = [
             (beneficiaires[0], formation1, 40, InscriptionFormation.Statut.EN_COURS),
@@ -252,4 +257,102 @@ class Command(BaseCommand):
                 },
             )
 
-        self.stdout.write(self.style.SUCCESS("Données de démonstration créées avec succès."))
+    def _get_or_create_formation1(self):
+        formation1, _ = FormationCouture.objects.get_or_create(
+            intitule="Couture débutant",
+            defaults={"description": "Initiation à la couture traditionnelle.", "duree_semaines": 8},
+        )
+        return formation1
+
+    def _get_or_create_formation2(self):
+        formation2, _ = FormationCouture.objects.get_or_create(
+            intitule="Broderie avancée",
+            defaults={"description": "Perfectionnement en broderie marocaine.", "duree_semaines": 12},
+        )
+        return formation2
+
+    def _seed_beneficiaire_vitrine(self, responsable):
+        if Beneficiaire.objects.filter(email=BENEFICIAIRE_EMAIL).exists():
+            self.stdout.write(self.style.WARNING("La bénéficiaire vitrine existe déjà."))
+            return
+
+        beneficiaire = Beneficiaire.objects.create(
+            nom="Jennane",
+            prenom="Imane",
+            cin="DEMO-VIP1",
+            date_naissance=date(1990, 7, 22),
+            telephone="0611223344",
+            email=BENEFICIAIRE_EMAIL,
+            ville="Rabat",
+            adresse="حي الرياض، الرباط",
+            situation_familiale=Beneficiaire.SituationFamiliale.DIVORCE,
+            nombre_enfants=2,
+            enfants_scolarises=2,
+            probleme_sante=False,
+        )
+
+        demande_acceptee = DemandeAide.objects.create(
+            beneficiaire=beneficiaire,
+            titre="دعم لتمدرس الأبناء",
+            categorie=DemandeAide.Categorie.ETUDE,
+            description="طلب دعم لتغطية مصاريف التمدرس للموسم الدراسي الحالي.",
+            urgence=DemandeAide.Urgence.MOYENNE,
+            montant_demande=900,
+            consentement_donnees=True,
+            statut=DemandeAide.Statut.ACCEPTEE,
+        )
+        DemandeAide.objects.create(
+            beneficiaire=beneficiaire,
+            titre="مواد خياطة لبدء نشاط مدر للدخل",
+            categorie=DemandeAide.Categorie.COUTURE,
+            description="طلب مواد خياطة أساسية لإطلاق مشروع صغير.",
+            urgence=DemandeAide.Urgence.FAIBLE,
+            montant_demande=500,
+            consentement_donnees=True,
+            statut=DemandeAide.Statut.EN_ATTENTE,
+        )
+        DemandeAide.objects.create(
+            beneficiaire=beneficiaire,
+            titre="مساعدة غذائية استعجالية",
+            categorie=DemandeAide.Categorie.NUTRITION,
+            description="طلب مساعدة غذائية عاجلة لأسرة تعاني من وضعية صعبة.",
+            urgence=DemandeAide.Urgence.HAUTE,
+            montant_demande=700,
+            consentement_donnees=True,
+            statut=DemandeAide.Statut.REFUSEE,
+        )
+
+        donateur, _ = User.objects.get_or_create(
+            username="demo.donateur.vitrine@example.com",
+            defaults={
+                "email": "demo.donateur.vitrine@example.com",
+                "first_name": "Hicham",
+                "last_name": "Berrada",
+                "role": User.Role.DONATEUR,
+            },
+        )
+        Don.objects.create(
+            donateur=donateur,
+            montant=600,
+            type_don=Don.TypeDon.UNIQUE,
+            demande_aide=demande_acceptee,
+        )
+
+        formation1 = self._get_or_create_formation1()
+        formation2 = self._get_or_create_formation2()
+        InscriptionFormation.objects.create(
+            beneficiaire=beneficiaire,
+            formation=formation1,
+            progression=100,
+            statut=InscriptionFormation.Statut.TERMINEE,
+        )
+        InscriptionFormation.objects.create(
+            beneficiaire=beneficiaire,
+            formation=formation2,
+            progression=25,
+            statut=InscriptionFormation.Statut.EN_COURS,
+        )
+
+        self.stdout.write(
+            self.style.SUCCESS(f"Bénéficiaire vitrine créée ({BENEFICIAIRE_EMAIL}).")
+        )
