@@ -1,0 +1,738 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: aide/templates/aide/soumettre_demande.html:107
+msgid "PDF أو صور — بطاقة التعريف، شهادة، إلخ."
+msgstr "PDF ou photos — carte d'identité, certificat, etc."
+
+#: formation/templates/formation/suivi_formation.html:8
+msgid "أدخل رقم التسجيل لعرض تقدّمك."
+msgstr "Entrez votre numéro d'inscription pour voir votre progression."
+
+#: aide/templates/aide/suivi_dossier.html:8
+msgid "أدخل رقم الملف لعرض حالته وتحديث معطياتك."
+msgstr ""
+"Entrez le numéro de dossier pour voir son état et mettre à jour vos données."
+
+#: ecole/templates/ecole/suivi_preinscription.html:8
+msgid "أدخل رقم الملف لعرض حالته."
+msgstr "Entrez le numéro de dossier pour voir son état."
+
+#: aide/models.py:12
+msgid "أرمل(ة)"
+msgstr "Veuf/Veuve"
+
+#: formation/templates/formation/liste_formations.html:16
+msgid "أسابيع"
+msgstr "semaines"
+
+#: aide/templates/aide/soumettre_demande.html:8
+msgid "أعبّر عن حاجة"
+msgstr "Exprimer un besoin"
+
+#: aide/models.py:11
+msgid "أعزب / عزباء"
+msgstr "Célibataire"
+
+#: users/forms.py:23
+msgid "أنا أسجّل بصفتي"
+msgstr "Je m'inscris en tant que"
+
+#: templates/registration/login.html:36
+msgid "أنشئ حسابًا"
+msgstr "Créer un compte"
+
+#: aide/forms.py:58
+msgid "أوافق على معالجة معطياتي الشخصية طبقاً للقانون رقم 09.08"
+msgstr ""
+"J'accepte le traitement de mes données personnelles conformément à la loi "
+"09-08"
+
+#: aide/templates/aide/soumettre_demande.html:124
+#: ecole/templates/ecole/preinscrire.html:55
+msgid "إرسال الطلب"
+msgstr "Envoyer la demande"
+
+#: templates/registration/inscription.html:47
+msgid "إنشاء الحساب"
+msgstr "Créer le compte"
+
+#: templates/registration/inscription.html:12
+#: templates/registration/login.html:12
+msgid "إنشاء حساب"
+msgstr "Créer un compte"
+
+#: formation/templates/formation/confirmation.html:10
+msgid "احتفظ برقم التسجيل هذا لتتبّع تقدّمك في التكوين."
+msgstr ""
+"Conservez ce numéro d'inscription pour suivre votre progression dans la "
+"formation."
+
+#: ecole/templates/ecole/confirmation.html:10
+msgid "احتفظ برقم الملف هذا لتتبّع حالة الطلب."
+msgstr "Conservez ce numéro de dossier pour suivre l'état de la demande."
+
+#: formation/templates/formation/inscription_formation.html:48
+msgid "اختر التكوين"
+msgstr "Choisir la formation"
+
+#: aide/templates/aide/liste_besoins.html:7
+msgid "اختر حالة وساهم بتبرّع ملائم، مرة واحدة أو بشكل دوري."
+msgstr ""
+"Choisissez une situation et contribuez par un don adapté, ponctuel ou "
+"régulier."
+
+#: users/templates/home.html:27
+msgid "استلام الطلب"
+msgstr "Réception de la demande"
+
+#: ecole/models.py:71
+msgid "اسم العائلة"
+msgstr "Nom de famille"
+
+#: ecole/models.py:74
+msgid "اسم الولي"
+msgstr "Nom du tuteur"
+
+#: users/templates/home.html:11
+msgid "اطلب مساعدة الآن"
+msgstr "Demander une aide maintenant"
+
+#: formation/templates/formation/liste_formations.html:8
+msgid "اكتشف التكوينات المتاحة وسجّل مجانًا."
+msgstr "Découvrez les formations disponibles et inscrivez-vous gratuitement."
+
+#: templates/base.html:25
+msgid "الاحتياجات"
+msgstr "Besoins"
+
+#: aide/templates/aide/liste_besoins.html:6
+msgid "الاحتياجات الحالية"
+msgstr "Besoins actuels"
+
+#: ecole/models.py:72
+msgid "الاسم الشخصي"
+msgstr "Prénom"
+
+#: aide/forms.py:8 users/forms.py:17
+msgid "الاسم الكامل"
+msgstr "Nom complet"
+
+#: templates/registration/inscription.html:30 users/forms.py:11
+msgid "البريد الإلكتروني"
+msgstr "Adresse e-mail"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:6
+msgid "البيان المالي"
+msgstr "Bilan financier"
+
+#: comptabilite/templates/comptabilite/consolidation.html:34
+msgid "البيان المالي التفصيلي"
+msgstr "Bilan financier détaillé"
+
+#: users/templates/home.html:33
+msgid "التحقق الميداني"
+msgstr "Vérification sur le terrain"
+
+#: users/templates/home.html:13
+msgid "التسجيل في المدرسة"
+msgstr "Inscription à l'école"
+
+#: formation/templates/formation/inscription_formation.html:8
+msgid "التسجيل في تكوين"
+msgstr "Inscription à une formation"
+
+#: users/templates/home.html:14
+msgid "التسجيل في مركز التكوين"
+msgstr "Inscription au centre de formation"
+
+#: formation/templates/formation/liste_formations.html:17
+msgid "التسجيل في هذا التكوين"
+msgstr "S'inscrire à cette formation"
+
+#: users/templates/home.html:52
+msgid "التعاون الوطني"
+msgstr "Entraide nationale"
+
+#: aide/models.py:57
+msgid "التغذية"
+msgstr "Nutrition"
+
+#: formation/templates/formation/inscription_formation.html:46
+#: formation/templates/formation/suivi_formation.html:24
+msgid "التكوين"
+msgstr "Formation"
+
+#: formation/forms.py:11
+msgid "التكوين المطلوب"
+msgstr "Formation souhaitée"
+
+#: dons/models.py:23 ecole/templates/ecole/suivi_preinscription.html:25
+#: formation/templates/formation/suivi_formation.html:25
+msgid "الحالة"
+msgstr "Statut"
+
+#: aide/templates/aide/soumettre_demande.html:50
+msgid "الحالة العائلية"
+msgstr "Situation familiale"
+
+#: dons/models.py:31
+msgid "الحالة المدعومة"
+msgstr "Situation soutenue"
+
+#: templates/registration/inscription.html:6
+#: templates/registration/login.html:6
+msgid "الدخول إلى فضائك"
+msgstr "Accédez à votre espace"
+
+#: aide/models.py:56
+msgid "الدراسة والتمدرس"
+msgstr "Études et scolarité"
+
+#: users/templates/home.html:39
+msgid "الدعم والمتابعة"
+msgstr "Accompagnement et suivi"
+
+#: templates/base.html:24
+msgid "الرئيسية"
+msgstr "Accueil"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:21
+#: comptabilite/templates/comptabilite/consolidation.html:14
+msgid "الرصيد"
+msgstr "Solde"
+
+#: aide/models.py:58
+msgid "الصحة"
+msgstr "Santé"
+
+#: ecole/templates/ecole/preinscrire.html:16
+#: ecole/templates/ecole/suivi_preinscription.html:24
+msgid "الطفل"
+msgstr "L'enfant"
+
+#: ecole/models.py:76
+msgid "العنوان"
+msgstr "Adresse"
+
+#: aide/templates/aide/soumettre_demande.html:42
+msgid "العنوان الكامل"
+msgstr "Adresse complète"
+
+#: aide/templates/aide/soumettre_demande.html:76
+msgid "الفئة"
+msgstr "Catégorie"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:18
+msgid "الفترة"
+msgstr "Période"
+
+#: aide/templates/aide/liste_besoins.html:11
+#: comptabilite/templates/comptabilite/bilan_financier.html:9
+msgid "الكل"
+msgstr "Tous"
+
+#: users/templates/home.html:57
+msgid "المبادرة الوطنية للتنمية البشرية"
+msgstr "Initiative nationale pour le développement humain"
+
+#: dons/models.py:19
+msgid "المبلغ"
+msgstr "Montant"
+
+#: aide/templates/aide/soumettre_demande.html:100
+msgid "المبلغ المطلوب (اختياري)"
+msgstr "Montant demandé (facultatif)"
+
+#: dons/models.py:48
+msgid "المبلغ الموزّع"
+msgstr "Montant affecté"
+
+#: comptabilite/templates/comptabilite/consolidation.html:27
+msgid "المجموع"
+msgstr "Total"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:19
+#: comptabilite/templates/comptabilite/consolidation.html:12
+msgid "المداخيل"
+msgstr "Recettes"
+
+#: dons/models.py:41 ecole/templates/ecole/preinscrire.html:7
+msgid "المدرسة"
+msgstr "École"
+
+#: aide/templates/aide/soumettre_demande.html:37
+#: formation/templates/formation/inscription_formation.html:39
+msgid "المدينة"
+msgstr "Ville"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:20
+#: comptabilite/templates/comptabilite/consolidation.html:13
+msgid "المصاريف"
+msgstr "Dépenses"
+
+#: aide/templates/aide/soumettre_demande.html:16
+#: formation/templates/formation/inscription_formation.html:18
+msgid "الهوية"
+msgstr "Identité"
+
+#: aide/templates/aide/soumettre_demande.html:106
+msgid "الوثائق المرفقة"
+msgstr "Documents joints"
+
+#: dons/models.py:50
+msgid "الوجهة"
+msgstr "Cible"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:17
+#: comptabilite/templates/comptabilite/consolidation.html:11
+msgid "الوحدة"
+msgstr "Module"
+
+#: aide/templates/aide/soumettre_demande.html:96
+msgid "الوصف"
+msgstr "Description"
+
+#: aide/templates/aide/soumettre_demande.html:66
+msgid "الوضع الصحي"
+msgstr "Situation de santé"
+
+#: users/templates/espace_responsable.html:31
+msgid "الوضع المالي"
+msgstr "Situation financière"
+
+#: aide/templates/aide/soumettre_demande.html:48
+msgid "الوضعية العائلية"
+msgstr "Situation familiale"
+
+#: ecole/templates/ecole/preinscrire.html:34
+msgid "الولي"
+msgstr "Le tuteur"
+
+#: formation/templates/formation/inscription_formation.html:59
+msgid "تأكيد التسجيل"
+msgstr "Confirmer l'inscription"
+
+#: users/forms.py:20
+msgid "تأكيد كلمة المرور"
+msgstr "Confirmer le mot de passe"
+
+#: aide/templates/aide/soumettre_demande.html:27 ecole/models.py:73
+#: formation/templates/formation/inscription_formation.html:29
+msgid "تاريخ الازدياد"
+msgstr "Date de naissance"
+
+#: dons/templates/dons/creer_don.html:34 dons/templates/dons/creer_don.html:7
+#: users/templates/home.html:12
+msgid "تبرّع الآن"
+msgstr "Faire un don maintenant"
+
+#: aide/templates/aide/liste_besoins.html:37
+msgid "تبرّع لهذه الحالة"
+msgstr "Faire un don pour ce cas"
+
+#: dons/templates/dons/creer_don.html:9
+msgid "تبرّعك موجّه إلى: %(titre)s"
+msgstr "Votre don est destiné à : %(titre)s"
+
+#: formation/templates/formation/confirmation.html:12
+#: formation/templates/formation/liste_formations.html:24
+#: formation/templates/formation/suivi_formation.html:7
+msgid "تتبّع تسجيلي"
+msgstr "Suivre mon inscription"
+
+#: ecole/templates/ecole/confirmation.html:12
+#: ecole/templates/ecole/preinscrire.html:58
+#: ecole/templates/ecole/suivi_preinscription.html:7
+msgid "تتبّع طلبي"
+msgstr "Suivre ma demande"
+
+#: aide/templates/aide/suivi_dossier.html:7 templates/base.html:27
+msgid "تتبّع ملفي"
+msgstr "Suivre mon dossier"
+
+#: templates/registration/inscription.html:11
+#: templates/registration/login.html:11 templates/registration/login.html:30
+msgid "تسجيل الدخول"
+msgstr "Connexion"
+
+#: comptabilite/templates/comptabilite/bilan_financier.html:36
+msgid "تصدير البيانات"
+msgstr "Exporter les données"
+
+#: aide/templates/aide/soumettre_demande.html:74
+msgid "تفاصيل الحاجة"
+msgstr "Détails du besoin"
+
+#: dons/views.py:71
+msgid "تم إنشاء التوزيع، وتم إشعار المتبرّع."
+msgstr "La répartition a été créée, le donateur a été notifié."
+
+#: ecole/views.py:106
+msgid "تم تسجيل الدفعة كمدفوعة."
+msgstr "Le paiement a été marqué comme payé."
+
+#: ecole/templates/ecole/confirmation.html:7
+msgid "تم تسجيل طلبكم"
+msgstr "Votre demande a été enregistrée"
+
+#: formation/templates/formation/confirmation.html:7
+msgid "تم تسجيلك بنجاح"
+msgstr "Votre inscription a été enregistrée avec succès"
+
+#: users/views.py:55
+msgid "تم تفعيل الحساب."
+msgstr "Le compte a été activé."
+
+#: aide/views.py:112 ecole/views.py:78
+msgid "تم رفض الطلب."
+msgstr "La demande a été refusée."
+
+#: aide/views.py:102
+msgid "تم قبول الطلب."
+msgstr "La demande a été acceptée."
+
+#: ecole/views.py:67
+msgid "تم قبول الطلب. يرجى إنشاء ملف التلميذ من واجهة الإدارة."
+msgstr ""
+"La demande a été acceptée. Veuillez créer le dossier de l'élève depuis "
+"l'interface d'administration."
+
+#: users/templates/home.html:28
+msgid "تملأ استمارة « أعبّر عن حاجة » وتحصل على رقم ملف فوري."
+msgstr ""
+"Vous remplissez le formulaire « Exprimer un besoin » et recevez "
+"immédiatement un numéro de dossier."
+
+#: comptabilite/templates/comptabilite/consolidation.html:6
+msgid "توحيد التدفقات المالية"
+msgstr "Consolidation des flux financiers"
+
+#: templates/base.html:19 templates/base.html:75 users/templates/home.html:8
+msgid "جمعية بسمة المغربية"
+msgstr "Association Bassma Maroc"
+
+#: templates/base.html:76
+msgid "جميع الحقوق محفوظة"
+msgstr "Tous droits réservés"
+
+#: templates/base.html:54
+msgid "دخول الأعضاء"
+msgstr "Connexion des membres"
+
+#: aide/templates/aide/soumettre_demande.html:84
+msgid "درجة الاستعجال"
+msgstr "Degré d'urgence"
+
+#: formation/templates/formation/suivi_formation.html:15
+msgid "رقم التسجيل"
+msgstr "Numéro d'inscription"
+
+#: formation/templates/formation/suivi_formation.html:29
+msgid "رقم الشهادة"
+msgstr "Numéro de certification"
+
+#: aide/templates/aide/suivi_dossier.html:15
+#: ecole/templates/ecole/suivi_preinscription.html:15
+msgid "رقم الملف"
+msgstr "Numéro de dossier"
+
+#: ecole/templates/ecole/confirmation.html:8
+msgid "رقم الملف:"
+msgstr "Numéro de dossier :"
+
+#: aide/templates/aide/soumettre_demande.html:33
+#: formation/templates/formation/inscription_formation.html:35
+msgid "رقم الهاتف"
+msgstr "Numéro de téléphone"
+
+#: aide/templates/aide/soumettre_demande.html:23
+#: formation/templates/formation/inscription_formation.html:25
+msgid "رقم بطاقة التعريف (CIN)"
+msgstr "Numéro de carte d'identité (CIN)"
+
+#: formation/templates/formation/confirmation.html:8
+msgid "رقم تسجيلك:"
+msgstr "Votre numéro d'inscription :"
+
+#: templates/registration/inscription.html:50
+msgid "سجّل الدخول"
+msgstr "Se connecter"
+
+#: users/templates/home.html:47
+msgid "شركاؤنا في العطاء"
+msgstr "Nos partenaires dans le don"
+
+#: dons/views.py:23
+msgid "شكرًا على تبرّعك."
+msgstr "Merci pour votre don."
+
+#: dons/templates/dons/creer_don.html:11
+msgid "شكرًا لدعمك — كل مساهمة تصنع فرقًا."
+msgstr "Merci pour votre soutien — chaque contribution fait la différence."
+
+#: dons/models.py:9
+msgid "شهري"
+msgstr "Mensuel"
+
+#: dons/models.py:80
+msgid "طلب المساعدة مطلوب عند اختيار وجهة «مستفيد»."
+msgstr ""
+"La demande d'aide est requise lorsque la destination « bénéficiaire » est "
+"choisie."
+
+#: ecole/templates/ecole/preinscrire.html:8
+msgid "طلب تسجيل مسبق"
+msgstr "Demande de préinscription"
+
+#: aide/templates/aide/soumettre_demande.html:7 templates/base.html:26
+msgid "طلب مساعدة"
+msgstr "Demande d'aide"
+
+#: aide/models.py:45 aide/templates/aide/liste_besoins.html:26
+msgid "عادي"
+msgstr "Normal"
+
+#: aide/templates/aide/soumettre_demande.html:55
+msgid "عدد الأبناء"
+msgstr "Nombre d'enfants"
+
+#: formation/templates/formation/suivi_formation.html:18
+msgid "عرض التسجيل"
+msgstr "Afficher l'inscription"
+
+#: ecole/templates/ecole/suivi_preinscription.html:18
+msgid "عرض الطلب"
+msgstr "Afficher la demande"
+
+#: aide/templates/aide/suivi_dossier.html:18
+msgid "عرض الملف"
+msgstr "Afficher le dossier"
+
+#: aide/templates/aide/soumettre_demande.html:92
+msgid "عنوان الطلب"
+msgstr "Titre de la demande"
+
+#: aide/models.py:50 ecole/models.py:66
+msgid "قيد الانتظار"
+msgstr "En attente"
+
+#: formation/models.py:35
+msgid "قيد التكوين"
+msgstr "En formation"
+
+#: dons/models.py:13
+msgid "قيد التوزيع"
+msgstr "En cours de répartition"
+
+#: aide/models.py:51
+msgid "قيد المعالجة"
+msgstr "En cours de traitement"
+
+#: templates/registration/login.html:22 users/forms.py:18
+msgid "كلمة المرور"
+msgstr "Mot de passe"
+
+#: users/templates/home.html:21
+msgid "كيف نعمل"
+msgstr "Comment nous travaillons"
+
+#: formation/templates/formation/liste_formations.html:20
+msgid "لا توجد تكوينات متاحة حاليًا."
+msgstr "Aucune formation disponible pour le moment."
+
+#: dons/forms.py:48
+msgid "لا يجب تحديده لهذه الوجهة."
+msgstr "Ne doit pas être renseigné pour cette destination."
+
+#: dons/models.py:84
+msgid "لا يجب ربط طلب مساعدة بهذه الوجهة."
+msgstr "Aucune demande d'aide ne doit être liée à cette destination."
+
+#: templates/registration/inscription.html:50
+msgid "لديك حساب بالفعل؟"
+msgstr "Vous avez déjà un compte ?"
+
+#: formation/views.py:63
+msgid "لم يتم العثور على تسجيل بهذا الرقم."
+msgstr "Aucune inscription trouvée avec ce numéro."
+
+#: aide/views.py:73 ecole/views.py:40
+msgid "لم يتم العثور على ملف بهذا الرقم."
+msgstr "Aucun dossier trouvé avec ce numéro."
+
+#: dons/models.py:8
+msgid "لمرة واحدة"
+msgstr "Ponctuel"
+
+#: templates/registration/login.html:36
+msgid "ليس لديك حساب؟"
+msgstr "Vous n'avez pas de compte ?"
+
+#: users/templates/home.html:53
+msgid "مؤسسة عمومية ذات طابع اجتماعي"
+msgstr "Établissement public à caractère social"
+
+#: users/forms.py:25
+msgid "متبرّع"
+msgstr "Donateur"
+
+#: templates/registration/inscription.html:7
+#: templates/registration/login.html:7
+msgid "متبرّع أو مستفيد — لكلٍّ فضاؤه الخاص"
+msgstr "Donateur ou bénéficiaire — chacun son espace"
+
+#: aide/models.py:10
+msgid "متزوج(ة)"
+msgstr "Marié(e)"
+
+#: formation/models.py:37
+msgid "متوقفة"
+msgstr "Abandonnée"
+
+#: aide/models.py:53 ecole/models.py:68
+msgid "مرفوضة"
+msgstr "Refusée"
+
+#: dons/models.py:42
+#: formation/templates/formation/inscription_formation.html:7
+msgid "مركز التكوين"
+msgstr "Centre de formation"
+
+#: formation/templates/formation/liste_formations.html:7
+msgid "مركز التكوين في الخياطة"
+msgstr "Centre de formation en couture"
+
+#: users/forms.py:26
+msgid "مسؤول"
+msgstr "Responsable"
+
+#: users/templates/home.html:20
+msgid "مسار بسيط"
+msgstr "Un parcours simple"
+
+#: aide/models.py:46 aide/templates/aide/liste_besoins.html:24
+msgid "مستعجل"
+msgstr "Urgent"
+
+#: aide/models.py:47 aide/templates/aide/liste_besoins.html:22
+msgid "مستعجل جدًا"
+msgstr "Très urgent"
+
+#: dons/models.py:40
+msgid "مستفيد"
+msgstr "Bénéficiaire"
+
+#: dons/models.py:12
+msgid "مستلم"
+msgstr "Reçu"
+
+#: dons/forms.py:46
+msgid "مطلوب عند اختيار وجهة «مستفيد»."
+msgstr "Requis lorsque la destination « bénéficiaire » est choisie."
+
+#: aide/models.py:13
+msgid "مطلّق(ة)"
+msgstr "Divorcé(e)"
+
+#: aide/models.py:52 ecole/models.py:67
+msgid "مقبولة"
+msgstr "Acceptée"
+
+#: formation/models.py:36
+msgid "منتهية"
+msgstr "Terminée"
+
+#: aide/templates/aide/soumettre_demande.html:59
+msgid "منهم في التعليم الأولي"
+msgstr "dont scolarisés"
+
+#: aide/models.py:59
+msgid "مواد الخياطة"
+msgstr "Matériel de couture"
+
+#: templates/base.html:20 users/templates/home.html:7
+msgid "مواطنة ملتزمة — المغرب"
+msgstr "Citoyenneté engagée — Maroc"
+
+#: dons/models.py:14
+msgid "موزّع"
+msgstr "Distribué"
+
+#: users/templates/home.html:9
+msgid ""
+"نعمل من أجل دعم الأسر المحتاجة وتقديم المساعدات الإنسانية لأبناء مجتمعنا، "
+"لأن كل ابتسامة تستحق أن تُصنع."
+msgstr ""
+"Nous œuvrons pour soutenir les familles dans le besoin et apporter une aide "
+"humanitaire aux membres de notre communauté, car chaque sourire mérite "
+"d'être créé."
+
+#: dons/models.py:21
+msgid "نوع التبرّع"
+msgstr "Type de don"
+
+#: ecole/models.py:75
+msgid "هاتف الولي"
+msgstr "Téléphone du tuteur"
+
+#: aide/forms.py:35
+msgid "هذا الحقل مطلوب."
+msgstr "Ce champ est requis."
+
+#: users/templates/home.html:58
+msgid "ورش ملكي تنموي"
+msgstr "Chantier royal de développement"
+
+#: dons/forms.py:55
+msgid "يتجاوز الرصيد المتاح لهذا التبرّع."
+msgstr "Dépasse le solde disponible pour ce don."
+
+#: users/templates/home.html:40
+msgid "يتم توجيه الدعم المناسب مع متابعة أثره خطوة بخطوة."
+msgstr ""
+"Le soutien adapté est orienté avec un suivi de son impact étape par étape."
+
+#: users/templates/home.html:34
+msgid "يراجع فريقنا معطياتك ووثائقك للتأكد من الحالة."
+msgstr ""
+"Notre équipe examine vos informations et documents pour vérifier la "
+"situation."
+
+#: aide/templates/aide/soumettre_demande.html:120
+#: dons/templates/dons/creer_don.html:32
+#: ecole/templates/ecole/preinscrire.html:51
+#: formation/templates/formation/inscription_formation.html:55
+msgid "يرجى تصحيح الأخطاء أعلاه."
+msgstr "Merci de corriger les erreurs ci-dessus."
+
+#: aide/templates/aide/soumettre_demande.html:69
+msgid "يعاني أحد أفراد الأسرة من مرض"
+msgstr "Un membre de la famille souffre d'une maladie"
+
+#: aide/templates/aide/soumettre_demande.html:9
+msgid "يُرجى ملء المعطيات بدقّة، وسيتواصل معك فريق الجمعية."
+msgstr ""
+"Veuillez remplir les informations avec précision, l'équipe de l'association "
+"vous contactera."
+
+#: formation/templates/formation/inscription_formation.html:9
+msgid "يُرجى ملء المعطيات، وسيتواصل معك فريق الجمعية لتأكيد التسجيل."
+msgstr ""
+"Veuillez remplir les informations, l'équipe de l'association vous contactera"
+" pour confirmer l'inscription."
+
+#: ecole/templates/ecole/preinscrire.html:9
+msgid ""
+"يُرجى ملء معطيات الطفل والولي، وسيتواصل معك فريق الجمعية لتأكيد التسجيل."
+msgstr ""
+"Veuillez remplir les informations de l'enfant et du tuteur, l'équipe de "
+"l'association vous contactera pour confirmer l'inscription."
