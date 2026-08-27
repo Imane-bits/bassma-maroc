@@ -1507,3 +1507,99 @@ msgstr "Validée par"
 #: dons/templates/dons/don_detail.html:1
 msgid "montant affecté"
 msgstr "montant affecté"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "آخر 6 أشهر"
+msgstr "Les 6 derniers mois"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "آخر سنة"
+msgstr "La dernière année"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "آخر شهر"
+msgstr "Le dernier mois"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "أسر دعمتها"
+msgstr "Familles soutenues"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "الإجمالي منذ البداية"
+msgstr "Total depuis le début"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تبرّع جديد"
+msgstr "Nouveau don"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تبرّع دوري نشط"
+msgstr "Don récurrent actif"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تبرّع هذا الشهر"
+msgstr "Don ce mois-ci"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تبرّعاتي شهريًا"
+msgstr "Mes dons mensuels"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تحميل الوصل الضريبي"
+msgstr "Télécharger le reçu"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تصفّح الاحتياجات"
+msgstr "Parcourir les besoins"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "تفصيل شهر بشهر"
+msgstr "Détail mois par mois"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "توزيع أثري"
+msgstr "Répartition de mon impact"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "دعم صحي"
+msgstr "Soutien santé"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "دعم عام"
+msgstr "Soutien général"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "دعم مدرسي"
+msgstr "Soutien scolaire"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "سجل تبرّعاتي"
+msgstr "Historique de mes dons"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "فضاء المتبرّع"
+msgstr "Espace donateur"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "كفالة أسرة"
+msgstr "Parrainage familial"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "مجموع الشهر"
+msgstr "Total du mois"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "مجموع تبرّعاتي"
+msgstr "Total de mes dons"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "مدن"
+msgstr "Villes"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "مرحبًا %(name)s 👋"
+msgstr "Bonjour %(name)s 👋"
+
+#: dons/templates/dons/mes_dons.html:1
+msgid "مساهمة إجمالية"
+msgstr "Contributions au total"

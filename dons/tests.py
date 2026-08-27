@@ -8,6 +8,7 @@ from django.urls import reverse
 from aide.models import Beneficiaire, DemandeAide
 from comptabilite.models import Budget
 
+from .impact import beneficiaires_touches, categorie_impact, donnees_espace_donateur
 from .models import Affectation, Don
 
 User = get_user_model()
@@ -51,10 +52,9 @@ class MesDonsViewTests(TestCase):
         Don.objects.create(donateur=donateur2, montant=200, type_don=Don.TypeDon.UNIQUE)
 
         self.client.force_login(donateur1)
-        response = self.client.get(reverse("dons:mes_dons"))
-        self.assertEqual(
-            list(response.context["dons"]), list(Don.objects.filter(donateur=donateur1))
-        )
+        response = self.client.get(reverse("dons:mes_dons"), {"periode": "annee"})
+        dons_affiches = [entree["don"] for entree in response.context["log"]]
+        self.assertEqual(dons_affiches, list(Don.objects.filter(donateur=donateur1)))
 
 
 class CreerAffectationViewTests(TestCase):
@@ -169,3 +169,132 @@ class DonDetailViewTests(TestCase):
         self.client.force_login(self.donateur)
         response = self.client.get(reverse("dons:don_detail", args=[self.don.pk]))
         self.assertEqual(response.status_code, 403)
+
+
+class CategorieImpactTests(TestCase):
+    def setUp(self):
+        self.donateur = User.objects.create_user(
+            username="don5", password="x", role=User.Role.DONATEUR
+        )
+        beneficiaire = Beneficiaire.objects.create(nom="X", prenom="Y", cin="II1")
+        self.demande_etude = DemandeAide.objects.create(
+            beneficiaire=beneficiaire, titre="T", categorie=DemandeAide.Categorie.ETUDE,
+            description="...", urgence=DemandeAide.Urgence.FAIBLE, consentement_donnees=True,
+        )
+        self.demande_sante = DemandeAide.objects.create(
+            beneficiaire=beneficiaire, titre="T2", categorie=DemandeAide.Categorie.SANTE,
+            description="...", urgence=DemandeAide.Urgence.FAIBLE, consentement_donnees=True,
+        )
+
+    def test_don_mensuel_est_famille_meme_si_cible(self):
+        don = Don.objects.create(
+            donateur=self.donateur, montant=100, type_don=Don.TypeDon.MENSUEL,
+            demande_aide=self.demande_etude,
+        )
+        self.assertEqual(categorie_impact(don), "famille")
+
+    def test_don_unique_cible_etude_est_scolaire(self):
+        don = Don.objects.create(
+            donateur=self.donateur, montant=100, type_don=Don.TypeDon.UNIQUE,
+            demande_aide=self.demande_etude,
+        )
+        self.assertEqual(categorie_impact(don), "scolaire")
+
+    def test_don_unique_cible_sante_est_sante(self):
+        don = Don.objects.create(
+            donateur=self.donateur, montant=100, type_don=Don.TypeDon.UNIQUE,
+            demande_aide=self.demande_sante,
+        )
+        self.assertEqual(categorie_impact(don), "sante")
+
+    def test_don_unique_sans_cible_est_general(self):
+        don = Don.objects.create(
+            donateur=self.donateur, montant=100, type_don=Don.TypeDon.UNIQUE,
+        )
+        self.assertEqual(categorie_impact(don), "general")
+
+
+class BeneficiairesTouchesTests(TestCase):
+    def setUp(self):
+        self.donateur = User.objects.create_user(
+            username="don6", password="x", role=User.Role.DONATEUR
+        )
+        self.responsable = User.objects.create_user(
+            username="resp4", password="x", role=User.Role.RESPONSABLE
+        )
+        self.budget = Budget.objects.create(module=Budget.Module.DONS, periode="2026-T1")
+        self.beneficiaire_directe = Beneficiaire.objects.create(nom="A", prenom="B", cin="JJ1")
+        self.beneficiaire_indirecte = Beneficiaire.objects.create(nom="C", prenom="D", cin="JJ2")
+        self.demande_directe = DemandeAide.objects.create(
+            beneficiaire=self.beneficiaire_directe, titre="T", categorie=DemandeAide.Categorie.ETUDE,
+            description="...", urgence=DemandeAide.Urgence.FAIBLE, consentement_donnees=True,
+        )
+        self.demande_indirecte = DemandeAide.objects.create(
+            beneficiaire=self.beneficiaire_indirecte, titre="T", categorie=DemandeAide.Categorie.ETUDE,
+            description="...", urgence=DemandeAide.Urgence.FAIBLE, consentement_donnees=True,
+        )
+
+    def test_beneficiaire_atteint_directement_via_don_cible(self):
+        Don.objects.create(
+            donateur=self.donateur, montant=500, type_don=Don.TypeDon.UNIQUE,
+            demande_aide=self.demande_directe,
+        )
+        resultats = beneficiaires_touches(self.donateur)
+        self.assertIn(self.beneficiaire_directe, resultats)
+        self.assertNotIn(self.beneficiaire_indirecte, resultats)
+
+    def test_beneficiaire_atteint_via_affectation(self):
+        don = Don.objects.create(donateur=self.donateur, montant=500, type_don=Don.TypeDon.UNIQUE)
+        Affectation.objects.create(
+            don=don, budget=self.budget, montant_affecte=500,
+            cible=Affectation.Cible.BENEFICIAIRE, demande_aide=self.demande_indirecte,
+            validee_par=self.responsable,
+        )
+        resultats = beneficiaires_touches(self.donateur)
+        self.assertIn(self.beneficiaire_indirecte, resultats)
+
+    def test_dons_non_cibles_ne_comptent_pas(self):
+        Don.objects.create(donateur=self.donateur, montant=500, type_don=Don.TypeDon.UNIQUE)
+        self.assertEqual(beneficiaires_touches(self.donateur).count(), 0)
+
+
+class DonneesEspaceDonateurTests(TestCase):
+    def test_total_periode_exclut_les_dons_hors_periode(self):
+        from datetime import date
+
+        donateur = User.objects.create_user(
+            username="don7", password="x", role=User.Role.DONATEUR
+        )
+        recent = Don.objects.create(donateur=donateur, montant=500, type_don=Don.TypeDon.UNIQUE)
+        ancien = Don.objects.create(donateur=donateur, montant=1000, type_don=Don.TypeDon.UNIQUE)
+        Don.objects.filter(pk=ancien.pk).update(date_don=date(2020, 1, 1))
+
+        donnees = donnees_espace_donateur(donateur, "mois")
+        self.assertEqual(donnees["total_periode"], 500)
+        self.assertEqual(donnees["total_all_time"], 1500)
+        self.assertEqual(donnees["nb_contributions"], 2)
+
+
+class MesDonsViewV2Tests(TestCase):
+    def setUp(self):
+        self.donateur = User.objects.create_user(
+            username="don8", password="pass1234", role=User.Role.DONATEUR
+        )
+        Don.objects.create(donateur=self.donateur, montant=500, type_don=Don.TypeDon.UNIQUE)
+
+    def test_periode_invalide_retombe_sur_6mois(self):
+        self.client.force_login(self.donateur)
+        response = self.client.get(reverse("dons:mes_dons"), {"periode": "n_importe_quoi"})
+        self.assertEqual(response.context["periode"], "6mois")
+
+    def test_export_csv(self):
+        self.client.force_login(self.donateur)
+        response = self.client.get(reverse("dons:exporter_mes_dons"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "text/csv")
+
+    def test_recu_pdf(self):
+        self.client.force_login(self.donateur)
+        response = self.client.get(reverse("dons:recu_fiscal"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "application/pdf")

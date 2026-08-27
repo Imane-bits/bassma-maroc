@@ -1,6 +1,11 @@
+import csv
+import io
+
 from django.contrib import messages
 from django.db.models import Sum
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from aide.models import DemandeAide
@@ -8,6 +13,7 @@ from users.mixins import role_required
 
 from .emails import notifier_donateur_affectation
 from .forms import AffectationForm, DonForm
+from .impact import donnees_espace_donateur
 from .models import Affectation, Don
 
 
@@ -33,12 +39,88 @@ def creer_don(request):
 
 @role_required("donateur")
 def mes_dons(request):
-    dons = (
-        Don.objects.filter(donateur=request.user)
-        .prefetch_related("affectations")
-        .order_by("-date_don")
+    periode = request.GET.get("periode", "6mois")
+    if periode not in ("mois", "6mois", "annee"):
+        periode = "6mois"
+    contexte = donnees_espace_donateur(request.user, periode)
+    return render(request, "dons/mes_dons.html", contexte)
+
+
+@role_required("donateur")
+def exporter_mes_dons(request):
+    dons = Don.objects.filter(donateur=request.user).order_by("date_don")
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="mes_dons.csv"'
+    writer = csv.writer(response)
+    writer.writerow(["Date", "Montant (MAD)", "Type", "Statut"])
+    for don in dons:
+        writer.writerow(
+            [don.date_don, don.montant, don.get_type_don_display(), don.get_statut_display()]
+        )
+    return response
+
+
+@role_required("donateur")
+def recu_fiscal(request):
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.units import cm
+    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+    from reportlab.lib.styles import getSampleStyleSheet
+
+    annee = timezone.localdate().year
+    dons = Don.objects.filter(donateur=request.user, date_don__year=annee).order_by("date_don")
+    total = dons.aggregate(t=Sum("montant"))["t"] or 0
+    donateur = request.user
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=1.5 * cm, bottomMargin=1.5 * cm)
+    styles = getSampleStyleSheet()
+    nom = donateur.get_full_name() or donateur.username
+
+    elements = [
+        Paragraph("Association Bassma Maroc", styles["Title"]),
+        Paragraph(f"Reçu de dons — année {annee}", styles["Heading2"]),
+        Spacer(1, 12),
+        Paragraph(f"Donateur : {nom}", styles["Normal"]),
+        Paragraph(f"Email : {donateur.email or '-'}", styles["Normal"]),
+        Spacer(1, 16),
+    ]
+
+    data = [["Date", "Montant (MAD)", "Type"]]
+    for don in dons:
+        data.append([str(don.date_don), f"{don.montant:,}", don.get_type_don_display()])
+    data.append(["", "", ""])
+    data.append(["Total", f"{total:,}", ""])
+
+    table = Table(data, hAlign="LEFT")
+    table.setStyle(
+        TableStyle(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#14432B")),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+                ("GRID", (0, 0), (-1, -2), 0.5, colors.grey),
+                ("FONTNAME", (0, -1), (-1, -1), "Helvetica-Bold"),
+                ("FONTSIZE", (0, 0), (-1, -1), 9),
+            ]
+        )
     )
-    return render(request, "dons/mes_dons.html", {"dons": dons})
+    elements.append(table)
+    elements.append(Spacer(1, 20))
+    elements.append(
+        Paragraph(
+            "Ce document récapitule les dons versés à l'association Bassma Maroc "
+            f"au cours de l'année {annee}, à titre indicatif.",
+            styles["Normal"],
+        )
+    )
+
+    doc.build(elements)
+    buffer.seek(0)
+    response = HttpResponse(buffer.read(), content_type="application/pdf")
+    response["Content-Disposition"] = f'attachment; filename="recu_dons_{annee}.pdf"'
+    return response
 
 
 @role_required("responsable")

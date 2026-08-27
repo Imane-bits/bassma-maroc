@@ -2,39 +2,131 @@
 {% load i18n %}
 {% block content %}
 <div class="container">
-  <div class="section-title" style="text-align:start;display:flex;justify-content:space-between;align-items:center">
-    <h2 style="color:var(--color-primary)">{% trans "Mes dons" %}</h2>
-    <a href="{% url 'dons:creer_don' %}" class="btn btn-accent btn-sm">💚 {% trans "Faire un nouveau don" %}</a>
+  <div class="section-title" style="text-align:start;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div>
+      <h2 style="color:var(--color-primary);margin:0">{% trans "فضاء المتبرّع" %}</h2>
+      <p style="color:var(--color-text-muted);margin:4px 0 0">{% blocktrans with name=user.get_full_name|default:user.username %}مرحبًا {{ name }} 👋{% endblocktrans %}</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="{% url 'aide:liste_besoins' %}" class="btn btn-primary btn-sm">{% trans "تصفّح الاحتياجات" %} ←</a>
+    </div>
   </div>
-  <div class="table-wrap">
-    <table class="styled">
-      <tr>
-        <th>#</th>
-        <th>{% trans "Montant" %}</th>
-        <th>{% trans "Type" %}</th>
-        <th>{% trans "Statut" %}</th>
-        <th>{% trans "Date" %}</th>
-        <th>{% trans "Affectations" %}</th>
-      </tr>
-      {% for don in dons %}
-      <tr>
-        <td>{{ don.pk }}</td>
-        <td>{{ don.montant }} MAD</td>
-        <td>{{ don.get_type_don_display }}</td>
-        <td>{{ don.get_statut_display }}</td>
-        <td>{{ don.date_don }}</td>
-        <td>
-          {% for affectation in don.affectations.all %}
-            {{ affectation.montant_affecte }} MAD &rarr; {{ affectation.get_cible_display }}<br>
-          {% empty %}
-            {% trans "Aucune affectation pour le moment." %}
-          {% endfor %}
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="6">{% trans "Aucun don pour le moment." %}</td></tr>
+
+  <div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="stat-number">{{ nb_villes }}</div>
+      <div class="stat-label">🌍 {% trans "مدن" %}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ nb_familles }}</div>
+      <div class="stat-label">👥 {% trans "أسر دعمتها" %}</div>
+    </div>
+    <div class="stat-card stat-card-primary">
+      <div class="stat-number">DH {{ total_periode|floatformat:0 }}</div>
+      <div class="stat-label">{% trans "مجموع تبرّعاتي" %}</div>
+      <p style="color:var(--color-cream);font-size:12px;margin:4px 0 10px">{% trans "الإجمالي منذ البداية" %} · DH {{ total_all_time|floatformat:0 }}</p>
+      <a href="{% url 'dons:recu_fiscal' %}" class="btn btn-accent btn-sm">⬇️ {% trans "تحميل الوصل الضريبي" %}</a>
+    </div>
+  </div>
+
+  <div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="stat-number">{{ nb_contributions }}</div>
+      <div class="stat-label">🎯 {% trans "مساهمة إجمالية" %}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ dons_mensuels_actifs }}</div>
+      <div class="stat-label">🔄 {% trans "تبرّع دوري نشط" %}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">DH {{ montant_ce_mois|floatformat:0 }}</div>
+      <div class="stat-label">📅 {% trans "تبرّع هذا الشهر" %}</div>
+    </div>
+  </div>
+
+  <div class="section-title" style="text-align:start;margin-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <h2 style="color:var(--color-primary);font-size:18px;margin:0">📊 {% trans "تبرّعاتي شهريًا" %}</h2>
+    <div class="periode-tabs">
+      <a href="?periode=annee" class="{% if periode == 'annee' %}active{% endif %}">{% trans "آخر سنة" %}</a>
+      <a href="?periode=6mois" class="{% if periode == '6mois' %}active{% endif %}">{% trans "آخر 6 أشهر" %}</a>
+      <a href="?periode=mois" class="{% if periode == 'mois' %}active{% endif %}">{% trans "آخر شهر" %}</a>
+    </div>
+  </div>
+  <div class="form-card">
+    <div class="bar-chart">
+      {% for ligne in graphique %}
+      <div class="bar-chart-col">
+        <div class="bar-chart-bar" style="height:{{ ligne.hauteur_pct }}%" title="DH {{ ligne.montant|floatformat:0 }}"></div>
+        <div class="bar-chart-label">{{ ligne.mois_label }}</div>
+      </div>
       {% endfor %}
-    </table>
+    </div>
   </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-top:20px">
+    <div>
+      <div class="section-title" style="text-align:start;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+        <h2 style="color:var(--color-primary);font-size:18px;margin:0">📋 {% trans "سجل تبرّعاتي" %}</h2>
+        <div style="display:flex;gap:8px">
+          <a href="{% url 'dons:creer_don' %}" class="btn btn-primary btn-sm">+ {% trans "تبرّع جديد" %}</a>
+          <a href="{% url 'dons:exporter_mes_dons' %}" class="btn btn-outline btn-sm">⬇️ {% trans "تصدير" %}</a>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="styled">
+          {% for entree in log %}
+          <tr>
+            <td style="font-weight:900;color:var(--color-primary)">DH {{ entree.don.montant|floatformat:0 }}</td>
+            <td>{{ entree.categorie_label }}</td>
+            <td style="color:var(--color-text-muted);font-size:13px">{{ entree.don.date_don }}</td>
+          </tr>
+          {% empty %}
+          <tr><td>{% trans "Aucun don pour le moment." %}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title" style="text-align:start;margin-bottom:12px">
+        <h2 style="color:var(--color-primary);font-size:18px;margin:0">🎯 {% trans "توزيع أثري" %}</h2>
+      </div>
+      <div class="form-card">
+        {% for ligne in repartition %}
+        <div class="repartition-ligne">
+          <div class="repartition-header">
+            <span class="repartition-montant">DH {{ ligne.montant|floatformat:0 }} · {{ ligne.pourcentage }}%</span>
+            <span>{{ ligne.label }}</span>
+          </div>
+          <div class="progress">
+            <div class="progress-bar {% cycle 'progress-bar-danger' '' 'progress-bar-accent' as impact_couleur %}" style="width:{{ ligne.pourcentage }}%"></div>
+          </div>
+        </div>
+        {% empty %}
+        <p style="color:var(--color-text-muted)">{% trans "Aucun don pour le moment." %}</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="text-align:start;margin-top:24px;margin-bottom:12px">
+    <h2 style="color:var(--color-primary);font-size:18px;margin:0">🗓 {% trans "تفصيل شهر بشهر" %}</h2>
+  </div>
+  {% for bloc in detail_mensuel %}
+  <div class="form-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <strong style="color:var(--color-primary)">{{ bloc.mois_label }}</strong>
+      <span style="color:var(--color-text-muted);font-size:13px">{% trans "مجموع الشهر" %} : DH {{ bloc.total|floatformat:0 }}</span>
+    </div>
+    {% for don in bloc.dons %}
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--color-border);font-size:14px">
+      <span style="font-weight:700">DH {{ don.montant|floatformat:0 }}</span>
+      <span>{{ don.date_don }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% empty %}
+  <p style="color:var(--color-text-muted)">{% trans "Aucun don pour le moment." %}</p>
+  {% endfor %}
 </div>
 {% endblock %}
