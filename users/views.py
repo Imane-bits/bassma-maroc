@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
+from django.contrib.auth import views as auth_views
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from aide.models import DemandeAide
@@ -11,6 +13,16 @@ from .forms import InscriptionForm
 from .mixins import role_required
 
 User = get_user_model()
+
+
+class RoleBasedLoginView(auth_views.LoginView):
+    def get_default_redirect_url(self):
+        role = self.request.user.role
+        if role == User.Role.RESPONSABLE:
+            return reverse("espace_responsable")
+        if role == User.Role.DONATEUR:
+            return reverse("dons:mes_dons")
+        return super().get_default_redirect_url()
 
 
 def register(request):

@@ -14,7 +14,7 @@ urlpatterns = [
     ),
     path(
         "connexion/",
-        auth_views.LoginView.as_view(
+        views.RoleBasedLoginView.as_view(
             template_name="registration/login.html",
             authentication_form=EmailAuthenticationForm,
         ),
