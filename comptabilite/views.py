@@ -89,10 +89,20 @@ def bilan_financier(request):
     periodes = (
         Budget.objects.order_by("-periode").values_list("periode", flat=True).distinct()
     )
+    totaux = budgets.aggregate(total_recettes=Sum("recettes"), total_depenses=Sum("depenses"))
+    total_recettes = totaux["total_recettes"] or 0
+    total_depenses = totaux["total_depenses"] or 0
     return render(
         request,
         "comptabilite/bilan_financier.html",
-        {"budgets": budgets, "periode": periode, "periodes": periodes},
+        {
+            "budgets": budgets,
+            "periode": periode,
+            "periodes": periodes,
+            "total_recettes": total_recettes,
+            "total_depenses": total_depenses,
+            "total_solde": total_recettes - total_depenses,
+        },
     )
 
 

@@ -6,7 +6,7 @@ from django.utils.translation import get_language, gettext_lazy as _
 
 from aide.models import Beneficiaire, DemandeAide
 
-from .models import Don
+from .models import Affectation, Don
 
 PERIODES = {
     "mois": 1,
@@ -19,6 +19,12 @@ CATEGORIE_LABELS = {
     "scolaire": _("دعم مدرسي"),
     "sante": _("دعم صحي"),
     "general": _("دعم عام"),
+}
+
+CIBLE_LABELS = {
+    "beneficiaire": _("مستفيدون"),
+    "ecole": _("المدرسة"),
+    "centre_formation": _("مركز التكوين"),
 }
 
 MOIS_AR_MAROC = {
@@ -95,14 +101,43 @@ def donnees_espace_donateur(donateur, periode):
     nb_familles = beneficiaires.count()
 
     par_mois = {m: 0 for m in mois_liste}
+    dons_par_mois = {m: [] for m in mois_liste}
     for don in dons_periode:
         cle = date(don.date_don.year, don.date_don.month, 1)
         if cle in par_mois:
             par_mois[cle] += don.montant
-    graphique = [
-        {"mois": m, "mois_label": mois_label(m, court=True), "montant": par_mois[m]}
-        for m in mois_liste
-    ]
+            dons_par_mois[cle].append(don)
+
+    affectations_par_don = {}
+    toutes_affectations = Affectation.objects.filter(
+        don_id__in=[d.pk for d in dons_periode]
+    ).only("don_id", "cible", "montant_affecte")
+    for affectation in toutes_affectations:
+        affectations_par_don.setdefault(affectation.don_id, []).append(affectation)
+
+    graphique = []
+    for m in mois_liste:
+        montant = par_mois[m]
+        par_cible = {}
+        for don in dons_par_mois[m]:
+            for affectation in affectations_par_don.get(don.pk, []):
+                par_cible[affectation.cible] = (
+                    par_cible.get(affectation.cible, 0) + affectation.montant_affecte
+                )
+        total_affecte = sum(par_cible.values())
+        allocs = [
+            {"label": CIBLE_LABELS[cible], "montant": mnt}
+            for cible, mnt in sorted(par_cible.items(), key=lambda kv: -kv[1])
+        ]
+        graphique.append(
+            {
+                "mois": m,
+                "mois_label": mois_label(m, court=True),
+                "montant": montant,
+                "allocs": allocs,
+                "non_affecte": montant - total_affecte,
+            }
+        )
     max_mois = max((ligne["montant"] for ligne in graphique), default=0)
     for ligne in graphique:
         ligne["hauteur_pct"] = round((ligne["montant"] / max_mois) * 100) if max_mois else 0
@@ -120,19 +155,15 @@ def donnees_espace_donateur(donateur, periode):
         for cle, montant in sorted(repartition.items(), key=lambda kv: -kv[1])
     ]
 
-    par_mois_detail = {}
-    for don in dons_periode:
-        cle = date(don.date_don.year, don.date_don.month, 1)
-        par_mois_detail.setdefault(cle, []).append(don)
     detail_mensuel = [
         {
             "mois": m,
             "mois_label": mois_label(m),
-            "dons": par_mois_detail[m],
-            "total": sum(d.montant for d in par_mois_detail[m]),
+            "dons": dons_par_mois[m],
+            "total": par_mois[m],
         }
         for m in reversed(mois_liste)
-        if m in par_mois_detail
+        if dons_par_mois[m]
     ]
 
     log = [

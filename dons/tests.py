@@ -74,7 +74,9 @@ class CreerAffectationViewTests(TestCase):
         self.don = Don.objects.create(
             donateur=self.donateur, montant=1000, type_don=Don.TypeDon.UNIQUE
         )
-        self.budget = Budget.objects.create(module=Budget.Module.ECOLE, periode="2026-T1")
+        self.budget = Budget.objects.create(
+            module=Budget.Module.ECOLE, periode="2026-T1", recettes=Decimal("1000")
+        )
         beneficiaire = Beneficiaire.objects.create(nom="A", prenom="B", cin="X1")
         self.demande = DemandeAide.objects.create(
             beneficiaire=beneficiaire,

@@ -1603,3 +1603,39 @@ msgstr "Bonjour %(name)s 👋"
 #: dons/templates/dons/mes_dons.html:1
 msgid "مساهمة إجمالية"
 msgstr "Contributions au total"
+
+msgid "تسجيلات مركز التكوين"
+msgstr "Inscriptions au centre de formation"
+
+msgid "المتدرّبة"
+msgstr "Stagiaire"
+
+msgid "%(max)s ملفات كحد أقصى."
+msgstr "%(max)s fichiers maximum."
+
+msgid "حجم كل ملف يجب ألا يتجاوز %(max)s ميغابايت."
+msgstr "La taille de chaque fichier ne doit pas dépasser %(max)s Mo."
+
+msgid "عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."
+msgstr "Trop de tentatives. Réessayez plus tard."
+
+msgid "مستفيدون"
+msgstr "Bénéficiaires"
+
+msgid "غير موزّع بعد"
+msgstr "Pas encore alloué"
+
+msgid "المسؤول(ة)"
+msgstr "Responsable"
+
+msgid "طلب مساعدة قيد الانتظار"
+msgstr "demande d'aide en attente"
+
+msgid "يحتاج فريقكم إلى مراجعتها"
+msgstr "Votre équipe doit les examiner"
+
+msgid "المراجعة الآن"
+msgstr "Examiner maintenant"
+
+msgid "يتجاوز الرصيد المتاح في هذه الميزانية."
+msgstr "Dépasse le solde disponible pour ce budget."

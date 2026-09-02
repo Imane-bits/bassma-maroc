@@ -53,4 +53,8 @@ class AffectationForm(forms.ModelForm):
             deja_affecte = don.affectations.aggregate(total=Sum("montant_affecte"))["total"] or 0
             if montant_affecte > (don.montant - deja_affecte):
                 self.add_error("montant_affecte", _("يتجاوز الرصيد المتاح لهذا التبرّع."))
+
+        budget = cleaned_data.get("budget")
+        if budget and montant_affecte and montant_affecte > budget.solde:
+            self.add_error("budget", _("يتجاوز الرصيد المتاح في هذه الميزانية."))
         return cleaned_data

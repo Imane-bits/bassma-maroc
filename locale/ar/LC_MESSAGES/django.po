@@ -10,8 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: aide/forms.py:33 aide/models.py:70
 msgid "J'accepte le traitement de mes données personnelles (loi 09-08)"
@@ -550,8 +549,8 @@ msgid ""
 "Votre compte gestionnaire a été créé mais doit être validé par un "
 "responsable avant que vous puissiez vous connecter."
 msgstr ""
-"تم إنشاء حسابكم كمسير، لكن يجب أن يتم تفعيله من طرف مسؤول قبل أن تتمكنوا "
-"من تسجيل الدخول."
+"تم إنشاء حسابكم كمسير، لكن يجب أن يتم تفعيله من طرف مسؤول قبل أن تتمكنوا من "
+"تسجيل الدخول."
 
 #: users/templates/comptes_en_attente.html:4
 #: users/templates/espace_responsable.html:6
@@ -602,6 +601,117 @@ msgstr "تسجيل الخروج"
 #: users/views.py:57
 msgid "Compte activé."
 msgstr "تم تفعيل الحساب."
+
+msgid "Reçue"
+msgstr "مستلم"
+
+msgid "Précédent"
+msgstr "السابق"
+
+msgid "Suivant"
+msgstr "التالي"
+
+msgid "titre de la demande"
+msgstr "عنوان الطلب"
+
+msgid "catégorie"
+msgstr "الفئة"
+
+msgid "montant demandé"
+msgstr "المبلغ المطلوب"
+
+msgid "Titre :"
+msgstr "العنوان:"
+
+msgid "Catégorie :"
+msgstr "الفئة:"
+
+msgid "Montant demandé :"
+msgstr "المبلغ المطلوب:"
+
+msgid "collecté :"
+msgstr "تم جمعه:"
+
+msgid "Retour à l'accueil"
+msgstr "العودة إلى الرئيسية"
+
+msgid "Aucun besoin actif pour le moment."
+msgstr "لا توجد احتياجات نشطة حاليًا."
+
+msgid "Titre"
+msgstr "العنوان"
+
+msgid "Catégorie"
+msgstr "الفئة"
+
+msgid "Aucune donnée."
+msgstr "لا توجد بيانات."
+
+msgid "Don"
+msgstr "التبرّع"
+
+msgid "Solde restant"
+msgstr "الرصيد المتبقي"
+
+msgid "Validée par"
+msgstr "تمت الموافقة من طرف"
+
+msgid "Dûs"
+msgstr "مستحقة"
+
+msgid "En retard"
+msgstr "متأخرة"
+
+msgid "Payés"
+msgstr "مدفوعة"
+
+msgid "Tous"
+msgstr "الكل"
+
+msgid "Élève"
+msgstr "التلميذ(ة)"
+
+msgid "Échéance"
+msgstr "تاريخ الاستحقاق"
+
+msgid "Marquer payé"
+msgstr "تسجيل كمدفوع"
+
+msgid "Aucun paiement."
+msgstr "لا توجد مدفوعات."
+
+msgid "Préinscriptions"
+msgstr "التسجيلات المسبقة"
+
+msgid "Enfant"
+msgstr "الطفل"
+
+msgid "Naissance"
+msgstr "تاريخ الازدياد"
+
+msgid "Tuteur"
+msgstr "الولي"
+
+msgid "Contact"
+msgstr "الهاتف"
+
+msgid "Aucune préinscription."
+msgstr "لا توجد تسجيلات مسبقة."
+
+msgid "Association Bassma Maroc"
+msgstr "جمعية بسمة المغربية"
+
+msgid "Espace responsable"
+msgstr "فضاء المسؤول"
+
+msgid "Mon espace"
+msgstr "فضائي"
+
+msgid "Bientôt disponible"
+msgstr "قريبًا"
+
+msgid "Cette section est en cours de préparation. Revenez bientôt !"
+msgstr "هذا القسم قيد الإعداد. عودوا قريبًا!"
 
 #, python-format
 #~ msgid "Demande #%(pk)s"
