@@ -10,6 +10,7 @@
   <a href="?statut=paye" class="{% if statut == 'paye' %}active{% endif %}">{% trans "Payés" %}</a>
   <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "Tous" %}</a>
 </div>
+<div id="paginated-region">
 <div class="table-wrap">
   <table class="styled">
     <tr>
@@ -26,7 +27,11 @@
       <td>{{ paiement.eleve }}</td>
       <td>{{ paiement.montant }} MAD</td>
       <td>{{ paiement.date_echeance }}</td>
-      <td>{{ paiement.get_statut_paiement_display }}</td>
+      <td>
+        {% if paiement.statut_paiement == "paye" %}<span class="badge badge-success">{{ paiement.get_statut_paiement_display }}</span>
+        {% elif paiement.statut_paiement == "en_retard" %}<span class="badge badge-urgent">{{ paiement.get_statut_paiement_display }}</span>
+        {% else %}<span class="badge badge-pending">{{ paiement.get_statut_paiement_display }}</span>{% endif %}
+      </td>
       <td>
         {% if paiement.statut_paiement != "paye" %}
         <form action="{% url 'ecole:marquer_paye' paiement.pk %}" method="post">
@@ -40,5 +45,7 @@
     <tr><td colspan="6">{% trans "Aucun paiement." %}</td></tr>
     {% endfor %}
   </table>
+</div>
+{% include "_pagination.html" %}
 </div>
 {% endblock %}

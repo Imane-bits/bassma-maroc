@@ -1,0 +1,16 @@
+{% load i18n %}
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pagination">
+  {% if page_obj.has_previous %}
+    <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value|urlencode }}&amp;{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">← {% trans "Précédent" %}</a>
+  {% else %}
+    <span class="disabled">← {% trans "Précédent" %}</span>
+  {% endif %}
+  <span class="current">{% blocktrans with current=page_obj.number total=page_obj.paginator.num_pages %}{{ current }} / {{ total }}{% endblocktrans %}</span>
+  {% if page_obj.has_next %}
+    <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value|urlencode }}&amp;{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">{% trans "Suivant" %} →</a>
+  {% else %}
+    <span class="disabled">{% trans "Suivant" %} →</span>
+  {% endif %}
+</nav>
+{% endif %}

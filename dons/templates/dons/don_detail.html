@@ -1,22 +1,54 @@
 {% extends "responsable_base.html" %}
 {% load i18n %}
 {% block dashboard_content %}
-<div class="section-title" style="text-align:start">
-  <h2 style="color:var(--color-primary)">{% trans "Don" %} #{{ don.pk }}</h2>
+{% with nom_donateur=don.donateur.get_full_name|default:don.donateur.username %}
+<div class="detail-header">
+  <span class="avatar-circle avatar-circle-lg">{{ nom_donateur|slice:":1"|upper }}</span>
+  <div>
+    <h2>{% trans "Don" %} #{{ don.pk }}</h2>
+    <div class="detail-meta">{{ nom_donateur }}</div>
+  </div>
 </div>
 
-<div class="form-card">
-  <p><strong>{% trans "Donateur" %}:</strong> {{ don.donateur.get_full_name|default:don.donateur.username }}</p>
-  <p><strong>{% trans "Montant" %}:</strong> {{ don.montant }} MAD</p>
-  <p><strong>{% trans "Statut" %}:</strong> {{ don.get_statut_display }}</p>
-  <p><strong>{% trans "Date" %}:</strong> {{ don.date_don }}</p>
-  {% if don.demande_aide %}
-    <p><strong>{% trans "الحالة المدعومة" %}:</strong> {{ don.demande_aide.titre }}</p>
-  {% endif %}
-  <hr style="border:none;border-top:1px solid var(--color-border);margin:16px 0">
-  <p><strong>{% trans "Déjà affecté" %}:</strong> {{ total_affecte }} MAD</p>
-  <p><strong>{% trans "Solde restant" %}:</strong> {{ reste }} MAD</p>
+<div class="detail-card">
+  <div class="detail-grid">
+    <div>
+      <span class="detail-item-label">{% trans "Donateur" %}</span>
+      <span class="detail-item-value">{{ nom_donateur }}</span>
+    </div>
+    <div>
+      <span class="detail-item-label">{% trans "Montant" %}</span>
+      <span class="detail-item-value">{{ don.montant }} MAD</span>
+    </div>
+    <div>
+      <span class="detail-item-label">{% trans "Statut" %}</span>
+      <span class="detail-item-value">
+        {% if don.statut == "distribue" %}<span class="badge badge-success">{{ don.get_statut_display }}</span>
+        {% elif don.statut == "en_affectation" %}<span class="badge badge-pending">{{ don.get_statut_display }}</span>
+        {% else %}<span class="badge badge-normal">{{ don.get_statut_display }}</span>{% endif %}
+      </span>
+    </div>
+    <div>
+      <span class="detail-item-label">{% trans "Date" %}</span>
+      <span class="detail-item-value">{{ don.date_don }}</span>
+    </div>
+    {% if don.demande_aide %}
+    <div>
+      <span class="detail-item-label">{% trans "الحالة المدعومة" %}</span>
+      <span class="detail-item-value">{{ don.demande_aide.titre }}</span>
+    </div>
+    {% endif %}
+    <div>
+      <span class="detail-item-label">{% trans "Déjà affecté" %}</span>
+      <span class="detail-item-value">{{ total_affecte }} MAD</span>
+    </div>
+    <div>
+      <span class="detail-item-label">{% trans "Solde restant" %}</span>
+      <span class="detail-item-value">{{ reste }} MAD</span>
+    </div>
+  </div>
 </div>
+{% endwith %}
 
 <div class="section-title" style="text-align:start;margin-bottom:12px">
   <h2 style="color:var(--color-primary);font-size:18px;margin:0">{% trans "Affectations" %}</h2>

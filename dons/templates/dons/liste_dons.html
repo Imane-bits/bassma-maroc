@@ -5,6 +5,7 @@
   <h2 style="color:var(--color-primary)">{% trans "Dons à affecter" %}</h2>
   <a href="{% url 'dons:creer_affectation' %}" class="btn btn-primary btn-sm">{% trans "Créer une affectation" %}</a>
 </div>
+<div id="paginated-region">
 <div class="table-wrap">
   <table class="styled">
     <tr>
@@ -21,12 +22,18 @@
       <td>{{ don.donateur.get_full_name|default:don.donateur.username }}</td>
       <td>{{ don.montant }} MAD</td>
       <td>{{ don.total_affecte|default:"0" }} MAD</td>
-      <td>{{ don.get_statut_display }}</td>
+      <td>
+        {% if don.statut == "distribue" %}<span class="badge badge-success">{{ don.get_statut_display }}</span>
+        {% elif don.statut == "en_affectation" %}<span class="badge badge-pending">{{ don.get_statut_display }}</span>
+        {% else %}<span class="badge badge-normal">{{ don.get_statut_display }}</span>{% endif %}
+      </td>
       <td>{{ don.date_don }}</td>
     </tr>
     {% empty %}
     <tr><td colspan="6">{% trans "Aucun don en attente d'affectation." %}</td></tr>
     {% endfor %}
   </table>
+</div>
+{% include "_pagination.html" %}
 </div>
 {% endblock %}

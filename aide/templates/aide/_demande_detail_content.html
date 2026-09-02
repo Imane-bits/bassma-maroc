@@ -1,5 +1,28 @@
 {% load i18n %}
 <h2 style="color:var(--color-primary);margin-top:0">{% blocktrans with numero=demande.numero_dossier %}Dossier {{ numero }}{% endblocktrans %}</h2>
+
+{% if demande.statut == "refusee" %}
+  <p><span class="badge badge-urgent">{{ demande.get_statut_display }}</span></p>
+{% else %}
+  <div class="stepper">
+    <div class="stepper-step done">
+      <div class="stepper-line"></div>
+      <div class="stepper-dot">✓</div>
+      <div class="stepper-label">{% trans "Reçue" %}</div>
+    </div>
+    <div class="stepper-step {% if demande.statut == "en_cours" %}current{% elif demande.statut == "acceptee" %}done{% endif %}">
+      <div class="stepper-line"></div>
+      <div class="stepper-dot">{% if demande.statut == "acceptee" %}✓{% else %}2{% endif %}</div>
+      <div class="stepper-label">{% trans "En cours" %}</div>
+    </div>
+    <div class="stepper-step {% if demande.statut == "acceptee" %}current{% endif %}">
+      <div class="stepper-line"></div>
+      <div class="stepper-dot">3</div>
+      <div class="stepper-label">{% trans "Acceptée" %}</div>
+    </div>
+  </div>
+{% endif %}
+
 <div class="field-row">
   <p><strong>{% trans "Bénéficiaire :" %}</strong>
     {% if user.is_authenticated and user.role == "responsable" %}
@@ -11,7 +34,12 @@
   <p><strong>{% trans "Titre :" %}</strong> {{ demande.titre }}</p>
   <p><strong>{% trans "Catégorie :" %}</strong> {{ demande.get_categorie_display }}</p>
   <p><strong>{% trans "Urgence :" %}</strong> {{ demande.get_urgence_display }}</p>
-  <p><strong>{% trans "Statut :" %}</strong> <span class="badge badge-normal">{{ demande.get_statut_display }}</span></p>
+  <p><strong>{% trans "Statut :" %}</strong>
+    {% if demande.statut == "acceptee" %}<span class="badge badge-success">{{ demande.get_statut_display }}</span>
+    {% elif demande.statut == "refusee" %}<span class="badge badge-urgent">{{ demande.get_statut_display }}</span>
+    {% elif demande.statut == "en_cours" %}<span class="badge badge-pending">{{ demande.get_statut_display }}</span>
+    {% else %}<span class="badge badge-normal">{{ demande.get_statut_display }}</span>{% endif %}
+  </p>
   <p><strong>{% trans "Date de soumission :" %}</strong> {{ demande.date_soumission }}</p>
 </div>
 <p><strong>{% trans "Description :" %}</strong> {{ demande.description }}</p>

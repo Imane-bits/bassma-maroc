@@ -12,4 +12,5 @@ urlpatterns = [
         name="confirmation",
     ),
     path("suivi/", views.suivi_formation, name="suivi_formation"),
+    path("responsable/inscriptions/", views.liste_inscriptions, name="liste_inscriptions"),
 ]

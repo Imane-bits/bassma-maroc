@@ -1,0 +1,46 @@
+{% extends "responsable_base.html" %}
+{% load i18n %}
+{% block dashboard_content %}
+<div class="section-title" style="text-align:start">
+  <h2 style="color:var(--color-primary)">{% trans "تسجيلات مركز التكوين" %}</h2>
+</div>
+<div class="filters">
+  <a href="?statut=en_cours" class="{% if statut == 'en_cours' %}active{% endif %}">{% trans "قيد التكوين" %}</a>
+  <a href="?statut=terminee" class="{% if statut == 'terminee' %}active{% endif %}">{% trans "منتهية" %}</a>
+  <a href="?statut=abandonnee" class="{% if statut == 'abandonnee' %}active{% endif %}">{% trans "متوقفة" %}</a>
+  <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "الكل" %}</a>
+</div>
+<div class="table-wrap">
+  <table class="styled">
+    <tr>
+      <th>{% trans "رقم التسجيل" %}</th>
+      <th>{% trans "المتدرّبة" %}</th>
+      <th>{% trans "التكوين" %}</th>
+      <th>{% trans "المدينة" %}</th>
+      <th>{% trans "الهاتف" %}</th>
+      <th>{% trans "التقدّم" %}</th>
+      <th>{% trans "الحالة" %}</th>
+      <th>{% trans "Date" %}</th>
+    </tr>
+    {% for inscription in inscriptions %}
+    <tr>
+      <td>{{ inscription.numero_inscription }}</td>
+      <td>{{ inscription.beneficiaire.prenom }} {{ inscription.beneficiaire.nom }}</td>
+      <td>{{ inscription.formation.intitule }}</td>
+      <td>{{ inscription.beneficiaire.ville|default:"—" }}</td>
+      <td>{{ inscription.beneficiaire.telephone|default:"—" }}</td>
+      <td>{{ inscription.progression }}%</td>
+      <td>
+        {% if inscription.statut == "terminee" %}<span class="badge badge-success">{{ inscription.get_statut_display }}</span>
+        {% elif inscription.statut == "abandonnee" %}<span class="badge badge-urgent">{{ inscription.get_statut_display }}</span>
+        {% else %}<span class="badge badge-pending">{{ inscription.get_statut_display }}</span>{% endif %}
+      </td>
+      <td>{{ inscription.date_inscription }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="8">{% trans "لا توجد تسجيلات." %}</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% include "_pagination.html" %}
+{% endblock %}

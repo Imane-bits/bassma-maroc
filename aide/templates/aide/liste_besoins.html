@@ -14,6 +14,7 @@
     {% endfor %}
   </div>
 
+  <div id="paginated-region">
   <div class="cards-grid">
     {% for besoin in besoins %}
       <div class="besoin-card">
@@ -39,6 +40,8 @@
     {% empty %}
       <p>{% trans "Aucun besoin actif pour le moment." %}</p>
     {% endfor %}
+  </div>
+  {% include "_pagination.html" %}
   </div>
 </div>
 {% endblock %}

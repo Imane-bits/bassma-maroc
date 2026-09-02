@@ -79,23 +79,30 @@
     <a href="{% url 'comptabilite:exporter_pdf' %}" class="btn btn-sm" style="background:var(--color-danger);color:#fff">⬇️ {% trans "تصدير" %} PDF</a>
   </div>
   <h2>🗂 {% trans "الميزانية المجمّعة" %}</h2>
-  <p style="font-size:22px;font-weight:900;color:var(--color-primary);margin:6px 0">
-    DH {{ total_recettes|floatformat:0 }}
-    <span style="font-size:13px;font-weight:700;color:var(--color-text-muted)">{% trans "مجموع الموارد" %}</span>
-  </p>
-  <p style="font-size:22px;font-weight:900;color:var(--color-danger);margin:6px 0">
-    DH {{ total_depenses|floatformat:0 }}
-    <span style="font-size:13px;font-weight:700;color:var(--color-text-muted)">{% trans "مجموع النفقات" %}</span>
-  </p>
-  <ul style="margin:6px 0 12px 20px;color:var(--color-text-muted);font-size:14px">
+  <div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="stat-number">DH {{ total_recettes|floatformat:0 }}</div>
+      <div class="stat-label">{% trans "مجموع الموارد" %}</div>
+    </div>
+    <div class="stat-card stat-card-danger">
+      <div class="stat-number">DH {{ total_depenses|floatformat:0 }}</div>
+      <div class="stat-label">{% trans "مجموع النفقات" %}</div>
+    </div>
+    <div class="stat-card {% if resultat >= 0 %}stat-card-primary{% else %}stat-card-danger{% endif %}">
+      <div class="stat-number">DH {{ resultat|floatformat:0 }}</div>
+      <div class="stat-label">{% trans "النتيجة" %} · {% if resultat >= 0 %}{% trans "فائض" %}{% else %}{% trans "عجز" %}{% endif %}</div>
+    </div>
+  </div>
+  <div style="margin-top:6px">
     {% for ligne in top_depenses %}
-    <li>{% trans "منها" %} · {{ ligne.label }}: DH {{ ligne.montant|floatformat:0 }}</li>
+    <div class="repartition-ligne">
+      <div class="repartition-header">
+        <span>{% trans "منها" %} · {{ ligne.label }}</span>
+        <span class="repartition-montant">DH {{ ligne.montant|floatformat:0 }}</span>
+      </div>
+    </div>
     {% endfor %}
-  </ul>
-  <p style="font-size:24px;font-weight:900;margin:6px 0;color:{% if resultat >= 0 %}var(--color-primary){% else %}var(--color-danger){% endif %}">
-    DH {{ resultat|floatformat:0 }}
-    <span style="font-size:13px;font-weight:700;color:var(--color-text-muted)">{% trans "النتيجة" %} · {% if resultat >= 0 %}{% trans "فائض" %}{% else %}{% trans "عجز" %}{% endif %}</span>
-  </p>
+  </div>
 </div>
 
 <p style="margin-top:16px"><a href="{% url 'comptabilite:bilan_financier' %}">← {% trans "البيان المالي التفصيلي" %}</a></p>

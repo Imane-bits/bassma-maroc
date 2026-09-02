@@ -4,6 +4,22 @@
 <div class="section-title" style="text-align:start">
   <h2 style="color:var(--color-primary)">{% trans "البيان المالي" %}</h2>
 </div>
+
+<div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
+  <div class="stat-card">
+    <div class="stat-number">DH {{ total_recettes|floatformat:0 }}</div>
+    <div class="stat-label">💰 {% trans "المداخيل" %}</div>
+  </div>
+  <div class="stat-card stat-card-danger">
+    <div class="stat-number">DH {{ total_depenses|floatformat:0 }}</div>
+    <div class="stat-label">💸 {% trans "المصاريف" %}</div>
+  </div>
+  <div class="stat-card stat-card-primary">
+    <div class="stat-number">DH {{ total_solde|floatformat:0 }}</div>
+    <div class="stat-label">📈 {% trans "الرصيد" %}</div>
+  </div>
+</div>
+
 <div class="filters">
   <a href="?periode=" class="{% if not periode %}active{% endif %}">{% trans "الكل" %}</a>
   {% for p in periodes %}

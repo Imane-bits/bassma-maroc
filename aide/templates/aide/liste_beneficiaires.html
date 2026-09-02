@@ -9,6 +9,7 @@
     <input type="text" name="q" value="{{ recherche }}" placeholder='{% trans "ابحث بالاسم أو CIN أو البريد الإلكتروني" %}'>
   </div>
 </form>
+<div id="paginated-region">
 <div class="table-wrap">
   <table class="styled">
     <tr>
@@ -34,5 +35,7 @@
     <tr><td colspan="7">{% trans "لا يوجد مستفيدون." %}</td></tr>
     {% endfor %}
   </table>
+</div>
+{% include "_pagination.html" %}
 </div>
 {% endblock %}

@@ -6,30 +6,40 @@
 </div>
 <p class="dashboard-welcome">{% blocktrans with name=user.get_full_name|default:user.username %}مرحبًا {{ name }} — رؤية شاملة على كل الأنشطة{% endblocktrans %}</p>
 
-<div class="stat-cards">
-  <div class="stat-card">
-    <div class="stat-number">{{ stats.demandes_en_attente }}</div>
-    <div class="stat-label">🤲 {% trans "طلبات مساعدة قيد الانتظار" %}</div>
+{% if stats.demandes_en_attente %}
+<div class="banner-alert">
+  <div>
+    <div class="banner-alert-title">⏳ {{ stats.demandes_en_attente }} {% trans "طلب مساعدة قيد الانتظار" %}</div>
+    <div class="banner-alert-sub">{% trans "يحتاج فريقكم إلى مراجعتها" %}</div>
   </div>
-  <div class="stat-card">
-    <div class="stat-number">{{ stats.dons_a_affecter }}</div>
-    <div class="stat-label">💚 {% trans "تبرّعات بانتظار التخصيص" %}</div>
+  <a href="{% url 'aide:liste_demandes' %}" class="btn btn-accent btn-sm">{% trans "المراجعة الآن" %}</a>
+</div>
+{% endif %}
+
+<div class="kpi-cards">
+  <div class="kpi-tile">
+    <div class="kpi-icon kpi-icon-danger">🤲</div>
+    <div><div class="kpi-value">{{ stats.demandes_en_attente }}</div><div class="kpi-label">{% trans "طلبات مساعدة قيد الانتظار" %}</div></div>
   </div>
-  <div class="stat-card">
-    <div class="stat-number">{{ stats.total_dons }} DH</div>
-    <div class="stat-label">📈 {% trans "مجموع التبرّعات المجمّعة" %}</div>
+  <div class="kpi-tile">
+    <div class="kpi-icon">💚</div>
+    <div><div class="kpi-value">{{ stats.dons_a_affecter }}</div><div class="kpi-label">{% trans "تبرّعات بانتظار التخصيص" %}</div></div>
   </div>
-  <div class="stat-card">
-    <div class="stat-number">{{ stats.paiements_en_retard }}</div>
-    <div class="stat-label">🎒 {% trans "أداءات دراسية متأخرة" %}</div>
+  <div class="kpi-tile">
+    <div class="kpi-icon kpi-icon-accent">📈</div>
+    <div><div class="kpi-value">{{ stats.total_dons }} DH</div><div class="kpi-label">{% trans "مجموع التبرّعات المجمّعة" %}</div></div>
   </div>
-  <div class="stat-card">
-    <div class="stat-number">{{ stats.preinscriptions_en_attente }}</div>
-    <div class="stat-label">📥 {% trans "طلبات تسجيل مسبق قيد الانتظار" %}</div>
+  <div class="kpi-tile">
+    <div class="kpi-icon kpi-icon-danger">🎒</div>
+    <div><div class="kpi-value">{{ stats.paiements_en_retard }}</div><div class="kpi-label">{% trans "أداءات دراسية متأخرة" %}</div></div>
   </div>
-  <div class="stat-card">
-    <div class="stat-number">{{ stats.comptes_en_attente }}</div>
-    <div class="stat-label">🔑 {% trans "حسابات بانتظار التفعيل" %}</div>
+  <div class="kpi-tile">
+    <div class="kpi-icon kpi-icon-info">📥</div>
+    <div><div class="kpi-value">{{ stats.preinscriptions_en_attente }}</div><div class="kpi-label">{% trans "طلبات تسجيل مسبق قيد الانتظار" %}</div></div>
+  </div>
+  <div class="kpi-tile">
+    <div class="kpi-icon kpi-icon-purple">🔑</div>
+    <div><div class="kpi-value">{{ stats.comptes_en_attente }}</div><div class="kpi-label">{% trans "حسابات بانتظار التفعيل" %}</div></div>
   </div>
 </div>
 

@@ -11,6 +11,7 @@
   <a href="?statut=refusee" class="{% if statut == 'refusee' %}active{% endif %}">{% trans "Refusées" %}</a>
   <a href="?statut=" class="{% if not statut %}active{% endif %}">{% trans "Toutes" %}</a>
 </div>
+<div id="paginated-region">
 <div class="table-wrap">
   <table class="styled">
     <tr>
@@ -28,13 +29,24 @@
       <td>{{ demande.beneficiaire }}</td>
       <td>{{ demande.titre }}</td>
       <td>{{ demande.get_categorie_display }}</td>
-      <td>{{ demande.get_urgence_display }}</td>
-      <td>{{ demande.get_statut_display }}</td>
+      <td>
+        {% if demande.urgence == "haute" %}<span class="badge badge-urgent">{{ demande.get_urgence_display }}</span>
+        {% elif demande.urgence == "moyenne" %}<span class="badge badge-pending">{{ demande.get_urgence_display }}</span>
+        {% else %}<span class="badge badge-normal">{{ demande.get_urgence_display }}</span>{% endif %}
+      </td>
+      <td>
+        {% if demande.statut == "acceptee" %}<span class="badge badge-success">{{ demande.get_statut_display }}</span>
+        {% elif demande.statut == "refusee" %}<span class="badge badge-urgent">{{ demande.get_statut_display }}</span>
+        {% elif demande.statut == "en_cours" %}<span class="badge badge-pending">{{ demande.get_statut_display }}</span>
+        {% else %}<span class="badge badge-normal">{{ demande.get_statut_display }}</span>{% endif %}
+      </td>
       <td>{{ demande.date_soumission }}</td>
     </tr>
     {% empty %}
     <tr><td colspan="7">{% trans "Aucune demande." %}</td></tr>
     {% endfor %}
   </table>
+</div>
+{% include "_pagination.html" %}
 </div>
 {% endblock %}

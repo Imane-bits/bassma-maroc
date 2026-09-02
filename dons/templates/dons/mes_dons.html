@@ -12,31 +12,12 @@
     </div>
   </div>
 
-  <div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
-    <div class="stat-card">
-      <div class="stat-number">{{ nb_villes }}</div>
-      <div class="stat-label">🌍 {% trans "مدن" %}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">{{ nb_familles }}</div>
-      <div class="stat-label">👥 {% trans "أسر دعمتها" %}</div>
-    </div>
-    <div class="stat-card stat-card-primary">
+  <div class="stat-cards" style="grid-template-columns:repeat(auto-fit, minmax(170px, 260px))">
+    <div class="stat-card stat-card-gradient">
       <div class="stat-number">DH {{ total_periode|floatformat:0 }}</div>
       <div class="stat-label">{% trans "مجموع تبرّعاتي" %}</div>
       <p style="color:var(--color-cream);font-size:12px;margin:4px 0 10px">{% trans "الإجمالي منذ البداية" %} · DH {{ total_all_time|floatformat:0 }}</p>
       <a href="{% url 'dons:recu_fiscal' %}" class="btn btn-accent btn-sm">⬇️ {% trans "تحميل الوصل الضريبي" %}</a>
-    </div>
-  </div>
-
-  <div class="stat-cards" style="grid-template-columns:repeat(3,1fr)">
-    <div class="stat-card">
-      <div class="stat-number">{{ nb_contributions }}</div>
-      <div class="stat-label">🎯 {% trans "مساهمة إجمالية" %}</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number">{{ dons_mensuels_actifs }}</div>
-      <div class="stat-label">🔄 {% trans "تبرّع دوري نشط" %}</div>
     </div>
     <div class="stat-card">
       <div class="stat-number">DH {{ montant_ce_mois|floatformat:0 }}</div>
@@ -56,7 +37,26 @@
     <div class="bar-chart">
       {% for ligne in graphique %}
       <div class="bar-chart-col">
-        <div class="bar-chart-bar" style="height:{{ ligne.hauteur_pct }}%" title="DH {{ ligne.montant|floatformat:0 }}"></div>
+        <div class="bar-chart-bar-wrap">
+          <div class="bar-chart-bar" style="height:{{ ligne.hauteur_pct }}%"></div>
+          {% if ligne.montant %}
+          <div class="bar-chart-tooltip">
+            <div class="bar-chart-tooltip-total">DH {{ ligne.montant|floatformat:0 }}</div>
+            {% for alloc in ligne.allocs %}
+            <div class="bar-chart-tooltip-row">
+              <span>{{ alloc.label }}</span>
+              <span>DH {{ alloc.montant|floatformat:0 }}</span>
+            </div>
+            {% endfor %}
+            {% if ligne.non_affecte %}
+            <div class="bar-chart-tooltip-row muted">
+              <span>{% trans "غير موزّع بعد" %}</span>
+              <span>DH {{ ligne.non_affecte|floatformat:0 }}</span>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
         <div class="bar-chart-label">{{ ligne.mois_label }}</div>
       </div>
       {% endfor %}
@@ -74,6 +74,11 @@
       </div>
       <div class="table-wrap">
         <table class="styled">
+          <tr>
+            <th>{% trans "Montant" %}</th>
+            <th>{% trans "Catégorie" %}</th>
+            <th>{% trans "Date" %}</th>
+          </tr>
           {% for entree in log %}
           <tr>
             <td style="font-weight:900;color:var(--color-primary)">DH {{ entree.don.montant|floatformat:0 }}</td>
