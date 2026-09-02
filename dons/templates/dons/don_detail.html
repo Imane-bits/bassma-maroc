@@ -1,7 +1,7 @@
 {% extends "responsable_base.html" %}
 {% load i18n %}
 {% block dashboard_content %}
-{% with nom_donateur=don.donateur.get_full_name|default:don.donateur.username %}
+{% with nom_donateur=don.nom_affichage %}
 <div class="detail-header">
   <span class="avatar-circle avatar-circle-lg">{{ nom_donateur|slice:":1"|upper }}</span>
   <div>

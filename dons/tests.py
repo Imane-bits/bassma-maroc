@@ -39,6 +39,44 @@ class CreerDonViewTests(TestCase):
         response = self.client.get(reverse("dons:creer_don"))
         self.assertEqual(response.status_code, 403)
 
+    def test_don_invite_sans_compte(self):
+        response = self.client.post(
+            reverse("dons:creer_don"),
+            {
+                "montant": "75.00",
+                "type_don": Don.TypeDon.UNIQUE,
+                "nom_invite": "Amine Test",
+                "email_invite": "amine@example.com",
+            },
+        )
+        self.assertRedirects(response, reverse("dons:merci_don"))
+        don = Don.objects.get()
+        self.assertIsNone(don.donateur)
+        self.assertEqual(don.nom_invite, "Amine Test")
+        self.assertEqual(don.email_invite, "amine@example.com")
+
+    def test_don_invite_honeypot_bloque(self):
+        response = self.client.post(
+            reverse("dons:creer_don"),
+            {
+                "montant": "75.00",
+                "type_don": Don.TypeDon.UNIQUE,
+                "nom_invite": "Bot",
+                "email_invite": "bot@example.com",
+                "site_web": "http://spam.example",
+            },
+        )
+        self.assertRedirects(response, reverse("home"))
+        self.assertEqual(Don.objects.count(), 0)
+
+    def test_don_invite_requiert_nom_et_email(self):
+        response = self.client.post(
+            reverse("dons:creer_don"),
+            {"montant": "75.00", "type_don": Don.TypeDon.UNIQUE},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Don.objects.count(), 0)
+
 
 class MesDonsViewTests(TestCase):
     def test_liste_uniquement_les_dons_du_donateur_connecte(self):

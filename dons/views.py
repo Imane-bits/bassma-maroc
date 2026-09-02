@@ -2,6 +2,8 @@ import csv
 import io
 
 from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -12,32 +14,53 @@ from django.utils.translation import gettext as _
 from aide.models import DemandeAide
 from comptabilite.services import enregistrer_depense_affectation, enregistrer_recette_don
 from users.mixins import role_required
+from users.ratelimit import is_rate_limited
 
 from .emails import notifier_donateur_affectation
 from .forms import AffectationForm, DonForm
 from .impact import donnees_espace_donateur
 from .models import Affectation, Don
 
+User = get_user_model()
 
-@role_required("donateur")
+
 def creer_don(request):
+    is_donateur = request.user.is_authenticated and request.user.role == User.Role.DONATEUR
+    if request.user.is_authenticated and not is_donateur:
+        raise PermissionDenied
+    guest = not is_donateur
+
     if request.method == "POST":
-        form = DonForm(request.POST)
+        if guest and request.POST.get("site_web"):
+            return redirect("home")
+        if guest and is_rate_limited(request, "don_invite"):
+            messages.error(request, _("عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."))
+            return redirect("dons:creer_don")
+        form = DonForm(request.POST, guest=guest)
         demande_pk = request.POST.get("demande_aide")
         if form.is_valid():
             don = form.save(commit=False)
-            don.donateur = request.user
+            if is_donateur:
+                don.donateur = request.user
             don.save()
             enregistrer_recette_don(don)
             messages.success(request, _("شكرًا على تبرّعك."))
-            return redirect("dons:mes_dons")
+            return redirect("dons:mes_dons" if is_donateur else "dons:merci_don")
     else:
         demande_pk = request.GET.get("demande")
-        form = DonForm(initial={"demande_aide": demande_pk} if demande_pk else {})
+        form = DonForm(
+            initial={"demande_aide": demande_pk} if demande_pk else {}, guest=guest
+        )
     cible_demande = DemandeAide.objects.filter(pk=demande_pk).first() if demande_pk else None
     return render(
-        request, "dons/creer_don.html", {"form": form, "cible_demande": cible_demande}
+        request,
+        "dons/creer_don.html",
+        {"form": form, "cible_demande": cible_demande, "guest": guest},
     )
+
+
+def merci_don(request):
+    return render(request, "dons/merci_don.html")
 
 
 @role_required("donateur")

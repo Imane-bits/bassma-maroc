@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="container">
+  <section class="hero">
+    <div class="hero-badge">💚</div>
+    <h1 style="font-size:28px">{% trans "شكرًا لتبرّعك!" %}</h1>
+    <p>{% trans "تم تسجيل تبرّعك بنجاح. لمتابعة تبرّعاتك وتحميل الإيصالات، يمكنك إنشاء حساب متبرّع." %}</p>
+    <div class="hero-actions">
+      <a href="{% url 'inscription' %}" class="btn btn-primary">{% trans "إنشاء حساب متبرّع" %}</a>
+      <a href="{% url 'home' %}" class="btn btn-ghost">{% trans "العودة إلى الرئيسية" %}</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

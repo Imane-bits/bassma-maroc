@@ -14,8 +14,14 @@ class Don(models.Model):
         DISTRIBUE = "distribue", _("موزّع")
 
     donateur = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="dons"
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name="dons",
+        null=True,
+        blank=True,
     )
+    nom_invite = models.CharField(_("اسم المتبرّع"), max_length=150, blank=True)
+    email_invite = models.EmailField(_("بريد المتبرّع"), blank=True)
     montant = models.DecimalField(_("المبلغ"), max_digits=10, decimal_places=2)
     date_don = models.DateField(auto_now_add=True)
     type_don = models.CharField(_("نوع التبرّع"), max_length=10, choices=TypeDon.choices)
@@ -32,7 +38,17 @@ class Don(models.Model):
     )
 
     def __str__(self):
-        return f"Don #{self.pk} - {self.montant} ({self.donateur})"
+        return f"Don #{self.pk} - {self.montant} ({self.nom_affichage})"
+
+    @property
+    def nom_affichage(self):
+        if self.donateur_id:
+            return self.donateur.get_full_name() or self.donateur.username
+        return self.nom_invite or _("متبرّع مجهول")
+
+    @property
+    def email_affichage(self):
+        return self.donateur.email if self.donateur_id else self.email_invite
 
 
 class Affectation(models.Model):

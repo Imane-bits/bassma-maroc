@@ -4,13 +4,13 @@ from django.core.mail import send_mail
 
 def notifier_donateur_affectation(affectation):
     don = affectation.don
-    destinataire = don.donateur.email
+    destinataire = don.email_affichage
     if not destinataire:
         return
 
     sujet = "تم توزيع تبرّعك"
     corps_lignes = [
-        f"مرحبًا {don.donateur.first_name}،",
+        f"مرحبًا {don.nom_affichage}،",
         "",
         f"تم توزيع تبرّعك البالغ {don.montant} MAD:",
         f"- المبلغ الموزّع: {affectation.montant_affecte} MAD",

@@ -12,15 +12,26 @@ class DonForm(forms.ModelForm):
 
     class Meta:
         model = Don
-        fields = ["montant", "type_don", "demande_aide"]
+        fields = ["montant", "type_don", "demande_aide", "nom_invite", "email_invite"]
         widgets = {"demande_aide": forms.HiddenInput()}
+        labels = {
+            "nom_invite": _("الاسم الكامل"),
+            "email_invite": _("البريد الإلكتروني"),
+        }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, guest=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["demande_aide"].queryset = DemandeAide.objects.exclude(
             statut=DemandeAide.Statut.REFUSEE
         )
         self.fields["demande_aide"].required = False
+        self.guest = guest
+        if guest:
+            self.fields["nom_invite"].required = True
+            self.fields["email_invite"].required = True
+        else:
+            del self.fields["nom_invite"]
+            del self.fields["email_invite"]
 
 
 class AffectationForm(forms.ModelForm):

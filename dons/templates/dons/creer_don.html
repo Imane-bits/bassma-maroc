@@ -15,6 +15,20 @@
   <div class="form-card">
     <form method="post">
       {% csrf_token %}
+      {% if guest %}
+      <div class="field" style="position:absolute;left:-9999px" aria-hidden="true">
+        <label for="id_site_web">Site web</label>
+        <input type="text" name="site_web" id="id_site_web" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="{{ form.nom_invite.id_for_label }}">{{ form.nom_invite.label }}</label>
+        {{ form.nom_invite }}
+      </div>
+      <div class="field">
+        <label for="{{ form.email_invite.id_for_label }}">{{ form.email_invite.label }}</label>
+        {{ form.email_invite }}
+      </div>
+      {% endif %}
       <div class="field">
         <label for="{{ form.montant.id_for_label }}">{{ form.montant.label }}</label>
         {{ form.montant }}
