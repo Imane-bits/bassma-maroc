@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 
@@ -14,10 +15,11 @@ def liste_membres(request):
     membres = Membre.objects.all()
     if statut:
         membres = membres.filter(statut=statut)
+    page_obj = Paginator(membres.order_by("nom"), 20).get_page(request.GET.get("page"))
     return render(
         request,
         "personnel/liste_membres.html",
-        {"membres": membres.order_by("nom"), "statut": statut},
+        {"membres": page_obj, "page_obj": page_obj, "statut": statut},
     )
 
 

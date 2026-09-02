@@ -11,28 +11,37 @@ from ecole.models import PaiementScolarite, PreinscriptionEleve
 
 from .forms import InscriptionForm
 from .mixins import role_required
+from .ratelimit import is_rate_limited
 
 User = get_user_model()
 
 
+def _espace_url_for_role(role):
+    if role == User.Role.RESPONSABLE:
+        return reverse("espace_responsable")
+    if role == User.Role.DONATEUR:
+        return reverse("dons:mes_dons")
+    return reverse("home")
+
+
 class RoleBasedLoginView(auth_views.LoginView):
     def get_default_redirect_url(self):
-        role = self.request.user.role
-        if role == User.Role.RESPONSABLE:
-            return reverse("espace_responsable")
-        if role == User.Role.DONATEUR:
-            return reverse("dons:mes_dons")
-        return super().get_default_redirect_url()
+        return _espace_url_for_role(self.request.user.role)
 
 
 def register(request):
     if request.method == "POST":
+        if request.POST.get("site_web"):
+            return redirect("inscription")
+        if is_rate_limited(request, "register"):
+            messages.error(request, _("عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."))
+            return redirect("inscription")
         form = InscriptionForm(request.POST)
         if form.is_valid():
             user = form.save()
             if user.is_active:
                 login(request, user)
-                return redirect("home")
+                return redirect(_espace_url_for_role(user.role))
             return redirect("compte_en_attente")
     else:
         form = InscriptionForm()

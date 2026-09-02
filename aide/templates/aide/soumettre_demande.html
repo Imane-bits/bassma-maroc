@@ -11,6 +11,10 @@
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <div style="position:absolute;left:-9999px" aria-hidden="true">
+      <label for="id_site_web">Site web</label>
+      <input type="text" name="site_web" id="id_site_web" tabindex="-1" autocomplete="off">
+    </div>
 
     <div class="form-card">
       <h2>👤 {% trans "الهوية" %}</h2>

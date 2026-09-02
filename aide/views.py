@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
@@ -6,13 +7,20 @@ from django.utils.translation import gettext as _
 
 from dons.models import Don
 from users.mixins import role_required
+from users.ratelimit import is_rate_limited
 
+from .emails import notifier_beneficiaire_demande
 from .forms import BeneficiaireProfilForm, DemandeAideForm, PiecesJustificativesForm
 from .models import Beneficiaire, DemandeAide, PieceJustificative
 
 
 def soumettre_demande(request):
     if request.method == "POST":
+        if request.POST.get("site_web"):
+            return redirect("aide:soumettre_demande")
+        if is_rate_limited(request, "soumettre_demande"):
+            messages.error(request, _("عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."))
+            return redirect("aide:soumettre_demande")
         cin = request.POST.get("cin", "").strip()
         profil_instance = Beneficiaire.objects.filter(cin=cin).first() if cin else None
         profil_form = BeneficiaireProfilForm(request.POST, instance=profil_instance)
@@ -50,11 +58,15 @@ def liste_besoins(request):
     ).select_related("beneficiaire")
     if categorie:
         besoins = besoins.filter(categorie=categorie)
+    page_obj = Paginator(besoins.order_by("-urgence", "-date_soumission"), 20).get_page(
+        request.GET.get("page")
+    )
     return render(
         request,
         "aide/liste_besoins.html",
         {
-            "besoins": besoins.order_by("-urgence", "-date_soumission"),
+            "besoins": page_obj,
+            "page_obj": page_obj,
             "categorie": categorie,
             "categories": DemandeAide.Categorie.choices,
         },
@@ -69,6 +81,9 @@ def confirmation(request, numero_dossier):
 def suivi_dossier(request):
     demande = None
     if request.method == "POST":
+        if is_rate_limited(request, "suivi_dossier", limit=20, window_seconds=600):
+            messages.error(request, _("عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."))
+            return render(request, "aide/suivi_dossier.html", {"demande": None})
         numero_dossier = request.POST.get("numero_dossier", "").strip()
         demande = DemandeAide.objects.filter(numero_dossier=numero_dossier).first()
         if demande is None:
@@ -98,10 +113,11 @@ def liste_beneficiaires(request):
     beneficiaires = beneficiaires.annotate(
         nb_demandes=Count("demandes_aide", distinct=True)
     ).order_by("nom", "prenom")
+    page_obj = Paginator(beneficiaires, 20).get_page(request.GET.get("page"))
     return render(
         request,
         "aide/liste_beneficiaires.html",
-        {"beneficiaires": beneficiaires, "recherche": recherche},
+        {"beneficiaires": page_obj, "page_obj": page_obj, "recherche": recherche},
     )
 
 
@@ -135,10 +151,13 @@ def liste_demandes(request):
     demandes = DemandeAide.objects.all()
     if statut:
         demandes = demandes.filter(statut=statut)
+    page_obj = Paginator(demandes.order_by("-date_soumission"), 20).get_page(
+        request.GET.get("page")
+    )
     return render(
         request,
         "aide/liste_demandes.html",
-        {"demandes": demandes.order_by("-date_soumission"), "statut": statut},
+        {"demandes": page_obj, "page_obj": page_obj, "statut": statut},
     )
 
 
@@ -148,6 +167,7 @@ def accepter_demande(request, pk):
     if request.method == "POST":
         demande.statut = DemandeAide.Statut.ACCEPTEE
         demande.save(update_fields=["statut"])
+        notifier_beneficiaire_demande(demande, acceptee=True)
         messages.success(request, _("تم قبول الطلب."))
     return redirect("aide:liste_demandes")
 
@@ -158,5 +178,6 @@ def refuser_demande(request, pk):
     if request.method == "POST":
         demande.statut = DemandeAide.Statut.REFUSEE
         demande.save(update_fields=["statut"])
+        notifier_beneficiaire_demande(demande, acceptee=False)
         messages.success(request, _("تم رفض الطلب."))
     return redirect("aide:liste_demandes")

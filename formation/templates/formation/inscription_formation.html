@@ -11,6 +11,10 @@
 
   <form method="post">
     {% csrf_token %}
+    <div style="position:absolute;left:-9999px" aria-hidden="true">
+      <label for="id_site_web">Site web</label>
+      <input type="text" name="site_web" id="id_site_web" tabindex="-1" autocomplete="off">
+    </div>
     <input type="hidden" name="nombre_enfants" value="0">
     <input type="hidden" name="enfants_scolarises" value="0">
 

@@ -2,6 +2,7 @@ import csv
 import io
 
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -9,6 +10,7 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from aide.models import DemandeAide
+from comptabilite.services import enregistrer_depense_affectation, enregistrer_recette_don
 from users.mixins import role_required
 
 from .emails import notifier_donateur_affectation
@@ -26,6 +28,7 @@ def creer_don(request):
             don = form.save(commit=False)
             don.donateur = request.user
             don.save()
+            enregistrer_recette_don(don)
             messages.success(request, _("شكرًا على تبرّعك."))
             return redirect("dons:mes_dons")
     else:
@@ -130,7 +133,8 @@ def liste_dons_a_affecter(request):
         .annotate(total_affecte=Sum("affectations__montant_affecte"))
         .order_by("-date_don")
     )
-    return render(request, "dons/liste_dons.html", {"dons": dons})
+    page_obj = Paginator(dons, 20).get_page(request.GET.get("page"))
+    return render(request, "dons/liste_dons.html", {"dons": page_obj, "page_obj": page_obj})
 
 
 @role_required("responsable")
@@ -160,6 +164,7 @@ def creer_affectation(request):
             affectation = form.save(commit=False)
             affectation.validee_par = request.user
             affectation.save()
+            enregistrer_depense_affectation(affectation)
 
             don = affectation.don
             total = don.affectations.aggregate(total=Sum("montant_affecte"))["total"] or 0

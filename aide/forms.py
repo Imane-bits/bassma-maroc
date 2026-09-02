@@ -1,7 +1,12 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 from django.utils.translation import gettext_lazy as _
 
 from .models import Beneficiaire, DemandeAide
+
+PIECE_JOINTE_EXTENSIONS = ["pdf", "jpg", "jpeg", "png", "doc", "docx"]
+PIECE_JOINTE_MAX_TAILLE_MO = 5
+PIECE_JOINTE_MAX_NOMBRE = 5
 
 
 class BeneficiaireProfilForm(forms.ModelForm):
@@ -88,4 +93,23 @@ class MultipleFileField(forms.FileField):
 
 
 class PiecesJustificativesForm(forms.Form):
-    fichiers = MultipleFileField(required=False, label=_("Pièces justificatives"))
+    fichiers = MultipleFileField(
+        required=False,
+        label=_("Pièces justificatives"),
+        validators=[FileExtensionValidator(allowed_extensions=PIECE_JOINTE_EXTENSIONS)],
+    )
+
+    def clean_fichiers(self):
+        fichiers = self.cleaned_data.get("fichiers") or []
+        if len(fichiers) > PIECE_JOINTE_MAX_NOMBRE:
+            raise forms.ValidationError(
+                _("%(max)s ملفات كحد أقصى.") % {"max": PIECE_JOINTE_MAX_NOMBRE}
+            )
+        max_taille = PIECE_JOINTE_MAX_TAILLE_MO * 1024 * 1024
+        for fichier in fichiers:
+            if fichier.size > max_taille:
+                raise forms.ValidationError(
+                    _("حجم كل ملف يجب ألا يتجاوز %(max)s ميغابايت.")
+                    % {"max": PIECE_JOINTE_MAX_TAILLE_MO}
+                )
+        return fichiers

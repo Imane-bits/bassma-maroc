@@ -1,9 +1,11 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
 from users.mixins import role_required
+from users.ratelimit import is_rate_limited
 
 from .forms import PreinscriptionEleveForm
 from .models import PaiementScolarite, PreinscriptionEleve
@@ -11,6 +13,11 @@ from .models import PaiementScolarite, PreinscriptionEleve
 
 def preinscrire(request):
     if request.method == "POST":
+        if request.POST.get("site_web"):
+            return redirect("ecole:preinscrire")
+        if is_rate_limited(request, "preinscrire"):
+            messages.error(request, _("عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."))
+            return redirect("ecole:preinscrire")
         form = PreinscriptionEleveForm(request.POST)
         if form.is_valid():
             preinscription = form.save()
@@ -32,6 +39,11 @@ def confirmation(request, numero_dossier):
 def suivi_preinscription(request):
     preinscription = None
     if request.method == "POST":
+        if is_rate_limited(request, "suivi_preinscription", limit=20, window_seconds=600):
+            messages.error(request, _("عدد كبير جدًا من المحاولات. حاول مرة أخرى لاحقًا."))
+            return render(
+                request, "ecole/suivi_preinscription.html", {"preinscription": None}
+            )
         numero_dossier = request.POST.get("numero_dossier", "").strip()
         preinscription = PreinscriptionEleve.objects.filter(
             numero_dossier=numero_dossier
@@ -49,10 +61,13 @@ def liste_preinscriptions(request):
     preinscriptions = PreinscriptionEleve.objects.all()
     if statut:
         preinscriptions = preinscriptions.filter(statut=statut)
+    page_obj = Paginator(preinscriptions.order_by("-date_soumission"), 20).get_page(
+        request.GET.get("page")
+    )
     return render(
         request,
         "ecole/liste_preinscriptions.html",
-        {"preinscriptions": preinscriptions.order_by("-date_soumission"), "statut": statut},
+        {"preinscriptions": page_obj, "page_obj": page_obj, "statut": statut},
     )
 
 
@@ -90,10 +105,11 @@ def liste_paiements(request):
     paiements = PaiementScolarite.objects.select_related("eleve").order_by("date_echeance")
     if statut:
         paiements = paiements.filter(statut_paiement=statut)
+    page_obj = Paginator(paiements, 20).get_page(request.GET.get("page"))
     return render(
         request,
         "ecole/liste_paiements.html",
-        {"paiements": paiements, "statut": statut},
+        {"paiements": page_obj, "page_obj": page_obj, "statut": statut},
     )
 
 
